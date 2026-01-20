@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using UniverSysLite.Application.Common.Interfaces;
 using UniverSysLite.Domain.Common;
+using UniverSysLite.Domain.Entities;
 using UniverSysLite.Domain.Entities.Academic;
 using UniverSysLite.Domain.Entities.Identity;
 
@@ -55,6 +56,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<ProgramCourse> ProgramCourses => Set<ProgramCourse>();
     public DbSet<CoursePrerequisite> CoursePrerequisites => Set<CoursePrerequisite>();
     public DbSet<StudentDocument> StudentDocuments => Set<StudentDocument>();
+
+    // Scheduling DbSets
+    public DbSet<Building> Buildings => Set<Building>();
+    public DbSet<Room> Rooms => Set<Room>();
+    public DbSet<RoomBooking> RoomBookings => Set<RoomBooking>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

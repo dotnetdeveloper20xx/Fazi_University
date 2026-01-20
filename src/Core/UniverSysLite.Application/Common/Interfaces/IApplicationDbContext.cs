@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UniverSysLite.Domain.Entities;
 using UniverSysLite.Domain.Entities.Academic;
 using UniverSysLite.Domain.Entities.Identity;
 
@@ -35,6 +36,11 @@ public interface IApplicationDbContext
     DbSet<ProgramCourse> ProgramCourses { get; }
     DbSet<CoursePrerequisite> CoursePrerequisites { get; }
     DbSet<StudentDocument> StudentDocuments { get; }
+
+    // Scheduling entities
+    DbSet<Building> Buildings { get; }
+    DbSet<Room> Rooms { get; }
+    DbSet<RoomBooking> RoomBookings { get; }
 
     /// <summary>
     /// Saves all changes made in this context to the database.

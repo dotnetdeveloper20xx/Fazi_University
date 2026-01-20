@@ -120,7 +120,11 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         await DatabaseSeeder.SeedAsync(context, services);
-        Log.Information("Database seeded successfully");
+        Log.Information("Base database seeded successfully");
+
+        // Seed comprehensive test data
+        await ComprehensiveDataSeeder.SeedComprehensiveDataAsync(context, services);
+        Log.Information("Comprehensive test data seeded successfully");
     }
     catch (Exception ex)
     {

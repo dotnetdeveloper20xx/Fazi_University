@@ -131,7 +131,7 @@ public class GetStudentTranscriptQueryHandler : IRequestHandler<GetStudentTransc
         {
             StudentId = student.Id,
             StudentId_Display = student.StudentId,
-            StudentName = $"{student.User.FirstName} {student.User.LastName}",
+            StudentName = $"{student.FirstName} {student.LastName}",
             ProgramName = student.Program?.Name ?? "Undeclared",
             CumulativeGpa = cumulativeGpa,
             TotalCreditsAttempted = totalCreditsAttempted,

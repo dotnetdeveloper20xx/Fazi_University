@@ -115,7 +115,7 @@ public class GetStudentGpaQueryHandler : IRequestHandler<GetStudentGpaQuery, Res
         {
             StudentId = student.Id,
             StudentId_Display = student.StudentId,
-            StudentName = $"{student.User.FirstName} {student.User.LastName}",
+            StudentName = $"{student.FirstName} {student.LastName}",
             CumulativeGpa = cumulativeGpa,
             TotalCreditsAttempted = totalCreditsAttempted,
             TotalCreditsEarned = totalCreditsEarned,

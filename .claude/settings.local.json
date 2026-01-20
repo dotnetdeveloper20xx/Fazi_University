@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet new:*)",
+      "Bash(dotnet sln add:*)",
+      "Bash(dotnet sln:*)",
+      "Bash(dotnet add:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\AfzalAhmed\\\\source\\\\repos\\\\dotnetdeveloper20xx\\\\UniversityCorpporateSoftware\\\\src\")",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(taskkill //F //PID 32188)",
+      "Bash(dotnet run:*)",
+      "Bash(timeout /t 5 /nobreak)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjVhMGY3YzgyLTJjZWMtNDhjYS02NGExLTA4ZGU1ODA5NzA2YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbkB1bml2ZXJzeXNsaXRlLmVkdSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQHVuaXZlcnN5c2xpdGUuZWR1IiwianRpIjoiYTA3ZjI0MDItMmQ0Yy00ODg1LTk5NGYtNzNiNmI0YTg3ZGUwIiwiaWF0IjoxNzY4OTA0NjYwLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJTeXN0ZW0iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zdXJuYW1lIjoiQWRtaW5pc3RyYXRvciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmF0b3IiLCJwZXJtaXNzaW9uIjpbIkdyYWRlcy5FZGl0IiwiQmlsbGluZy5EZWxldGUiLCJSb2xlcy5WaWV3IiwiQ291cnNlcy5WaWV3IiwiUm9sZXMuRWRpdCIsIkJpbGxpbmcuVmlldyIsIkJpbGxpbmcuRWRpdCIsIkdyYWRlcy5WaWV3IiwiQXVkaXRMb2dzLlZpZXciLCJCaWxsaW5nLlByb2Nlc3NQYXltZW50cyIsIlJvbGVzLkNyZWF0ZSIsIlVzZXJzLkRlbGV0ZSIsIkNvdXJzZXMuQ3JlYXRlIiwiU3R1ZGVudHMuRWRpdCIsIkNvdXJzZXMuRGVsZXRlIiwiVXNlcnMuQ3JlYXRlIiwiUm9sZXMuRGVsZXRlIiwiU2V0dGluZ3MuRWRpdCIsIlJlcG9ydHMuRXhwb3J0IiwiU3R1ZGVudHMuQ3JlYXRlIiwiR3JhZGVzLkNyZWF0ZSIsIlVzZXJzLlZpZXciLCJTdHVkZW50cy5WaWV3IiwiU3R1ZGVudHMuRGVsZXRlIiwiVXNlcnMuRWRpdCIsIlJlcG9ydHMuVmlldyIsIlNldHRpbmdzLlZpZXciLCJDb3Vyc2VzLkVkaXQiLCJSb2xlcy5Bc3NpZ25QZXJtaXNzaW9ucyIsIkdyYWRlcy5EZWxldGUiLCJCaWxsaW5nLkNyZWF0ZSJdLCJleHAiOjE3Njg5MDgyNjAsImlzcyI6IlVuaXZlclN5c0xpdGUiLCJhdWQiOiJVbml2ZXJTeXNMaXRlVXNlcnMifQ.jXqSb1Ms_NZjNwgOH9Ic-WYqQGF8v0nxFqzQ6p7Kuis\")",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(del \"\\\\?\\\\C:\\\\Users\\\\AfzalAhmed\\\\source\\\\repos\\\\dotnetdeveloper20xx\\\\UniversityCorpporateSoftware\\\\nul\")",
+      "Bash(cmd //c \"del \\\\?\\\\C:\\\\Users\\\\AfzalAhmed\\\\source\\\\repos\\\\dotnetdeveloper20xx\\\\UniversityCorpporateSoftware\\\\nul\")"
+    ]
+  }
+}

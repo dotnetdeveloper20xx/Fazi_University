@@ -10,4 +10,7 @@
   <Folder Name="/src/Presentation/">
     <Project Path="src/Presentation/UniverSysLite.API/UniverSysLite.API.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/UniverSysLite.Application.Tests/UniverSysLite.Application.Tests.csproj" />
+  </Folder>
 </Solution>

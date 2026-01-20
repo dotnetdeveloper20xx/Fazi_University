@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using UniverSysLite.Application.Common.Exceptions;
 using UniverSysLite.Application.Common.Models;
+using DomainValidationException = UniverSysLite.Domain.Exceptions.ValidationException;
 
 namespace UniverSysLite.API.Middleware;
 
@@ -43,6 +44,10 @@ public class ExceptionHandlingMiddleware
                 HttpStatusCode.BadRequest,
                 ApiResponse<object>.Fail(validationException.Errors.SelectMany(e => e.Value))
             ),
+            DomainValidationException domainValidationException => (
+                HttpStatusCode.BadRequest,
+                ApiResponse<object>.Fail(domainValidationException.Errors.SelectMany(e => e.Value))
+            ),
             NotFoundException notFoundException => (
                 HttpStatusCode.NotFound,
                 ApiResponse<object>.Fail(notFoundException.Message)
@@ -62,7 +67,7 @@ public class ExceptionHandlingMiddleware
         };
 
         // Log the exception
-        if (exception is ValidationException)
+        if (exception is ValidationException or DomainValidationException)
         {
             _logger.LogWarning(exception, "Validation error occurred");
         }

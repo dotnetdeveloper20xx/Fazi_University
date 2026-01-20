@@ -21,7 +21,7 @@ public class CreateProgramCommandValidator : AbstractValidator<CreateProgramComm
         RuleFor(x => x.DegreeType)
             .NotEmpty().WithMessage("Degree type is required.")
             .Must(dt => Enum.TryParse<DegreeType>(dt, true, out _))
-            .WithMessage("Invalid degree type. Valid values are: Certificate, Associate, Bachelor, Master, Doctorate, Professional.");
+            .WithMessage("Invalid degree type. Valid values are: Certificate, AssociateDegree, BachelorsDegree, MastersDegree, DoctoralDegree, ProfessionalDegree.");
 
         RuleFor(x => x.DepartmentId)
             .NotEmpty().WithMessage("Department is required.");

@@ -113,12 +113,16 @@ public static class DependencyInjection
         // Email settings
         services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
 
+        // File storage settings
+        services.Configure<FileStorageSettings>(configuration.GetSection(FileStorageSettings.SectionName));
+
         // Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAuditService, AuditService>();
         services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
 
         // HTTP Context accessor (required for CurrentUserService)
         services.AddHttpContextAccessor();

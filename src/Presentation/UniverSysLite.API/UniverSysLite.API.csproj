@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="UniverSysLite.API.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\UniverSysLite.Application\UniverSysLite.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\UniverSysLite.Infrastructure\UniverSysLite.Infrastructure.csproj" />
   </ItemGroup>

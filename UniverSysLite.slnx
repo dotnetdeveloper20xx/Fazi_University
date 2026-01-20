@@ -12,5 +12,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/UniverSysLite.Application.Tests/UniverSysLite.Application.Tests.csproj" />
+    <Project Path="tests/UniverSysLite.API.Tests/UniverSysLite.API.Tests.csproj" />
   </Folder>
 </Solution>

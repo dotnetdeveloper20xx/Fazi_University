@@ -135,3 +135,6 @@ using (var scope = app.Services.CreateScope())
 Log.Information("UniverSys Lite API starting...");
 
 app.Run();
+
+// Make Program accessible for integration tests
+public partial class Program { }

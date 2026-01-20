@@ -10,9 +10,9 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.*" />
     <PackageReference Include="FluentAssertions" Version="6.12.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
-    <PackageReference Include="Moq" Version="4.20.*" />
     <PackageReference Include="xunit" Version="2.*" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.*" />
   </ItemGroup>
@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\UniverSysLite.Application\UniverSysLite.Application.csproj" />
-    <ProjectReference Include="..\..\src\Core\UniverSysLite.Domain\UniverSysLite.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Presentation\UniverSysLite.API\UniverSysLite.API.csproj" />
   </ItemGroup>
 
 </Project>

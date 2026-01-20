@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using UniverSysLite.Application.Common.Interfaces;
 using UniverSysLite.Domain.Common;
+using UniverSysLite.Domain.Entities.Academic;
 using UniverSysLite.Domain.Entities.Identity;
 
 namespace UniverSysLite.Infrastructure.Persistence;
@@ -42,6 +43,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<UserNotificationPreference> UserNotificationPreferences => Set<UserNotificationPreference>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+
+    // Academic DbSets
+    public DbSet<Student> Students => Set<Student>();
+    public DbSet<Department> Departments => Set<Department>();
+    public DbSet<Program> Programs => Set<Program>();
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<CourseSection> CourseSections => Set<CourseSection>();
+    public DbSet<Term> Terms => Set<Term>();
+    public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<ProgramCourse> ProgramCourses => Set<ProgramCourse>();
+    public DbSet<CoursePrerequisite> CoursePrerequisites => Set<CoursePrerequisite>();
+    public DbSet<StudentDocument> StudentDocuments => Set<StudentDocument>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

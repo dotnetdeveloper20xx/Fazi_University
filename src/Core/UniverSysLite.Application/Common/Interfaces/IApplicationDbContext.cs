@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UniverSysLite.Domain.Entities.Academic;
 using UniverSysLite.Domain.Entities.Identity;
 
 namespace UniverSysLite.Application.Common.Interfaces;
@@ -22,6 +23,18 @@ public interface IApplicationDbContext
     DbSet<Notification> Notifications { get; }
     DbSet<UserNotificationPreference> UserNotificationPreferences { get; }
     DbSet<AuditLog> AuditLogs { get; }
+
+    // Academic entities
+    DbSet<Student> Students { get; }
+    DbSet<Department> Departments { get; }
+    DbSet<Program> Programs { get; }
+    DbSet<Course> Courses { get; }
+    DbSet<CourseSection> CourseSections { get; }
+    DbSet<Term> Terms { get; }
+    DbSet<Enrollment> Enrollments { get; }
+    DbSet<ProgramCourse> ProgramCourses { get; }
+    DbSet<CoursePrerequisite> CoursePrerequisites { get; }
+    DbSet<StudentDocument> StudentDocuments { get; }
 
     /// <summary>
     /// Saves all changes made in this context to the database.

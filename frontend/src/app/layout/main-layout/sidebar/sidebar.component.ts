@@ -86,13 +86,13 @@ export class SidebarComponent {
 
   private readonly navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { label: 'Students', icon: 'school', route: '/students', roles: ['Admin', 'Registrar', 'Faculty'] },
-    { label: 'Courses', icon: 'menu_book', route: '/courses', roles: ['Admin', 'Registrar', 'Faculty'] },
-    { label: 'Enrollments', icon: 'assignment', route: '/enrollments', roles: ['Admin', 'Registrar', 'Student'] },
-    { label: 'Grades', icon: 'grade', route: '/grades', roles: ['Admin', 'Faculty', 'Student'] },
-    { label: 'Billing', icon: 'payments', route: '/billing', roles: ['Admin', 'BillingStaff', 'Student'] },
-    { label: 'Scheduling', icon: 'event', route: '/scheduling', roles: ['Admin', 'Registrar', 'Faculty'] },
-    { label: 'Documents', icon: 'folder', route: '/documents', roles: ['Admin', 'Registrar', 'Student'] },
+    { label: 'Students', icon: 'school', route: '/students', roles: ['Administrator', 'Registrar', 'Faculty'] },
+    { label: 'Courses', icon: 'menu_book', route: '/courses', roles: ['Administrator', 'Registrar', 'Faculty'] },
+    { label: 'Enrollments', icon: 'assignment', route: '/enrollments', roles: ['Administrator', 'Registrar', 'Student'] },
+    { label: 'Grades', icon: 'grade', route: '/grades', roles: ['Administrator', 'Faculty', 'Student'] },
+    { label: 'Billing', icon: 'payments', route: '/billing', roles: ['Administrator', 'BillingStaff', 'Student'] },
+    { label: 'Scheduling', icon: 'event', route: '/scheduling', roles: ['Administrator', 'Registrar', 'Faculty'] },
+    { label: 'Documents', icon: 'folder', route: '/documents', roles: ['Administrator', 'Registrar', 'Student'] },
     { label: 'Notifications', icon: 'notifications', route: '/notifications' },
     { label: 'Settings', icon: 'settings', route: '/settings' },
   ];

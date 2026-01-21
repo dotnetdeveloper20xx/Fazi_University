@@ -36,7 +36,7 @@ export class AuthService {
   readonly isAuthenticated = computed(() => !!this._currentUser() && !this.tokenService.isTokenExpired());
   readonly isLoading = this._isLoading.asReadonly();
   readonly userRoles = computed(() => this._currentUser()?.roles ?? []);
-  readonly isAdmin = computed(() => this.hasRole('Admin'));
+  readonly isAdmin = computed(() => this.hasRole('Administrator'));
   readonly isFaculty = computed(() => this.hasRole('Faculty'));
   readonly isStudent = computed(() => this.hasRole('Student'));
   readonly isRegistrar = computed(() => this.hasRole('Registrar'));

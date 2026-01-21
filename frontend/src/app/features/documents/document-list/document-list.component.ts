@@ -612,7 +612,7 @@ export class DocumentListComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.hasRole('Admin');
+    return this.authService.hasRole('Administrator');
   }
 
   formatFileSize(bytes: number): string {

@@ -44,7 +44,7 @@ export interface User {
   lastLoginAt?: Date;
 }
 
-export type UserRole = 'Admin' | 'Faculty' | 'Registrar' | 'BillingStaff' | 'Student';
+export type UserRole = 'Administrator' | 'Faculty' | 'Registrar' | 'BillingStaff' | 'Student' | 'ReadOnly';
 
 export interface RefreshTokenRequest {
   token: string;

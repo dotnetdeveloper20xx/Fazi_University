@@ -454,3 +454,73 @@ a {
     width: 100% !important;
   }
 }
+
+/* Login form and full-width form field improvements */
+.mat-mdc-form-field.w-full {
+  display: block;
+  width: 100%;
+
+  .mat-mdc-text-field-wrapper {
+    width: 100%;
+  }
+
+  .mat-mdc-form-field-flex {
+    width: 100%;
+  }
+}
+
+/* Form fields with prefix icons - ensure proper alignment */
+.mat-mdc-form-field {
+  .mat-mdc-form-field-icon-prefix {
+    padding-right: 8px;
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    padding-left: 4px;
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+/* Improve input appearance in form fields */
+.mat-mdc-form-field-infix {
+  padding-top: 20px !important;
+  padding-bottom: 4px !important;
+  min-height: 48px;
+}
+
+/* Ensure input text doesn't get cut off */
+input.mat-mdc-input-element,
+textarea.mat-mdc-input-element {
+  line-height: 1.5;
+}
+
+/* Fix placeholder text color */
+.mat-mdc-input-element::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* Improve select appearance */
+.mat-mdc-select {
+  .mat-mdc-select-arrow-wrapper {
+    padding-left: 8px;
+  }
+}
+
+/* Better spacing for outlined form fields */
+.mat-form-field-appearance-outline {
+  .mat-mdc-form-field-subscript-wrapper {
+    padding: 0 12px;
+  }
+}

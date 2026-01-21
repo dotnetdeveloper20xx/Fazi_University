@@ -16,6 +16,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { SchedulingService } from '../services/scheduling.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import {
@@ -47,7 +49,9 @@ import {
     MatChipsModule,
     MatTabsModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   template: `
     <div class="p-6">
@@ -304,11 +308,13 @@ import {
                 </mat-card-header>
                 <mat-card-content>
                   <div class="flex items-center gap-4 mb-4">
-                    <mat-form-field class="min-w-[140px]">
-                      <input matInput type="date"
+                    <mat-form-field class="min-w-[160px]">
+                      <mat-label>Check Date</mat-label>
+                      <input matInput [matDatepicker]="availabilityPicker"
                              [value]="availabilityDate()"
-                             (change)="onAvailabilityDateChange($event)"
-                             placeholder="Check Date">
+                             (dateChange)="onAvailabilityDateChange($event)">
+                      <mat-datepicker-toggle matIconSuffix [for]="availabilityPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #availabilityPicker></mat-datepicker>
                     </mat-form-field>
                     <button mat-button (click)="selectedRoomAvailability.set(null)">Close</button>
                   </div>
@@ -728,9 +734,11 @@ export class RoomListComponent implements OnInit {
     });
   }
 
-  onAvailabilityDateChange(event: Event): void {
-    const date = (event.target as HTMLInputElement).value;
-    this.availabilityDate.set(date);
+  onAvailabilityDateChange(event: any): void {
+    const date = event.value;
+    if (date instanceof Date) {
+      this.availabilityDate.set(date.toISOString().split('T')[0]);
+    }
     const room = this.selectedRoomForAvailability();
     if (room) {
       this.loadAvailability(room.id);

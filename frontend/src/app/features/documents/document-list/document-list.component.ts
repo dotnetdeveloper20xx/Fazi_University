@@ -14,6 +14,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { DocumentService } from '../services/document.service';
 import { StudentService } from '../../students/services/student.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -44,7 +46,9 @@ import {
     MatChipsModule,
     MatTooltipModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   template: `
     <div class="space-y-6">
@@ -160,7 +164,9 @@ import {
 
             <mat-form-field appearance="outline">
               <mat-label>Expiration Date (Optional)</mat-label>
-              <input matInput type="date" [(ngModel)]="uploadForm.expirationDate">
+              <input matInput [matDatepicker]="expirationPicker" [(ngModel)]="uploadForm.expirationDate">
+              <mat-datepicker-toggle matIconSuffix [for]="expirationPicker"></mat-datepicker-toggle>
+              <mat-datepicker #expirationPicker></mat-datepicker>
             </mat-form-field>
 
             <div class="flex items-center">

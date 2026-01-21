@@ -57,7 +57,7 @@ function handleUnauthorized(
       return authService.refreshToken().pipe(
         switchMap(response => {
           isRefreshing = false;
-          return next(addTokenHeader(request, response.token));
+          return next(addTokenHeader(request, response.data.accessToken));
         }),
         catchError(error => {
           isRefreshing = false;

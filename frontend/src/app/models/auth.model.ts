@@ -13,10 +13,22 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  token: string;
+  success: boolean;
+  data: AuthData;
+  message?: string;
+  errors?: string[];
+}
+
+export interface AuthData {
+  userId: string;
+  userName: string;
+  email: string;
+  accessToken: string;
   refreshToken: string;
-  expiresAt: Date;
-  user: User;
+  accessTokenExpiration: string;
+  refreshTokenExpiration: string;
+  roles: string[];
+  permissions: string[];
 }
 
 export interface User {

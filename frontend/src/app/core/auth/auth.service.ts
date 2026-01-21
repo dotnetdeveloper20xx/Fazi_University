@@ -9,6 +9,7 @@ import {
   LoginRequest,
   RegisterRequest,
   AuthResponse,
+  AuthData,
   RefreshTokenRequest,
   ChangePasswordRequest,
   ForgotPasswordRequest,
@@ -124,10 +125,28 @@ export class AuthService {
   }
 
   private handleAuthSuccess(response: AuthResponse): void {
-    this.tokenService.setToken(response.token);
-    this.tokenService.setRefreshToken(response.refreshToken);
-    this._currentUser.set(response.user);
-    this.saveUserToStorage(response.user);
+    if (!response.success || !response.data) {
+      throw new Error(response.errors?.join(', ') || 'Authentication failed');
+    }
+
+    const authData = response.data;
+    this.tokenService.setToken(authData.accessToken);
+    this.tokenService.setRefreshToken(authData.refreshToken);
+
+    // Map AuthData to User
+    const user: User = {
+      id: authData.userId,
+      email: authData.email,
+      firstName: authData.userName.split('@')[0], // Extract from username
+      lastName: '',
+      fullName: authData.userName,
+      roles: authData.roles as UserRole[],
+      permissions: authData.permissions,
+      isActive: true
+    };
+
+    this._currentUser.set(user);
+    this.saveUserToStorage(user);
     this._isLoading.set(false);
   }
 

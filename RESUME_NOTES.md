@@ -93,6 +93,10 @@
 - [x] GradeService with operations (submitGrade, finalizeGrades, getStudentTranscript, getStudentGpa)
 - [x] Grade list/management component for faculty (select section, view enrolled students, submit/edit grades, finalize grades)
 - [x] Transcript component for viewing student academic records with GPA summary and term-by-term breakdown
+- [x] Billing models updated to match backend DTOs (StudentAccount, Charge, Payment, TuitionCalculation, etc.)
+- [x] BillingService with operations (getStudentAccount, calculateTuition, addCharge, processPayment)
+- [x] Billing overview component with student account management, charges, payments, inline forms
+- [x] Tuition calculator component for calculating tuition by student and term
 
 #### Phase 2 Status: COMPLETE
 
@@ -155,6 +159,11 @@ frontend/
 │   │   │   │   ├── transcript/transcript.component.ts ✅
 │   │   │   │   ├── services/grade.service.ts ✅
 │   │   │   │   └── grades.routes.ts ✅
+│   │   │   ├── billing/
+│   │   │   │   ├── billing-overview/billing-overview.component.ts ✅
+│   │   │   │   ├── tuition-calculator/tuition-calculator.component.ts ✅
+│   │   │   │   ├── services/billing.service.ts ✅
+│   │   │   │   └── billing.routes.ts ✅
 │   │   │   ├── [other features with placeholder components] ✅
 │   │   │   ├── settings/
 │   │   │   │   ├── settings-page/settings-page.component.ts ✅
@@ -168,6 +177,7 @@ frontend/
 │   │   │   ├── course.model.ts ✅
 │   │   │   ├── enrollment.model.ts ✅
 │   │   │   ├── grade.model.ts ✅
+│   │   │   ├── billing.model.ts ✅
 │   │   │   ├── dashboard.model.ts ✅
 │   │   │   └── index.ts ✅
 │   │   ├── app.component.ts ✅ (default)

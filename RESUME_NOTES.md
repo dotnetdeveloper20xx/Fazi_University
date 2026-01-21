@@ -1,7 +1,7 @@
 # UniverSys Lite - Development Resume Notes
 
 **Last Updated:** January 21, 2026
-**Session Status:** Phase 2 Complete - All Core Module API Integrations Done
+**Session Status:** Phase 2 Extended - Scheduling Management Added
 
 ---
 
@@ -98,7 +98,15 @@
 - [x] Billing overview component with student account management, charges, payments, inline forms
 - [x] Tuition calculator component for calculating tuition by student and term
 
-#### Phase 2 Status: COMPLETE
+#### Scheduling Management (NEW):
+- [x] Scheduling models updated to match backend DTOs (BuildingListItem, RoomListItem, RoomBooking, RoomAvailability, etc.)
+- [x] SchedulingService with operations (getBuildings, getRooms, getBookings, bookRoom, cancelBooking, getRoomAvailability)
+- [x] Scheduling calendar component with date/building/type filters, bookings table, new booking form
+- [x] Room list component with room management (rooms table, create room form, availability check)
+- [x] Building management (buildings table, create building form)
+- [x] Scheduling routes updated with calendar and rooms paths
+
+#### Phase 2 Status: COMPLETE (Extended with Scheduling)
 
 ---
 
@@ -164,6 +172,11 @@ frontend/
 │   │   │   │   ├── tuition-calculator/tuition-calculator.component.ts ✅
 │   │   │   │   ├── services/billing.service.ts ✅
 │   │   │   │   └── billing.routes.ts ✅
+│   │   │   ├── scheduling/
+│   │   │   │   ├── scheduling-calendar/scheduling-calendar.component.ts ✅
+│   │   │   │   ├── room-list/room-list.component.ts ✅
+│   │   │   │   ├── services/scheduling.service.ts ✅
+│   │   │   │   └── scheduling.routes.ts ✅
 │   │   │   ├── [other features with placeholder components] ✅
 │   │   │   ├── settings/
 │   │   │   │   ├── settings-page/settings-page.component.ts ✅
@@ -178,6 +191,7 @@ frontend/
 │   │   │   ├── enrollment.model.ts ✅
 │   │   │   ├── grade.model.ts ✅
 │   │   │   ├── billing.model.ts ✅
+│   │   │   ├── scheduling.model.ts ✅
 │   │   │   ├── dashboard.model.ts ✅
 │   │   │   └── index.ts ✅
 │   │   ├── app.component.ts ✅ (default)
@@ -195,31 +209,19 @@ frontend/
 
 ## Next Steps (Phase 3 - Enhanced Features)
 
-Phase 2 API Integration is complete. Potential next steps:
+Phase 2 API Integration is complete (extended with Scheduling). Potential next steps:
 
-1. **Billing Management:**
-   - Update billing models to match backend DTOs
-   - Create BillingService for fee management
-   - Invoice list and detail views
-   - Payment processing integration
-
-2. **Scheduling & Calendar:**
-   - Create scheduling service
-   - Calendar view component with event display
-   - Class schedule by student/faculty
-   - Room booking integration
-
-3. **Document Management:**
+1. **Document Management:**
    - Document upload functionality
    - Document list and detail views
    - Preview and download capabilities
 
-4. **Notifications:**
+2. **Notifications:**
    - Real-time notification system
    - Notification center component
    - Email notification preferences
 
-5. **Reports & Analytics:**
+3. **Reports & Analytics:**
    - Enhanced reporting dashboard
    - Export to PDF/Excel
    - Custom report builder
@@ -262,4 +264,4 @@ ng test
 
 ---
 
-*Resume from: Phase 2 Complete - All core modules (Students, Courses, Enrollments, Grades) have API integration. Ready for Phase 3 enhancements or testing.*
+*Resume from: Phase 2 Extended - All core modules (Students, Courses, Enrollments, Grades, Billing, Scheduling) have API integration. Ready for Phase 3 enhancements (Documents, Notifications) or testing.*

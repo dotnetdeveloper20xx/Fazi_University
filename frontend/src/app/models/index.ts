@@ -5,4 +5,5 @@ export * from './course.model';
 export * from './enrollment.model';
 export * from './grade.model';
 export * from './billing.model';
+export * from './scheduling.model';
 export * from './dashboard.model';

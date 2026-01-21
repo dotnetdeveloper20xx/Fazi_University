@@ -196,15 +196,30 @@
 
 1. **View Student Accounts:**
    - Navigate to Billing
-   - See student account balances
-   - Filter by financial hold status
+   - Select a student from the dropdown
+   - See detailed account information:
+     - Account balance and status
+     - Financial hold indicator
+     - Recent charges (tuition, fees)
+     - Payment history
 
-2. **Process Payments:**
-   - Select student account
-   - View charges and payments
-   - Process payment
+2. **Billing Details (auto-generated from enrollments):**
+   - **Tuition Charges:** Per course based on credit hours × tuition rate
+   - **Registration Fee:** $150 per term
+   - **Technology Fee:** $200 per term
+   - **Student Activity Fee:** $75 per term
 
-3. **Financial Holds:**
+3. **Payment History:**
+   - Payment methods: Credit Card, Bank Transfer, Financial Aid, Scholarship, Check
+   - Reference numbers for each payment
+   - Payment dates and amounts
+
+4. **Tuition Calculator:**
+   - Select student and term
+   - View tuition breakdown by course
+   - See total credits and amount due
+
+5. **Financial Holds:**
    - ~10% of students have financial holds
    - Show hold impact on registration
 
@@ -323,13 +338,14 @@ Access Swagger UI at: http://localhost:5275/swagger
 - 150 Students
 - 10 Departments
 - 17 Programs
-- 70+ Courses
+- 69 Courses
 - 8 Academic Terms (past, current, future)
-- 1000+ Course Sections
-- 1000+ Enrollments with grades
+- 1,075 Course Sections
+- 4,400+ Enrollments with grades
 - 8 Buildings, 80+ Rooms
 - Room Bookings
 - Notifications
+- Billing data (auto-generated from enrollments)
 
 ---
 
@@ -384,6 +400,25 @@ Access Swagger UI at: http://localhost:5275/swagger
 3. Check prerequisites
 4. Enroll in course
 5. Confirm enrollment
+
+---
+
+## UI Features
+
+### Form Fields & Dropdowns
+- Angular Material 19 styled form fields
+- Proper label alignment with prefix icons (email, lock icons on login)
+- Dropdown selects with custom triggers showing formatted values
+- Date pickers using Angular Material datepicker component
+- Responsive form field widths
+- Placeholder text for filter fields
+
+### Styling
+- Tailwind CSS for utility-based styling
+- Custom Angular Material theme with blue primary color
+- Consistent card, table, and button styling
+- Scrollbar customization
+- Dark mode support (toggle in settings)
 
 ---
 

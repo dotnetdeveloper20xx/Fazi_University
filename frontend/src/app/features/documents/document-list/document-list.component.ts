@@ -81,22 +81,32 @@ import {
       <!-- Student Selector and Filters -->
       <mat-card class="p-4">
         <div class="flex flex-wrap gap-4 items-end">
-          <mat-form-field appearance="outline" class="w-64">
+          <mat-form-field appearance="outline" class="w-80">
             <mat-label>Select Student</mat-label>
             <mat-select [(ngModel)]="selectedStudentId" (selectionChange)="onStudentChange()">
+              <mat-select-trigger>
+                @if (getSelectedStudent(); as student) {
+                  <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                  <span class="mx-2">-</span>
+                  <span>{{ student.fullName }}</span>
+                } @else {
+                  <span class="text-gray-500">-- Select a Student --</span>
+                }
+              </mat-select-trigger>
               <mat-option value="">-- Select a Student --</mat-option>
               @for (student of students(); track student.id) {
                 <mat-option [value]="student.id">
-                  {{ student.studentId }} - {{ student.fullName }}
+                  <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                  <span class="mx-2">-</span>
+                  <span>{{ student.fullName }}</span>
                 </mat-option>
               }
             </mat-select>
           </mat-form-field>
 
           @if (selectedStudentId) {
-            <mat-form-field appearance="outline" class="w-48">
-              <mat-label>Document Type</mat-label>
-              <mat-select [(ngModel)]="filterType" (selectionChange)="loadDocuments()">
+            <mat-form-field appearance="outline" class="min-w-[140px]">
+              <mat-select [(ngModel)]="filterType" (selectionChange)="loadDocuments()" placeholder="Doc Type">
                 <mat-option value="">All Types</mat-option>
                 @for (type of documentTypes; track type) {
                   <mat-option [value]="type">{{ type }}</mat-option>
@@ -104,10 +114,9 @@ import {
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-48">
-              <mat-label>Verification Status</mat-label>
-              <mat-select [(ngModel)]="filterVerified" (selectionChange)="loadDocuments()">
-                <mat-option [value]="null">All</mat-option>
+            <mat-form-field appearance="outline" class="min-w-[130px]">
+              <mat-select [(ngModel)]="filterVerified" (selectionChange)="loadDocuments()" placeholder="Verification">
+                <mat-option [value]="null">All Status</mat-option>
                 <mat-option [value]="true">Verified</mat-option>
                 <mat-option [value]="false">Not Verified</mat-option>
               </mat-select>
@@ -440,6 +449,10 @@ export class DocumentListComponent implements OnInit {
   // Constants
   documentTypes = DOCUMENT_TYPES;
   displayedColumns = ['name', 'type', 'size', 'status', 'expiration', 'uploaded', 'actions'];
+
+  getSelectedStudent(): StudentListItem | undefined {
+    return this.students().find(s => s.id === this.selectedStudentId);
+  }
 
   ngOnInit(): void {
     this.loadStudents();

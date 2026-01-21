@@ -88,9 +88,8 @@ import {
             <!-- Filters -->
             <mat-card class="p-4">
               <div class="flex flex-wrap gap-4 items-end">
-                <mat-form-field appearance="outline" class="w-48">
-                  <mat-label>Type</mat-label>
-                  <mat-select [(ngModel)]="filterType" (selectionChange)="loadNotifications()">
+                <mat-form-field appearance="outline" class="min-w-[130px]">
+                  <mat-select [(ngModel)]="filterType" (selectionChange)="loadNotifications()" placeholder="Type">
                     <mat-option value="">All Types</mat-option>
                     @for (type of notificationTypes; track type) {
                       <mat-option [value]="type">{{ type }}</mat-option>
@@ -98,18 +97,16 @@ import {
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-48">
-                  <mat-label>Status</mat-label>
-                  <mat-select [(ngModel)]="filterRead" (selectionChange)="loadNotifications()">
-                    <mat-option [value]="null">All</mat-option>
+                <mat-form-field appearance="outline" class="min-w-[110px]">
+                  <mat-select [(ngModel)]="filterRead" (selectionChange)="loadNotifications()" placeholder="Status">
+                    <mat-option [value]="null">All Status</mat-option>
                     <mat-option [value]="false">Unread</mat-option>
                     <mat-option [value]="true">Read</mat-option>
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-48">
-                  <mat-label>Priority</mat-label>
-                  <mat-select [(ngModel)]="filterPriority" (selectionChange)="loadNotifications()">
+                <mat-form-field appearance="outline" class="min-w-[120px]">
+                  <mat-select [(ngModel)]="filterPriority" (selectionChange)="loadNotifications()" placeholder="Priority">
                     <mat-option value="">All Priorities</mat-option>
                     @for (priority of notificationPriorities; track priority) {
                       <mat-option [value]="priority">{{ priority }}</mat-option>

@@ -61,7 +61,6 @@ import { CourseListItem, CourseLevel, CourseListFilter } from '../../../models';
         <mat-card-content class="p-4">
           <div class="flex flex-wrap gap-4 items-end">
             <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-              <mat-label>Search</mat-label>
               <input
                 matInput
                 [(ngModel)]="searchTerm"
@@ -76,9 +75,8 @@ import { CourseListItem, CourseLevel, CourseListFilter } from '../../../models';
               }
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-48">
-              <mat-label>Level</mat-label>
-              <mat-select [(ngModel)]="levelFilter" (selectionChange)="applyFilters()">
+            <mat-form-field appearance="outline" class="min-w-[140px]">
+              <mat-select [(ngModel)]="levelFilter" (selectionChange)="applyFilters()" placeholder="Level">
                 <mat-option value="">All Levels</mat-option>
                 <mat-option value="Undergraduate">Undergraduate</mat-option>
                 <mat-option value="Graduate">Graduate</mat-option>
@@ -87,10 +85,9 @@ import { CourseListItem, CourseLevel, CourseListFilter } from '../../../models';
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-36">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="activeFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All</mat-option>
+            <mat-form-field appearance="outline" class="min-w-[100px]">
+              <mat-select [(ngModel)]="activeFilter" (selectionChange)="applyFilters()" placeholder="Status">
+                <mat-option value="">All Status</mat-option>
                 <mat-option [value]="true">Active</mat-option>
                 <mat-option [value]="false">Inactive</mat-option>
               </mat-select>

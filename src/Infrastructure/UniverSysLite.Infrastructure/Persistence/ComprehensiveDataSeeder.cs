@@ -792,6 +792,7 @@ public static class ComprehensiveDataSeeder
         ApplicationDbContext context, List<Student> students, List<CourseSection> sections, List<Term> terms)
     {
         var enrollments = new List<Enrollment>();
+        var enrolledCombinations = new HashSet<(Guid StudentId, Guid SectionId)>();
         var pastTerms = terms.Where(t => t.EndDate < DateOnly.FromDateTime(DateTime.Now)).ToList();
         var currentTerm = terms.FirstOrDefault(t => t.IsCurrent);
 
@@ -806,6 +807,10 @@ public static class ComprehensiveDataSeeder
 
                 foreach (var section in selectedSections)
                 {
+                    var key = (student.Id, section.Id);
+                    if (enrolledCombinations.Contains(key)) continue;
+                    enrolledCombinations.Add(key);
+
                     var grade = GetRandomGrade();
                     enrollments.Add(new Enrollment
                     {
@@ -830,6 +835,10 @@ public static class ComprehensiveDataSeeder
 
                 foreach (var section in selectedSections)
                 {
+                    var key = (student.Id, section.Id);
+                    if (enrolledCombinations.Contains(key)) continue;
+                    enrolledCombinations.Add(key);
+
                     enrollments.Add(new Enrollment
                     {
                         StudentId = student.Id,

@@ -52,10 +52,18 @@ import { Transcript, GpaSummary, StudentListItem } from '../../../models';
         <mat-form-field appearance="outline" class="w-full md:w-1/2">
           <mat-label>Student</mat-label>
           <mat-select [(ngModel)]="selectedStudentId" (selectionChange)="onStudentChange()">
+            <mat-select-trigger>
+              @if (getSelectedStudent(); as student) {
+                <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                <span class="mx-2">-</span>
+                <span>{{ student.fullName }}</span>
+              }
+            </mat-select-trigger>
             @for (student of students(); track student.id) {
               <mat-option [value]="student.id">
                 <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
-                <span class="ml-2">{{ student.fullName }}</span>
+                <span class="mx-2">-</span>
+                <span>{{ student.fullName }}</span>
               </mat-option>
             }
           </mat-select>
@@ -275,6 +283,10 @@ export class TranscriptComponent implements OnInit {
   error = signal<string | null>(null);
 
   selectedStudentId: string = '';
+
+  getSelectedStudent(): StudentListItem | undefined {
+    return this.students().find(s => s.id === this.selectedStudentId);
+  }
 
   ngOnInit(): void {
     this.loadStudents();

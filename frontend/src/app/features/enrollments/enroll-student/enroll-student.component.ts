@@ -57,12 +57,20 @@ import { forkJoin } from 'rxjs';
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Student</mat-label>
               <mat-select formControlName="studentId">
+                <mat-select-trigger>
+                  @if (getSelectedStudent(); as student) {
+                    <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                    <span class="mx-2">-</span>
+                    <span>{{ student.fullName }}</span>
+                  }
+                </mat-select-trigger>
                 @for (student of students(); track student.id) {
                   <mat-option [value]="student.id">
                     <div class="flex items-center gap-2">
                       <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                      <span class="mx-1">-</span>
                       <span>{{ student.fullName }}</span>
-                      <span class="text-sm text-gray-400">- {{ student.email }}</span>
+                      <span class="text-sm text-gray-400">({{ student.email }})</span>
                     </div>
                   </mat-option>
                 }
@@ -203,6 +211,11 @@ export class EnrollStudentComponent implements OnInit {
     courseSectionId: ['', Validators.required],
     notes: ['']
   });
+
+  getSelectedStudent(): StudentListItem | undefined {
+    const studentId = this.enrollForm.get('studentId')?.value;
+    return this.students().find(s => s.id === studentId);
+  }
 
   ngOnInit(): void {
     this.loadData();

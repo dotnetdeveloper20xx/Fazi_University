@@ -66,16 +66,15 @@ import {
       <!-- Filters -->
       <mat-card class="p-4">
         <div class="flex flex-wrap gap-4 items-end">
-          <mat-form-field appearance="outline" class="w-48">
+          <mat-form-field appearance="outline" class="min-w-[150px]">
             <mat-label>Date</mat-label>
             <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="w-48">
-            <mat-label>Building</mat-label>
-            <mat-select [(ngModel)]="selectedBuildingId" (selectionChange)="loadBookings()">
+          <mat-form-field appearance="outline" class="min-w-[140px]">
+            <mat-select [(ngModel)]="selectedBuildingId" (selectionChange)="loadBookings()" placeholder="Building">
               <mat-option value="">All Buildings</mat-option>
               @for (building of buildings(); track building.id) {
                 <mat-option [value]="building.id">{{ building.name }}</mat-option>
@@ -83,9 +82,8 @@ import {
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="w-48">
-            <mat-label>Booking Type</mat-label>
-            <mat-select [(ngModel)]="selectedBookingType" (selectionChange)="loadBookings()">
+          <mat-form-field appearance="outline" class="min-w-[140px]">
+            <mat-select [(ngModel)]="selectedBookingType" (selectionChange)="loadBookings()" placeholder="Booking Type">
               <mat-option value="">All Types</mat-option>
               @for (type of bookingTypes; track type) {
                 <mat-option [value]="type">{{ type }}</mat-option>

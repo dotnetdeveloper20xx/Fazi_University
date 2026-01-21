@@ -353,3 +353,104 @@ a {
 .mat-mdc-progress-spinner {
   margin: 0 auto;
 }
+
+/* Fix mat-select overflow issues */
+.mat-mdc-select {
+  .mat-mdc-select-value {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .mat-mdc-select-value-text {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Ensure select trigger content doesn't overflow
+  .mat-mdc-select-trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+// Fix mat-option overflow
+.mat-mdc-option {
+  .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+}
+
+// Ensure form field inputs handle overflow properly
+.mat-mdc-form-field-infix {
+  min-width: 0;
+  width: 100%;
+}
+
+// Fix input text overflow
+.mat-mdc-input-element {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Ensure proper spacing in select options */
+.mat-mdc-select-panel {
+  max-width: none !important;
+
+  .mat-mdc-option {
+    min-height: 42px;
+    padding: 0 16px;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+}
+
+/* Fix form field label overflow */
+.mat-mdc-form-field {
+  // Ensure the form field respects min-width and doesn't shrink
+  flex-shrink: 0;
+
+  // Fix floating label overflow
+  .mdc-floating-label {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  // Fix notched outline to accommodate longer labels
+  .mdc-notched-outline__notch {
+    max-width: calc(100% - 24px) !important;
+  }
+
+  // Ensure prefix icons don't cause overflow
+  .mat-mdc-form-field-icon-prefix,
+  .mat-mdc-form-field-icon-suffix {
+    flex-shrink: 0;
+  }
+
+  // Fix infix width
+  .mat-mdc-form-field-infix {
+    min-width: 80px;
+  }
+}
+
+/* Responsive form field adjustments */
+@media (max-width: 640px) {
+  .mat-mdc-form-field {
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+}

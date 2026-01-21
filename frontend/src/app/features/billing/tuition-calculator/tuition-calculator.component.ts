@@ -56,10 +56,18 @@ interface Term {
           <mat-form-field appearance="outline">
             <mat-label>Student</mat-label>
             <mat-select [(ngModel)]="selectedStudentId">
+              <mat-select-trigger>
+                @if (getSelectedStudent(); as student) {
+                  <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
+                  <span class="mx-2">-</span>
+                  <span>{{ student.fullName }}</span>
+                }
+              </mat-select-trigger>
               @for (student of students(); track student.id) {
                 <mat-option [value]="student.id">
                   <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
-                  <span class="ml-2">{{ student.fullName }}</span>
+                  <span class="mx-2">-</span>
+                  <span>{{ student.fullName }}</span>
                 </mat-option>
               }
             </mat-select>
@@ -234,6 +242,10 @@ export class TuitionCalculatorComponent implements OnInit {
   selectedTermId: string = '';
 
   displayedColumns = ['courseCode', 'courseName', 'creditHours', 'tuitionRate', 'amount'];
+
+  getSelectedStudent(): StudentListItem | undefined {
+    return this.students().find(s => s.id === this.selectedStudentId);
+  }
 
   ngOnInit(): void {
     this.loadStudents();

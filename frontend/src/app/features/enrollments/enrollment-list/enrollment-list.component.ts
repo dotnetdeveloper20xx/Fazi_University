@@ -63,7 +63,6 @@ import { EnrollmentListItem, EnrollmentStatus, EnrollmentListFilter } from '../.
         <mat-card-content class="p-4">
           <div class="flex flex-wrap gap-4 items-end">
             <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-              <mat-label>Search</mat-label>
               <input
                 matInput
                 [(ngModel)]="searchTerm"
@@ -78,10 +77,9 @@ import { EnrollmentListItem, EnrollmentStatus, EnrollmentListFilter } from '../.
               }
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-40">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All</mat-option>
+            <mat-form-field appearance="outline" class="min-w-[120px]">
+              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()" placeholder="Status">
+                <mat-option value="">All Status</mat-option>
                 <mat-option value="Enrolled">Enrolled</mat-option>
                 <mat-option value="Completed">Completed</mat-option>
                 <mat-option value="Dropped">Dropped</mat-option>
@@ -91,10 +89,9 @@ import { EnrollmentListItem, EnrollmentStatus, EnrollmentListFilter } from '../.
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-40">
-              <mat-label>Grade Status</mat-label>
-              <mat-select [(ngModel)]="gradeFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All</mat-option>
+            <mat-form-field appearance="outline" class="min-w-[120px]">
+              <mat-select [(ngModel)]="gradeFilter" (selectionChange)="applyFilters()" placeholder="Grade">
+                <mat-option value="">All Grades</mat-option>
                 <mat-option [value]="true">Finalized</mat-option>
                 <mat-option [value]="false">Pending</mat-option>
               </mat-select>

@@ -63,18 +63,16 @@ import {
             <mat-card class="mb-4">
               <mat-card-content>
                 <div class="flex flex-wrap gap-4 items-end">
-                  <mat-form-field class="w-48">
-                    <mat-label>Search</mat-label>
+                  <mat-form-field class="min-w-[160px]">
                     <input matInput
                            [value]="roomSearchTerm()"
                            (input)="onRoomSearch($event)"
-                           placeholder="Room number or name">
-                    <mat-icon matSuffix>search</mat-icon>
+                           placeholder="Search rooms">
+                    <mat-icon matPrefix>search</mat-icon>
                   </mat-form-field>
 
-                  <mat-form-field class="w-48">
-                    <mat-label>Building</mat-label>
-                    <mat-select [value]="selectedBuildingId()" (selectionChange)="onBuildingFilter($event.value)">
+                  <mat-form-field class="min-w-[140px]">
+                    <mat-select [value]="selectedBuildingId()" (selectionChange)="onBuildingFilter($event.value)" placeholder="Building">
                       <mat-option value="">All Buildings</mat-option>
                       @for (building of buildings(); track building.id) {
                         <mat-option [value]="building.id">{{ building.name }}</mat-option>
@@ -82,9 +80,8 @@ import {
                     </mat-select>
                   </mat-form-field>
 
-                  <mat-form-field class="w-40">
-                    <mat-label>Room Type</mat-label>
-                    <mat-select [value]="selectedRoomType()" (selectionChange)="onTypeFilter($event.value)">
+                  <mat-form-field class="min-w-[130px]">
+                    <mat-select [value]="selectedRoomType()" (selectionChange)="onTypeFilter($event.value)" placeholder="Room Type">
                       <mat-option value="">All Types</mat-option>
                       @for (type of roomTypes; track type) {
                         <mat-option [value]="type">{{ type }}</mat-option>
@@ -92,11 +89,11 @@ import {
                     </mat-select>
                   </mat-form-field>
 
-                  <mat-form-field class="w-32">
-                    <mat-label>Min Capacity</mat-label>
+                  <mat-form-field class="min-w-[100px]">
                     <input matInput type="number" min="0"
                            [value]="minCapacity()"
-                           (input)="onCapacityFilter($event)">
+                           (input)="onCapacityFilter($event)"
+                           placeholder="Min Capacity">
                   </mat-form-field>
 
                   <button mat-raised-button color="primary" (click)="showRoomForm = true">
@@ -307,11 +304,11 @@ import {
                 </mat-card-header>
                 <mat-card-content>
                   <div class="flex items-center gap-4 mb-4">
-                    <mat-form-field class="w-40">
-                      <mat-label>Check Date</mat-label>
+                    <mat-form-field class="min-w-[140px]">
                       <input matInput type="date"
                              [value]="availabilityDate()"
-                             (change)="onAvailabilityDateChange($event)">
+                             (change)="onAvailabilityDateChange($event)"
+                             placeholder="Check Date">
                     </mat-form-field>
                     <button mat-button (click)="selectedRoomAvailability.set(null)">Close</button>
                   </div>

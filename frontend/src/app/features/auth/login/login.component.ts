@@ -26,86 +26,88 @@ import { NotificationService } from '../../../core/services/notification.service
     MatProgressSpinnerModule
   ],
   template: `
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-        Welcome back
-      </h1>
-      <p class="text-gray-600 dark:text-gray-400">
-        Sign in to your account to continue
-      </p>
-    </div>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="Enter your email">
-        <mat-icon matPrefix>email</mat-icon>
-        @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-          <mat-error>Email is required</mat-error>
-        }
-        @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-          <mat-error>Please enter a valid email</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          [type]="hidePassword() ? 'password' : 'text'"
-          formControlName="password"
-          placeholder="Enter your password"
-        >
-        <mat-icon matPrefix>lock</mat-icon>
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="hidePassword.set(!hidePassword())"
-        >
-          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-        </button>
-        @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-          <mat-error>Password is required</mat-error>
-        }
-      </mat-form-field>
-
-      <div class="flex items-center justify-between">
-        <mat-checkbox formControlName="rememberMe" color="primary">
-          Remember me
-        </mat-checkbox>
-        <a
-          routerLink="/auth/forgot-password"
-          class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400"
-        >
-          Forgot password?
-        </a>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          Welcome back
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Sign in to your account to continue
+        </p>
       </div>
 
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        class="w-full h-12"
-        [disabled]="isLoading()"
-      >
-        @if (isLoading()) {
-          <mat-spinner diameter="24" class="inline-block"></mat-spinner>
-        } @else {
-          Sign In
-        }
-      </button>
-    </form>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="Enter your email">
+          <mat-icon matPrefix>email</mat-icon>
+          @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
+            <mat-error>Email is required</mat-error>
+          }
+          @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+            <mat-error>Please enter a valid email</mat-error>
+          }
+        </mat-form-field>
 
-    <p class="mt-8 text-center text-gray-600 dark:text-gray-400">
-      Don't have an account?
-      <a
-        routerLink="/auth/register"
-        class="text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium"
-      >
-        Contact administrator
-      </a>
-    </p>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Enter your password"
+          >
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+          >
+            <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+            <mat-error>Password is required</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="flex items-center justify-between">
+          <mat-checkbox formControlName="rememberMe" color="primary">
+            Remember me
+          </mat-checkbox>
+          <a
+            routerLink="/auth/forgot-password"
+            class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400"
+          >
+            Forgot password?
+          </a>
+        </div>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="w-full h-12 text-base font-medium"
+          [disabled]="isLoading()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="24" class="inline-block"></mat-spinner>
+          } @else {
+            Sign In
+          }
+        </button>
+      </form>
+
+      <p class="mt-8 text-center text-gray-600 dark:text-gray-400">
+        Don't have an account?
+        <a
+          routerLink="/auth/register"
+          class="text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium"
+        >
+          Contact administrator
+        </a>
+      </p>
+    </div>
   `,
   styles: [`
     :host {

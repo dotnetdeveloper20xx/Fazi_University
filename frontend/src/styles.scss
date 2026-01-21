@@ -1,9 +1,5 @@
 @use '@angular/material' as mat;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 // Define custom theme colors
 $primary-palette: (
   50: #eff6ff,
@@ -97,15 +93,29 @@ $light-theme: mat.m2-define-light-theme((
   density: 0,
 ));
 
-// Include core styles
+// Include core styles FIRST
 @include mat.core();
 
 // Include theme styles
 @include mat.all-component-themes($light-theme);
 
+// Tailwind AFTER Angular Material for proper cascade
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Custom global styles */
 :root {
-  --primary-color: #3b82f6;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
   --success-color: #22c55e;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
@@ -116,6 +126,19 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Ensure smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* Scrollbar styling */
@@ -125,16 +148,15 @@ html, body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  @apply bg-gray-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  @apply bg-gray-300 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  @apply bg-gray-400;
 }
 
 /* Snackbar notification styles */
@@ -178,23 +200,156 @@ html, body {
   }
 }
 
-/* Material form field adjustments for Tailwind */
+/* Material form field improvements */
 .mat-mdc-form-field {
   width: 100%;
+
+  // Outline appearance - colors only, no layout changes
+  &.mat-form-field-appearance-outline {
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #d1d5db !important;
+      }
+    }
+
+    &:hover:not(.mat-focused) .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #9ca3af !important;
+      }
+    }
+
+    &.mat-focused .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #3b82f6 !important;
+      }
+    }
+
+    &.mat-form-field-invalid .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #ef4444 !important;
+      }
+    }
+  }
+
+  // Prefix/suffix icon colors
+  .mat-mdc-form-field-icon-prefix,
+  .mat-mdc-form-field-icon-suffix {
+    color: #9ca3af !important;
+  }
+
+  // Error message
+  .mat-mdc-form-field-error {
+    color: #ef4444 !important;
+    font-size: 12px !important;
+  }
 }
 
-/* Material button adjustments */
+// Icon button styling
+.mat-mdc-form-field .mat-mdc-icon-button {
+  color: #9ca3af !important;
+
+  &:hover {
+    color: #6b7280 !important;
+  }
+}
+
+/* Material button improvements */
 .mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button {
   letter-spacing: 0.025em;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
 }
 
-/* Table styling adjustments */
+.mat-mdc-flat-button.mat-primary {
+  @apply bg-primary-600 hover:bg-primary-700;
+}
+
+/* Table styling */
 .mat-mdc-table {
   background: transparent !important;
+
+  .mat-mdc-header-row {
+    @apply bg-gray-50;
+  }
+
+  .mat-mdc-row:hover {
+    @apply bg-gray-50;
+  }
 }
 
 /* Card styling */
 .mat-mdc-card {
   border-radius: 12px !important;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
+  @apply bg-white border border-gray-200;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  }
+}
+
+.mat-mdc-card-header {
+  @apply border-b border-gray-100 pb-4 mb-2;
+}
+
+.mat-mdc-card-title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+/* Checkbox styling */
+.mat-mdc-checkbox {
+  .mdc-checkbox__background {
+    @apply border-gray-400;
+  }
+}
+
+/* Menu styling */
+.mat-mdc-menu-panel {
+  @apply rounded-lg shadow-lg border border-gray-200;
+}
+
+.mat-mdc-menu-item {
+  @apply text-gray-700;
+
+  &:hover {
+    @apply bg-gray-50;
+  }
+}
+
+/* Dialog styling */
+.mat-mdc-dialog-container {
+  @apply rounded-xl;
+}
+
+/* Icon adjustments */
+.mat-icon {
+  font-family: 'Material Icons' !important;
+}
+
+/* Link styling */
+a {
+  @apply text-primary-600 hover:text-primary-700;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+/* Improved focus states */
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Loading spinner center */
+.mat-mdc-progress-spinner {
+  margin: 0 auto;
 }

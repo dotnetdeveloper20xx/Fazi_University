@@ -1,0 +1,200 @@
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Define custom theme colors
+$primary-palette: (
+  50: #eff6ff,
+  100: #dbeafe,
+  200: #bfdbfe,
+  300: #93c5fd,
+  400: #60a5fa,
+  500: #3b82f6,
+  600: #2563eb,
+  700: #1d4ed8,
+  800: #1e40af,
+  900: #1e3a8a,
+  contrast: (
+    50: #1e3a8a,
+    100: #1e3a8a,
+    200: #1e3a8a,
+    300: #1e3a8a,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$accent-palette: (
+  50: #f5f3ff,
+  100: #ede9fe,
+  200: #ddd6fe,
+  300: #c4b5fd,
+  400: #a78bfa,
+  500: #8b5cf6,
+  600: #7c3aed,
+  700: #6d28d9,
+  800: #5b21b6,
+  900: #4c1d95,
+  contrast: (
+    50: #4c1d95,
+    100: #4c1d95,
+    200: #4c1d95,
+    300: #4c1d95,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$warn-palette: (
+  50: #fef2f2,
+  100: #fee2e2,
+  200: #fecaca,
+  300: #fca5a5,
+  400: #f87171,
+  500: #ef4444,
+  600: #dc2626,
+  700: #b91c1c,
+  800: #991b1b,
+  900: #7f1d1d,
+  contrast: (
+    50: #7f1d1d,
+    100: #7f1d1d,
+    200: #7f1d1d,
+    300: #7f1d1d,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Create theme
+$primary: mat.m2-define-palette($primary-palette, 500, 300, 700);
+$accent: mat.m2-define-palette($accent-palette, 500, 300, 700);
+$warn: mat.m2-define-palette($warn-palette, 500, 300, 700);
+
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: 'Inter, system-ui, -apple-system, sans-serif',
+  ),
+  density: 0,
+));
+
+// Include core styles
+@include mat.core();
+
+// Include theme styles
+@include mat.all-component-themes($light-theme);
+
+/* Custom global styles */
+:root {
+  --primary-color: #3b82f6;
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Snackbar notification styles */
+.snackbar-notification {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #334155;
+    --mat-snack-bar-button-color: #ffffff;
+  }
+
+  .mdc-snackbar__surface {
+    border-radius: 8px !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  }
+
+  .mdc-snackbar__label {
+    font-weight: 500;
+  }
+}
+
+.snackbar-success {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #166534;
+  }
+}
+
+.snackbar-error {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #991b1b;
+  }
+}
+
+.snackbar-warning {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #b45309;
+  }
+}
+
+.snackbar-info {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #1e40af;
+  }
+}
+
+/* Material form field adjustments for Tailwind */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Material button adjustments */
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button {
+  letter-spacing: 0.025em;
+}
+
+/* Table styling adjustments */
+.mat-mdc-table {
+  background: transparent !important;
+}
+
+/* Card styling */
+.mat-mdc-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
+}

@@ -16,7 +16,7 @@ public class CourseSectionConfiguration : IEntityTypeConfiguration<CourseSection
 
         builder.Property(cs => cs.SectionNumber)
             .IsRequired()
-            .HasMaxLength(10);
+            .HasMaxLength(20);
 
         builder.Property(cs => cs.Room)
             .HasMaxLength(50);

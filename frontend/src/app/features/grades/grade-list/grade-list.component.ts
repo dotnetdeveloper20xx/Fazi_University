@@ -222,7 +222,8 @@ interface GradeEntry extends SectionEnrollment {
                   @if (row.status === 'Enrolled' && !row.isGradeFinalized) {
                     <div class="flex items-center gap-2">
                       <mat-form-field appearance="outline" class="w-24">
-                        <mat-select [(ngModel)]="row.newGrade" placeholder="Grade">
+                        <mat-label>Grade</mat-label>
+                        <mat-select [(ngModel)]="row.newGrade">
                           @for (grade of validGrades; track grade) {
                             <mat-option [value]="grade">{{ grade }}</mat-option>
                           }

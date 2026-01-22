@@ -110,7 +110,8 @@ import {
 
           @if (selectedStudentId) {
             <mat-form-field appearance="outline" class="min-w-[140px]">
-              <mat-select [(ngModel)]="filterType" (selectionChange)="loadDocuments()" placeholder="Doc Type">
+              <mat-label>Doc Type</mat-label>
+              <mat-select [(ngModel)]="filterType" (selectionChange)="loadDocuments()">
                 <mat-option value="">All Types</mat-option>
                 @for (type of documentTypes; track type) {
                   <mat-option [value]="type">{{ type }}</mat-option>
@@ -119,7 +120,8 @@ import {
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[130px]">
-              <mat-select [(ngModel)]="filterVerified" (selectionChange)="loadDocuments()" placeholder="Verification">
+              <mat-label>Verification</mat-label>
+              <mat-select [(ngModel)]="filterVerified" (selectionChange)="loadDocuments()">
                 <mat-option [value]="null">All Status</mat-option>
                 <mat-option [value]="true">Verified</mat-option>
                 <mat-option [value]="false">Not Verified</mat-option>

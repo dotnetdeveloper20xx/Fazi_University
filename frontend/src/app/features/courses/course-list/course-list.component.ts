@@ -76,7 +76,8 @@ import { CourseListItem, CourseLevel, CourseListFilter } from '../../../models';
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[140px]">
-              <mat-select [(ngModel)]="levelFilter" (selectionChange)="applyFilters()" placeholder="Level">
+              <mat-label>Level</mat-label>
+              <mat-select [(ngModel)]="levelFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Levels</mat-option>
                 <mat-option value="Undergraduate">Undergraduate</mat-option>
                 <mat-option value="Graduate">Graduate</mat-option>
@@ -86,7 +87,8 @@ import { CourseListItem, CourseLevel, CourseListFilter } from '../../../models';
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[100px]">
-              <mat-select [(ngModel)]="activeFilter" (selectionChange)="applyFilters()" placeholder="Status">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="activeFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Status</mat-option>
                 <mat-option [value]="true">Active</mat-option>
                 <mat-option [value]="false">Inactive</mat-option>

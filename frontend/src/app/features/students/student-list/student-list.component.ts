@@ -77,7 +77,8 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()" placeholder="Status">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Status</mat-option>
                 <mat-option value="Admitted">Admitted</mat-option>
                 <mat-option value="Active">Active</mat-option>
@@ -90,7 +91,8 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-select [(ngModel)]="typeFilter" (selectionChange)="applyFilters()" placeholder="Type">
+              <mat-label>Type</mat-label>
+              <mat-select [(ngModel)]="typeFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Types</mat-option>
                 <mat-option value="FullTime">Full Time</mat-option>
                 <mat-option value="PartTime">Part Time</mat-option>
@@ -100,7 +102,8 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[140px]">
-              <mat-select [(ngModel)]="standingFilter" (selectionChange)="applyFilters()" placeholder="Standing">
+              <mat-label>Standing</mat-label>
+              <mat-select [(ngModel)]="standingFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Standing</mat-option>
                 <mat-option value="GoodStanding">Good Standing</mat-option>
                 <mat-option value="AcademicWarning">Warning</mat-option>

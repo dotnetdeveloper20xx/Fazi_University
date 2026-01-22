@@ -74,7 +74,8 @@ import {
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="min-w-[140px]">
-            <mat-select [(ngModel)]="selectedBuildingId" (selectionChange)="loadBookings()" placeholder="Building">
+            <mat-label>Building</mat-label>
+            <mat-select [(ngModel)]="selectedBuildingId" (selectionChange)="loadBookings()">
               <mat-option value="">All Buildings</mat-option>
               @for (building of buildings(); track building.id) {
                 <mat-option [value]="building.id">{{ building.name }}</mat-option>
@@ -83,7 +84,8 @@ import {
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="min-w-[140px]">
-            <mat-select [(ngModel)]="selectedBookingType" (selectionChange)="loadBookings()" placeholder="Booking Type">
+            <mat-label>Booking Type</mat-label>
+            <mat-select [(ngModel)]="selectedBookingType" (selectionChange)="loadBookings()">
               <mat-option value="">All Types</mat-option>
               @for (type of bookingTypes; track type) {
                 <mat-option [value]="type">{{ type }}</mat-option>

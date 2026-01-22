@@ -78,7 +78,8 @@ import { EnrollmentListItem, EnrollmentStatus, EnrollmentListFilter } from '../.
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()" placeholder="Status">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Status</mat-option>
                 <mat-option value="Enrolled">Enrolled</mat-option>
                 <mat-option value="Completed">Completed</mat-option>
@@ -90,7 +91,8 @@ import { EnrollmentListItem, EnrollmentStatus, EnrollmentListFilter } from '../.
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-select [(ngModel)]="gradeFilter" (selectionChange)="applyFilters()" placeholder="Grade">
+              <mat-label>Grade</mat-label>
+              <mat-select [(ngModel)]="gradeFilter" (selectionChange)="applyFilters()">
                 <mat-option value="">All Grades</mat-option>
                 <mat-option [value]="true">Finalized</mat-option>
                 <mat-option [value]="false">Pending</mat-option>

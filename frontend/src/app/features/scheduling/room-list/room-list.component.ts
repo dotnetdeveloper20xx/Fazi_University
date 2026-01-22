@@ -67,7 +67,7 @@ import {
             <mat-card class="mb-4">
               <mat-card-content>
                 <div class="flex flex-wrap gap-4 items-end">
-                  <mat-form-field class="min-w-[160px]">
+                  <mat-form-field appearance="outline" class="min-w-[160px]">
                     <input matInput
                            [value]="roomSearchTerm()"
                            (input)="onRoomSearch($event)"
@@ -75,8 +75,9 @@ import {
                     <mat-icon matPrefix>search</mat-icon>
                   </mat-form-field>
 
-                  <mat-form-field class="min-w-[140px]">
-                    <mat-select [value]="selectedBuildingId()" (selectionChange)="onBuildingFilter($event.value)" placeholder="Building">
+                  <mat-form-field appearance="outline" class="min-w-[140px]">
+                    <mat-label>Building</mat-label>
+                    <mat-select [value]="selectedBuildingId()" (selectionChange)="onBuildingFilter($event.value)">
                       <mat-option value="">All Buildings</mat-option>
                       @for (building of buildings(); track building.id) {
                         <mat-option [value]="building.id">{{ building.name }}</mat-option>
@@ -84,8 +85,9 @@ import {
                     </mat-select>
                   </mat-form-field>
 
-                  <mat-form-field class="min-w-[130px]">
-                    <mat-select [value]="selectedRoomType()" (selectionChange)="onTypeFilter($event.value)" placeholder="Room Type">
+                  <mat-form-field appearance="outline" class="min-w-[130px]">
+                    <mat-label>Room Type</mat-label>
+                    <mat-select [value]="selectedRoomType()" (selectionChange)="onTypeFilter($event.value)">
                       <mat-option value="">All Types</mat-option>
                       @for (type of roomTypes; track type) {
                         <mat-option [value]="type">{{ type }}</mat-option>
@@ -93,7 +95,7 @@ import {
                     </mat-select>
                   </mat-form-field>
 
-                  <mat-form-field class="min-w-[100px]">
+                  <mat-form-field appearance="outline" class="min-w-[100px]">
                     <input matInput type="number" min="0"
                            [value]="minCapacity()"
                            (input)="onCapacityFilter($event)"
@@ -116,7 +118,7 @@ import {
                 </mat-card-header>
                 <mat-card-content>
                   <form [formGroup]="roomForm" (ngSubmit)="createRoom()" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Building</mat-label>
                       <mat-select formControlName="buildingId" required>
                         @for (building of buildings(); track building.id) {
@@ -125,17 +127,17 @@ import {
                       </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Room Number</mat-label>
                       <input matInput formControlName="roomNumber" required>
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Name</mat-label>
                       <input matInput formControlName="name" required>
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Type</mat-label>
                       <mat-select formControlName="type" required>
                         @for (type of roomTypes; track type) {
@@ -144,17 +146,17 @@ import {
                       </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Capacity</mat-label>
                       <input matInput type="number" formControlName="capacity" required min="1">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Floor</mat-label>
                       <input matInput type="number" formControlName="floor" min="0">
                     </mat-form-field>
 
-                    <mat-form-field class="md:col-span-3">
+                    <mat-form-field appearance="outline" class="md:col-span-3">
                       <mat-label>Description</mat-label>
                       <textarea matInput formControlName="description" rows="2"></textarea>
                     </mat-form-field>
@@ -167,7 +169,7 @@ import {
                     </div>
 
                     @if (roomForm.get('hasComputers')?.value) {
-                      <mat-form-field>
+                      <mat-form-field appearance="outline">
                         <mat-label>Computer Count</mat-label>
                         <input matInput type="number" formControlName="computerCount" min="1">
                       </mat-form-field>
@@ -308,7 +310,7 @@ import {
                 </mat-card-header>
                 <mat-card-content>
                   <div class="flex items-center gap-4 mb-4">
-                    <mat-form-field class="min-w-[160px]">
+                    <mat-form-field appearance="outline" class="min-w-[160px]">
                       <mat-label>Check Date</mat-label>
                       <input matInput [matDatepicker]="availabilityPicker"
                              [value]="availabilityDate()"
@@ -373,27 +375,27 @@ import {
                 </mat-card-header>
                 <mat-card-content>
                   <form [formGroup]="buildingForm" (ngSubmit)="createBuilding()" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Building Code</mat-label>
                       <input matInput formControlName="code" required placeholder="e.g., SCI">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Building Name</mat-label>
                       <input matInput formControlName="name" required placeholder="e.g., Science Building">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Address</mat-label>
                       <input matInput formControlName="address">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                       <mat-label>Total Floors</mat-label>
                       <input matInput type="number" formControlName="totalFloors" min="1">
                     </mat-form-field>
 
-                    <mat-form-field class="md:col-span-2">
+                    <mat-form-field appearance="outline" class="md:col-span-2">
                       <mat-label>Description</mat-label>
                       <textarea matInput formControlName="description" rows="2"></textarea>
                     </mat-form-field>

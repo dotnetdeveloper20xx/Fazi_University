@@ -9,6 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AuthService } from '../../core/auth/auth.service';
 import { DashboardService } from './services/dashboard.service';
 import { DashboardSummary, RecentActivity } from '../../models';
+import { fadeIn, slideUp, staggeredList } from '../../shared/animations';
 
 interface DashboardStat {
   label: string;
@@ -42,10 +43,11 @@ interface ActivityDisplay {
     MatProgressSpinnerModule,
     NgxChartsModule
   ],
+  animations: [fadeIn, slideUp, staggeredList],
   template: `
-    <div class="space-y-6">
+    <div class="space-y-6" @fadeIn>
       <!-- Welcome section -->
-      <div class="bg-gradient-to-r from-primary-600 to-primary-800 rounded-xl p-6 text-white">
+      <div class="bg-gradient-to-r from-primary-600 to-primary-800 rounded-xl p-6 text-white slide-up">
         <h1 class="text-2xl font-bold mb-2">
           Welcome back, {{ authService.currentUser()?.firstName }}!
         </h1>
@@ -60,9 +62,9 @@ interface ActivityDisplay {
           <mat-spinner diameter="40"></mat-spinner>
         </div>
       } @else {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" [@staggeredList]="dashboardStats().length">
           @for (stat of dashboardStats(); track stat.label) {
-            <mat-card class="hover:shadow-lg transition-shadow cursor-pointer" [routerLink]="stat.route">
+            <mat-card class="hover-lift cursor-pointer" [routerLink]="stat.route">
               <mat-card-content class="p-6">
                 <div class="flex items-center justify-between">
                   <div>
@@ -129,7 +131,7 @@ interface ActivityDisplay {
                 @for (action of quickActions(); track action.label) {
                   <a
                     [routerLink]="action.route"
-                    class="flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                    class="flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all hover-lift-sm"
                   >
                     <mat-icon class="text-primary-600 dark:text-primary-400 mb-2">{{ action.icon }}</mat-icon>
                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ action.label }}</span>

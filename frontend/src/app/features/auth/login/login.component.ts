@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/auth/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { fadeIn, scaleIn } from '../../../shared/animations';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +26,9 @@ import { NotificationService } from '../../../core/services/notification.service
     MatCheckboxModule,
     MatProgressSpinnerModule
   ],
+  animations: [fadeIn, scaleIn],
   template: `
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+    <div @scaleIn class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 backdrop-blur-sm border border-gray-100 dark:border-gray-700">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Welcome back

@@ -4,6 +4,7 @@ import { RouterModule, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../../core/auth/auth.service';
+import { staggeredList } from '../../../shared/animations';
 
 interface NavItem {
   label: string;
@@ -16,20 +17,21 @@ interface NavItem {
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule, MatIconModule, MatTooltipModule],
+  animations: [staggeredList],
   template: `
     <aside
-      class="flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300"
+      class="flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 shadow-sm"
       [class.w-64]="!collapsed()"
       [class.w-20]="collapsed()"
     >
       <!-- Logo -->
-      <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-primary-600 to-primary-700">
         @if (!collapsed()) {
-          <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
+          <span class="text-xl font-bold text-white tracking-tight">
             UniverSys Lite
           </span>
         } @else {
-          <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
+          <span class="text-xl font-bold text-white">
             UL
           </span>
         }
@@ -37,18 +39,18 @@ interface NavItem {
 
       <!-- Navigation -->
       <nav class="flex-1 overflow-y-auto py-4">
-        <ul class="space-y-1 px-3">
+        <ul class="space-y-1 px-3" [@staggeredList]="filteredNavItems().length">
           @for (item of filteredNavItems(); track item.route) {
             <li>
               <a
                 [routerLink]="item.route"
-                routerLinkActive="bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+                routerLinkActive="active-nav-item"
                 [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
                 [matTooltip]="collapsed() ? item.label : ''"
                 matTooltipPosition="right"
               >
-                <mat-icon class="text-gray-500 dark:text-gray-400">{{ item.icon }}</mat-icon>
+                <mat-icon class="nav-icon text-gray-500 dark:text-gray-400 transition-colors duration-200">{{ item.icon }}</mat-icon>
                 @if (!collapsed()) {
                   <span class="font-medium">{{ item.label }}</span>
                 }
@@ -62,10 +64,10 @@ interface NavItem {
       <div class="border-t border-gray-200 dark:border-gray-700 p-3">
         <button
           (click)="toggleCollapse.emit()"
-          class="flex items-center justify-center w-full py-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="collapse-btn flex items-center justify-center w-full py-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
         >
-          <mat-icon>
-            {{ collapsed() ? 'chevron_right' : 'chevron_left' }}
+          <mat-icon class="transition-transform duration-300" [class.rotate-180]="!collapsed()">
+            chevron_right
           </mat-icon>
         </button>
       </div>
@@ -75,6 +77,52 @@ interface NavItem {
     :host {
       display: block;
       height: 100%;
+    }
+
+    .nav-item {
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #3b82f6, #2563eb);
+        transform: scaleY(0);
+        transition: transform 200ms ease;
+      }
+
+      &:hover {
+        transform: translateX(4px);
+
+        .nav-icon {
+          color: #3b82f6;
+        }
+      }
+    }
+
+    .active-nav-item {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent) !important;
+      color: #3b82f6 !important;
+
+      &::before {
+        transform: scaleY(1);
+      }
+
+      .nav-icon {
+        color: #3b82f6 !important;
+      }
+    }
+
+    .collapse-btn:hover mat-icon {
+      transform: scale(1.1);
+    }
+
+    .rotate-180 {
+      transform: rotate(180deg);
     }
   `]
 })

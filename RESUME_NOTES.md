@@ -1,298 +1,104 @@
-# UniverSys Lite - Development Resume Notes
+# Resume Notes - University Corporate Software
 
-**Last Updated:** January 21, 2026
-**Session Status:** Phase 2 COMPLETE - All Features Implemented
+## Last Updated: January 22, 2026
 
----
+## Session Summary
 
-## Completed Work
+### Completed Tasks
 
-### Backend (100% Complete)
-1. **Clean Architecture** with CQRS pattern using MediatR
-2. **Entity Framework Core 8** with SQL Server
-3. **Domain Entities:** Students, Courses, Sections, Enrollments, Grades, Faculty, Staff, Departments, Programs, Terms, Buildings, Rooms, Bookings, Notifications, Documents
-4. **API Endpoints:** Full REST API with JWT authentication
-5. **Comprehensive Seed Data:** 150+ students, faculty, courses, sections, etc.
-6. **Unit Tests:** 30 tests for handlers (GetStudentById, EnrollStudent, SubmitGrade)
-7. **Integration Tests:** 19 API endpoint tests
+1. **Dashboard Improvements**
+   - Removed Recent Activity section from `dashboard.component.ts`
+   - Made Quick Actions full-width with 4-column responsive grid
 
-### Frontend Angular 19 (Phase 1 Complete - 100%)
+2. **Form Field Fixes (Custom Styled Inputs)**
+   - **Login Page** (`login.component.ts`) - Already fixed in previous session
+   - **Forgot Password** (`forgot-password.component.ts`) - Uses custom inputs
+   - **Scheduling Calendar** (`scheduling-calendar.component.ts`) - Replaced Material form fields with custom inputs for date, building, and booking type filters. Added focus signals.
+   - **Settings Password Fields** (`settings-page.component.ts`) - Replaced Material form fields with custom inputs for password change form. Added focus signals.
 
-#### Completed:
-- [x] Project initialized with Angular CLI 19
-- [x] Tailwind CSS 3.4 configured (tailwind.config.js, styles.scss)
-- [x] Angular Material 19 installed with custom theme
-- [x] Angular Animations installed
-- [x] Environment files (environment.ts, environment.prod.ts)
-- [x] TypeScript models (auth, student, course, enrollment, grade, api-response)
-- [x] Core services:
-  - TokenService (JWT handling)
-  - AuthService (login, logout, refresh, role checks with Signals)
-  - ApiService (HTTP wrapper)
-  - NotificationService (toast notifications with styled snackbars)
-- [x] Interceptors:
-  - authInterceptor (JWT token injection, refresh handling)
-  - errorInterceptor (global error handling)
-- [x] Guards (authGuard, guestGuard, roleGuard, permissionGuard)
-- [x] Main layout with sidebar navigation
-- [x] Header component with user menu
-- [x] Auth layout for login pages
-- [x] Login component with form validation
-- [x] Forgot password component
-- [x] Dashboard component (role-based with proper TypeScript types)
-- [x] App routes configured with lazy loading
-- [x] Student list component (with Material table)
-- [x] Profile component (with password change functionality)
-- [x] Unauthorized component (403 access denied page)
-- [x] Custom Angular Material theme (blue primary, purple accent)
-- [x] Snackbar notification styles (success, error, warning, info)
+3. **Error Handling Improvements**
+   - `error.interceptor.ts` - Added `X-Suppress-Error-Notification` header support
+   - `api.service.ts` - Added `getSilent()` method for background requests
+   - `dashboard.service.ts` - Uses `getSilent()` for dashboard summary
+   - `header.component.ts` - Uses `getSilent()` for notification polling
 
-#### Placeholder Components Created:
-- [x] Student detail, Student form
-- [x] Course list
-- [x] Enrollment list
-- [x] Grade list
-- [x] Billing overview
-- [x] Scheduling calendar
-- [x] Notification center
-- [x] Document list
-- [x] Settings page
+4. **User Display Fixes**
+   - `auth.service.ts` - Improved name parsing from email (handles "john.doe@..." format)
+   - `header.component.ts` - Improved `userInitials()` to handle missing lastName
 
-#### Phase 1 Status: COMPLETE
-- [x] Application builds successfully
-- [x] Development server runs at http://localhost:4200
+5. **Login Page Registration**
+   - Added "Request Account Access" email button
+   - Styled registration section with helpful guidance text
 
-### Phase 2: API Integration (Complete - 100%)
+6. **Notifications Seeding**
+   - `ComprehensiveDataSeeder.cs` - Added 8 new notifications for admin users
+   - Added more diverse notifications for staff users
 
-#### Completed:
-- [x] Student model updated to match backend DTOs (StudentListItem, StudentDetail)
-- [x] StudentService with full CRUD operations (getStudents, getStudent, createStudent, updateStudent, deleteStudent)
-- [x] Student list component with real API integration, pagination, filtering, sorting
-- [x] Student detail component with tabbed layout (Personal Info, Academic, Financial)
-- [x] Student form component for create/edit with full validation
-- [x] Error handling and loading states
-- [x] Toast notifications for success/error feedback
-- [x] Dashboard models (DashboardSummary, StudentStatistics, CourseStatistics, etc.)
-- [x] DashboardService connecting to Reports API endpoints
-- [x] Dashboard component with real API data for admin users
-- [x] Recent activities from API with relative timestamps
-- [x] Upcoming deadlines display
-- [x] Financial and Academic overview cards for admin
-- [x] Clickable stat cards navigating to related pages
-- [x] Course models updated to match backend DTOs (CourseListItem, CourseDetail, CreateCourseRequest, etc.)
-- [x] CourseService with full CRUD operations (getCourses, getCourse, createCourse, updateCourse, deleteCourse)
-- [x] Course list component with real API integration, pagination, filtering by level/status, sorting
-- [x] Course detail component with tabbed layout (Overview, Prerequisites, Sections)
-- [x] Course form component for create/edit with prerequisite management and department selection
-- [x] Enrollment models updated to match backend DTOs (EnrollmentListItem, EnrollmentDetail, StudentEnrollment, etc.)
-- [x] EnrollmentService with full CRUD operations (getEnrollments, enrollStudent, dropEnrollment, withdrawEnrollment)
-- [x] Enrollment list component with real API integration, filtering by status/grade status
-- [x] Enrollment detail component with student/course info, status management, drop/withdraw actions
-- [x] Enroll student component for enrolling students in course sections
-- [x] Grade models updated to match backend DTOs (GradeInfo, Transcript, TranscriptTerm, GpaSummary, etc.)
-- [x] GradeService with operations (submitGrade, finalizeGrades, getStudentTranscript, getStudentGpa)
-- [x] Grade list/management component for faculty (select section, view enrolled students, submit/edit grades, finalize grades)
-- [x] Transcript component for viewing student academic records with GPA summary and term-by-term breakdown
-- [x] Billing models updated to match backend DTOs (StudentAccount, Charge, Payment, TuitionCalculation, etc.)
-- [x] BillingService with operations (getStudentAccount, calculateTuition, addCharge, processPayment)
-- [x] Billing overview component with student account management, charges, payments, inline forms
-- [x] Tuition calculator component for calculating tuition by student and term
+7. **Profile Photo Change**
+   - `settings-page.component.ts` - Added file input and `onPhotoSelected()` handler
+   - Validates file type (images only) and size (max 5MB)
+   - Shows "coming soon" message (backend upload not implemented)
 
-#### Scheduling Management:
-- [x] Scheduling models updated to match backend DTOs (BuildingListItem, RoomListItem, RoomBooking, RoomAvailability, etc.)
-- [x] SchedulingService with operations (getBuildings, getRooms, getBookings, bookRoom, cancelBooking, getRoomAvailability)
-- [x] Scheduling calendar component with date/building/type filters, bookings table, new booking form
-- [x] Room list component with room management (rooms table, create room form, availability check)
-- [x] Building management (buildings table, create building form)
-- [x] Scheduling routes updated with calendar and rooms paths
+### Pending/Known Issues
 
-#### Document Management:
-- [x] Document models updated to match backend DTOs (StudentDocument, StudentDocumentListItem, DocumentUploadResult, DocumentStatistics)
-- [x] DocumentService with operations (getStudentDocuments, getDocument, uploadDocument, verifyDocument, deleteDocument, getStatistics, downloadDocument)
-- [x] Document list component with student selector, type/verification filters, statistics cards
-- [x] Document upload form with file picker, expiration date, type selection
-- [x] Document detail modal with full metadata display
-- [x] Download functionality and verification toggle for admins
-- [x] Documents routes configured
+1. **Courses Not Loading**
+   - Frontend code is correct (`course-list.component.ts`)
+   - Issue is likely backend API endpoint (`/courses`) not returning data
+   - Need to verify backend is running and API is accessible
 
-#### Notifications:
-- [x] Notification models updated to match backend DTOs (NotificationListItem, NotificationSummary, NotificationPreference)
-- [x] NotificationsDataService with operations (getNotifications, getSummary, markAsRead, markAllAsRead, deleteNotification, getPreferences, updatePreference)
-- [x] Notification center component with tabbed layout (Notifications/Preferences)
-- [x] Notification list with type/status/priority filters, pagination
-- [x] Mark as read, mark all as read, delete functionality
-- [x] Notification preferences management with toggle switches for email/push/in-app
-- [x] Relative time display and priority badges
-- [x] Notifications routes configured
+2. **Enrollments Not Loading**
+   - Frontend code is correct (`enrollment-list.component.ts`)
+   - Issue is likely backend API endpoint (`/enrollments`) not returning data
+   - Need to verify backend is running and API is accessible
 
-#### Phase 2 Status: COMPLETE (All Features)
+3. **Profile Photo Upload**
+   - Frontend file selection works
+   - Backend API for uploading avatar not implemented
+   - Currently shows "coming soon" notification
 
----
+### Login Credentials
 
-## File Structure Created
+| Role | Email | Password |
+|------|-------|----------|
+| Administrator | admin@universyslite.edu | Admin@123! |
+| Faculty | john.smith@universyslite.edu | Faculty@123! |
+| Registrar | mary.wilson@universyslite.edu | Staff@123! |
+| Billing Staff | robert.walker@universyslite.edu | Staff@123! |
 
-```
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   │   ├── auth/
-│   │   │   │   ├── auth.service.ts ✅
-│   │   │   │   ├── auth.guard.ts ✅
-│   │   │   │   ├── auth.interceptor.ts ✅
-│   │   │   │   ├── token.service.ts ✅
-│   │   │   │   └── index.ts ✅
-│   │   │   ├── interceptors/
-│   │   │   │   └── error.interceptor.ts ✅
-│   │   │   └── services/
-│   │   │       ├── api.service.ts ✅
-│   │   │       └── notification.service.ts ✅
-│   │   ├── layout/
-│   │   │   ├── main-layout/
-│   │   │   │   ├── main-layout.component.ts ✅
-│   │   │   │   ├── sidebar/sidebar.component.ts ✅
-│   │   │   │   └── header/header.component.ts ✅
-│   │   │   └── auth-layout/
-│   │   │       └── auth-layout.component.ts ✅
-│   │   ├── features/
-│   │   │   ├── auth/
-│   │   │   │   ├── login/login.component.ts ✅
-│   │   │   │   ├── forgot-password/forgot-password.component.ts ✅
-│   │   │   │   └── auth.routes.ts ✅
-│   │   │   ├── dashboard/
-│   │   │   │   ├── dashboard.component.ts ✅
-│   │   │   │   ├── services/dashboard.service.ts ✅
-│   │   │   │   └── dashboard.routes.ts ✅
-│   │   │   ├── students/
-│   │   │   │   ├── student-list/student-list.component.ts ✅
-│   │   │   │   ├── student-detail/student-detail.component.ts ✅
-│   │   │   │   ├── student-form/student-form.component.ts ✅
-│   │   │   │   ├── services/student.service.ts ✅
-│   │   │   │   └── students.routes.ts ✅
-│   │   │   ├── courses/
-│   │   │   │   ├── course-list/course-list.component.ts ✅
-│   │   │   │   ├── course-detail/course-detail.component.ts ✅
-│   │   │   │   ├── course-form/course-form.component.ts ✅
-│   │   │   │   ├── services/course.service.ts ✅
-│   │   │   │   └── courses.routes.ts ✅
-│   │   │   ├── enrollments/
-│   │   │   │   ├── enrollment-list/enrollment-list.component.ts ✅
-│   │   │   │   ├── enrollment-detail/enrollment-detail.component.ts ✅
-│   │   │   │   ├── enroll-student/enroll-student.component.ts ✅
-│   │   │   │   ├── services/enrollment.service.ts ✅
-│   │   │   │   └── enrollments.routes.ts ✅
-│   │   │   ├── grades/
-│   │   │   │   ├── grade-list/grade-list.component.ts ✅
-│   │   │   │   ├── transcript/transcript.component.ts ✅
-│   │   │   │   ├── services/grade.service.ts ✅
-│   │   │   │   └── grades.routes.ts ✅
-│   │   │   ├── billing/
-│   │   │   │   ├── billing-overview/billing-overview.component.ts ✅
-│   │   │   │   ├── tuition-calculator/tuition-calculator.component.ts ✅
-│   │   │   │   ├── services/billing.service.ts ✅
-│   │   │   │   └── billing.routes.ts ✅
-│   │   │   ├── scheduling/
-│   │   │   │   ├── scheduling-calendar/scheduling-calendar.component.ts ✅
-│   │   │   │   ├── room-list/room-list.component.ts ✅
-│   │   │   │   ├── services/scheduling.service.ts ✅
-│   │   │   │   └── scheduling.routes.ts ✅
-│   │   │   ├── documents/
-│   │   │   │   ├── document-list/document-list.component.ts ✅
-│   │   │   │   ├── services/document.service.ts ✅
-│   │   │   │   └── documents.routes.ts ✅
-│   │   │   ├── notifications/
-│   │   │   │   ├── notification-center/notification-center.component.ts ✅
-│   │   │   │   ├── services/notifications-data.service.ts ✅
-│   │   │   │   └── notifications.routes.ts ✅
-│   │   │   ├── settings/
-│   │   │   │   ├── settings-page/settings-page.component.ts ✅
-│   │   │   │   ├── profile/profile.component.ts ✅
-│   │   │   │   └── settings.routes.ts ✅
-│   │   │   └── unauthorized/unauthorized.component.ts ✅
-│   │   ├── models/
-│   │   │   ├── api-response.model.ts ✅
-│   │   │   ├── auth.model.ts ✅
-│   │   │   ├── student.model.ts ✅
-│   │   │   ├── course.model.ts ✅
-│   │   │   ├── enrollment.model.ts ✅
-│   │   │   ├── grade.model.ts ✅
-│   │   │   ├── billing.model.ts ✅
-│   │   │   ├── scheduling.model.ts ✅
-│   │   │   ├── document.model.ts ✅
-│   │   │   ├── notification.model.ts ✅
-│   │   │   ├── dashboard.model.ts ✅
-│   │   │   └── index.ts ✅
-│   │   ├── app.component.ts ✅ (default)
-│   │   ├── app.config.ts ✅ (configured)
-│   │   └── app.routes.ts ✅ (configured)
-│   ├── environments/
-│   │   ├── environment.ts ✅
-│   │   └── environment.prod.ts ✅
-│   └── styles.scss ✅ (Tailwind configured)
-├── tailwind.config.js ✅
-└── package.json ✅
-```
+### Key Files Modified This Session
 
----
+**Frontend:**
+- `frontend/src/app/features/dashboard/dashboard.component.ts`
+- `frontend/src/app/features/scheduling/scheduling-calendar/scheduling-calendar.component.ts`
+- `frontend/src/app/features/settings/settings-page/settings-page.component.ts`
+- `frontend/src/app/features/auth/login/login.component.ts`
+- `frontend/src/app/core/interceptors/error.interceptor.ts`
+- `frontend/src/app/core/services/api.service.ts`
+- `frontend/src/app/features/dashboard/services/dashboard.service.ts`
+- `frontend/src/app/layout/main-layout/header/header.component.ts`
+- `frontend/src/app/core/auth/auth.service.ts`
 
-## Next Steps (Phase 3 - Enhanced Features)
+**Backend:**
+- `src/Infrastructure/UniverSysLite.Infrastructure/Persistence/ComprehensiveDataSeeder.cs`
 
-Phase 2 API Integration is COMPLETE. All core features have been implemented. Potential future enhancements:
+### Next Steps
 
-1. **Reports & Analytics:**
-   - Enhanced reporting dashboard
-   - Export to PDF/Excel
-   - Custom report builder
+1. Test the application to verify all fixes work correctly
+2. Investigate why Courses and Enrollments APIs are not returning data
+3. Consider implementing profile photo upload API on backend
+4. Run `ng build` to check for any TypeScript errors (was blocked by group policy)
+5. Commit all changes when verified working
 
-2. **Real-time Features:**
-   - WebSocket integration for live notifications
-   - Real-time dashboard updates
+### Technical Notes
 
-3. **Advanced UI/UX:**
-   - Drag-and-drop calendar scheduling
-   - Data visualization charts
-   - Mobile-responsive improvements
+- Angular Material form fields with `appearance="outline"` had issues with label positioning
+- Solution: Use custom HTML inputs with wrapper divs and focus state signals
+- Pattern: `.input-wrapper` / `.select-wrapper` with `.focused` class toggled by signals
+- Dark mode styles are included for all custom form fields
 
-4. **Testing:**
-   - Unit tests for services and components
-   - End-to-end tests with Playwright/Cypress
+### Git Status (Uncommitted Changes)
 
----
-
-## API Base URL
-- Development: `https://localhost:7001/api`
-- The backend API should be running for frontend testing
-
----
-
-## Commands Reference
-```bash
-# Navigate to frontend
-cd frontend
-
-# Install dependencies (if needed)
-npm install
-
-# Start development server
-ng serve
-
-# Build for production
-ng build
-
-# Run tests
-ng test
-```
-
----
-
-## Technology Stack
-- **Angular 19** with Standalone Components
-- **Angular Material 19** for UI components
-- **Tailwind CSS 3.4** for utility styling
-- **TypeScript 5.5+**
-- **Signals** for reactive state
-- **Functional Guards & Interceptors**
-
----
-
-*Resume from: Phase 2 COMPLETE - All core modules (Students, Courses, Enrollments, Grades, Billing, Scheduling, Documents, Notifications) have full API integration. The frontend is feature-complete and ready for production testing or Phase 3 enhancements.*
+The following changes have not been committed yet:
+- All frontend fixes listed above
+- Backend notification seeder updates
+- This resume notes file

@@ -5,6 +5,8 @@ import { NotificationService } from '../services/notification.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
+  // Check if this request should suppress error notifications
+  const suppressErrors = req.headers.get('X-Suppress-Error-Notification') === 'true';
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -53,8 +55,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      // Don't show notification for 401 errors (handled by auth)
-      if (error.status !== 401) {
+      // Don't show notification for 401 errors (handled by auth) or if suppressed
+      if (error.status !== 401 && !suppressErrors) {
         notificationService.showError(errorMessage);
       }
 

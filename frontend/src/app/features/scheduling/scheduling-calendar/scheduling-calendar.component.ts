@@ -65,35 +65,61 @@ import {
 
       <!-- Filters -->
       <mat-card class="p-4">
-        <div class="flex flex-wrap gap-4 items-end">
-          <mat-form-field appearance="outline" class="min-w-[150px]">
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+        <div class="filter-row">
+          <div class="filter-group">
+            <label class="filter-label">Date</label>
+            <div class="input-wrapper" [class.focused]="dateFocused()">
+              <mat-icon class="input-icon">calendar_today</mat-icon>
+              <input
+                [matDatepicker]="picker"
+                [(ngModel)]="selectedDate"
+                (dateChange)="onDateChange()"
+                (focus)="dateFocused.set(true)"
+                (blur)="dateFocused.set(false)"
+                placeholder="Select date"
+              >
+              <mat-datepicker-toggle [for]="picker" class="datepicker-toggle"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
+          </div>
 
-          <mat-form-field appearance="outline" class="min-w-[140px]">
-            <mat-label>Building</mat-label>
-            <mat-select [(ngModel)]="selectedBuildingId" (selectionChange)="loadBookings()">
-              <mat-option value="">All Buildings</mat-option>
-              @for (building of buildings(); track building.id) {
-                <mat-option [value]="building.id">{{ building.name }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+          <div class="filter-group">
+            <label class="filter-label">Building</label>
+            <div class="select-wrapper" [class.focused]="buildingFocused()">
+              <mat-icon class="input-icon">apartment</mat-icon>
+              <mat-select
+                [(ngModel)]="selectedBuildingId"
+                (selectionChange)="loadBookings()"
+                (openedChange)="buildingFocused.set($event)"
+                placeholder="All Buildings"
+              >
+                <mat-option value="">All Buildings</mat-option>
+                @for (building of buildings(); track building.id) {
+                  <mat-option [value]="building.id">{{ building.name }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
 
-          <mat-form-field appearance="outline" class="min-w-[140px]">
-            <mat-label>Booking Type</mat-label>
-            <mat-select [(ngModel)]="selectedBookingType" (selectionChange)="loadBookings()">
-              <mat-option value="">All Types</mat-option>
-              @for (type of bookingTypes; track type) {
-                <mat-option [value]="type">{{ type }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+          <div class="filter-group">
+            <label class="filter-label">Booking Type</label>
+            <div class="select-wrapper" [class.focused]="typeFocused()">
+              <mat-icon class="input-icon">event</mat-icon>
+              <mat-select
+                [(ngModel)]="selectedBookingType"
+                (selectionChange)="loadBookings()"
+                (openedChange)="typeFocused.set($event)"
+                placeholder="All Types"
+              >
+                <mat-option value="">All Types</mat-option>
+                @for (type of bookingTypes; track type) {
+                  <mat-option [value]="type">{{ type }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
 
-          <button mat-icon-button (click)="loadBookings()" matTooltip="Refresh">
+          <button mat-icon-button (click)="loadBookings()" matTooltip="Refresh" class="refresh-btn">
             <mat-icon>refresh</mat-icon>
           </button>
         </div>
@@ -268,6 +294,137 @@ import {
     :host {
       display: block;
     }
+
+    /* Filter Row Styles */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px;
+    }
+
+    .filter-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .input-wrapper, .select-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      height: 44px;
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper:hover, .select-wrapper:hover {
+      border-color: #9ca3af;
+    }
+
+    .input-wrapper.focused, .select-wrapper.focused {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: white;
+    }
+
+    .input-icon {
+      color: #9ca3af;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .input-wrapper.focused .input-icon,
+    .select-wrapper.focused .input-icon {
+      color: #6366f1;
+    }
+
+    .input-wrapper input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #111827;
+      outline: none;
+      padding: 0;
+      height: 100%;
+      min-width: 100px;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #9ca3af;
+    }
+
+    .select-wrapper mat-select {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .select-wrapper ::ng-deep .mat-mdc-select-trigger {
+      height: 100%;
+    }
+
+    .select-wrapper ::ng-deep .mat-mdc-select-value {
+      color: #111827;
+    }
+
+    .select-wrapper ::ng-deep .mat-mdc-select-placeholder {
+      color: #9ca3af;
+    }
+
+    .select-wrapper ::ng-deep .mat-mdc-select-arrow-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .datepicker-toggle {
+      margin-right: -8px;
+    }
+
+    .datepicker-toggle ::ng-deep button {
+      width: 32px;
+      height: 32px;
+    }
+
+    .refresh-btn {
+      margin-bottom: 2px;
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      .filter-label {
+        color: #d1d5db;
+      }
+
+      .input-wrapper, .select-wrapper {
+        background: #374151;
+        border-color: #4b5563;
+      }
+
+      .input-wrapper.focused, .select-wrapper.focused {
+        background: #1f2937;
+      }
+
+      .input-wrapper input {
+        color: #f3f4f6;
+      }
+
+      .select-wrapper ::ng-deep .mat-mdc-select-value {
+        color: #f3f4f6;
+      }
+    }
   `]
 })
 export class SchedulingCalendarComponent implements OnInit {
@@ -280,6 +437,11 @@ export class SchedulingCalendarComponent implements OnInit {
 
   isLoading = signal(false);
   isSubmitting = signal(false);
+
+  // Focus states for custom inputs
+  dateFocused = signal(false);
+  buildingFocused = signal(false);
+  typeFocused = signal(false);
 
   selectedDate: Date = new Date();
   selectedBuildingId: string = '';

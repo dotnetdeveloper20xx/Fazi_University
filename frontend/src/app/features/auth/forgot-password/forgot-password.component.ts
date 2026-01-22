@@ -24,67 +24,193 @@ import { NotificationService } from '../../../core/services/notification.service
     MatProgressSpinnerModule
   ],
   template: `
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-        Forgot Password
-      </h1>
-      <p class="text-gray-600 dark:text-gray-400">
-        Enter your email and we'll send you a reset link
-      </p>
-    </div>
-
-    @if (emailSent()) {
-      <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-        <div class="flex items-center gap-3">
-          <mat-icon class="text-green-600 dark:text-green-400">check_circle</mat-icon>
-          <p class="text-green-800 dark:text-green-200">
-            If an account exists with this email, you'll receive a password reset link shortly.
-          </p>
+    <div class="forgot-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <mat-icon>lock_reset</mat-icon>
         </div>
+        <h1 class="card-title">Forgot Password</h1>
+        <p class="card-subtitle">Enter your email and we'll send you a reset link</p>
       </div>
-    }
 
-    <form [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="Enter your email">
-        <mat-icon matPrefix>email</mat-icon>
-        @if (forgotPasswordForm.get('email')?.hasError('required') && forgotPasswordForm.get('email')?.touched) {
-          <mat-error>Email is required</mat-error>
-        }
-        @if (forgotPasswordForm.get('email')?.hasError('email') && forgotPasswordForm.get('email')?.touched) {
-          <mat-error>Please enter a valid email</mat-error>
-        }
-      </mat-form-field>
+      @if (emailSent()) {
+        <div class="success-message">
+          <mat-icon>check_circle</mat-icon>
+          <p>If an account exists with this email, you'll receive a password reset link shortly.</p>
+        </div>
+      }
 
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        class="w-full h-12"
-        [disabled]="isLoading()"
-      >
-        @if (isLoading()) {
-          <mat-spinner diameter="24" class="inline-block"></mat-spinner>
-        } @else {
-          Send Reset Link
-        }
-      </button>
-    </form>
+      <form [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()" class="forgot-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="email">
+          @if (forgotPasswordForm.get('email')?.hasError('required') && forgotPasswordForm.get('email')?.touched) {
+            <mat-error>Email is required</mat-error>
+          }
+          @if (forgotPasswordForm.get('email')?.hasError('email') && forgotPasswordForm.get('email')?.touched) {
+            <mat-error>Please enter a valid email</mat-error>
+          }
+        </mat-form-field>
 
-    <p class="mt-8 text-center">
-      <a
-        routerLink="/auth/login"
-        class="text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium flex items-center justify-center gap-2"
-      >
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="submit-btn"
+          [disabled]="isLoading()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="24"></mat-spinner>
+          } @else {
+            Send Reset Link
+          }
+        </button>
+      </form>
+
+      <a routerLink="/auth/login" class="back-link">
         <mat-icon>arrow_back</mat-icon>
         Back to Login
       </a>
-    </p>
+    </div>
   `,
   styles: [`
     :host {
       display: block;
+    }
+
+    .forgot-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .header-icon mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+
+    .card-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 8px 0;
+    }
+
+    .card-subtitle {
+      font-size: 15px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .success-message {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .success-message mat-icon {
+      color: #10b981;
+      flex-shrink: 0;
+    }
+
+    .success-message p {
+      font-size: 14px;
+      color: #065f46;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .forgot-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .forgot-form mat-form-field {
+      width: 100%;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px !important;
+      margin-top: 8px;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #4f46e5;
+    }
+
+    .back-link mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      .forgot-card {
+        background: #1f2937;
+        border: 1px solid #374151;
+      }
+
+      .card-title {
+        color: #f3f4f6;
+      }
+
+      .card-subtitle {
+        color: #9ca3af;
+      }
+
+      .success-message {
+        background: #064e3b;
+        border-color: #065f46;
+      }
+
+      .success-message p {
+        color: #a7f3d0;
+      }
     }
   `]
 })

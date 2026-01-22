@@ -16,6 +16,15 @@ export class ApiService {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
   }
 
+  /**
+   * GET request that suppresses error notifications (useful for background/optional requests)
+   */
+  getSilent<T>(endpoint: string, params?: HttpParams | Record<string, any>): Observable<T> {
+    const httpParams = this.buildParams(params);
+    const headers = new HttpHeaders().set('X-Suppress-Error-Notification', 'true');
+    return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params: httpParams, headers });
+  }
+
   post<T>(endpoint: string, body: unknown, options?: { headers?: HttpHeaders }): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body, options);
   }

@@ -133,7 +133,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Poll for new notifications every 60 seconds
     this.notificationSub = interval(60000).pipe(
       filter(() => this.authService.isAuthenticated()),
-      switchMap(() => this.apiService.get<{unreadCount: number}>('/notifications/summary'))
+      switchMap(() => this.apiService.getSilent<{unreadCount: number}>('/notifications/summary'))
     ).subscribe({
       next: (response: any) => {
         if (response?.data?.unreadCount !== undefined) {
@@ -151,7 +151,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   fetchNotificationCount(): void {
     if (!this.authService.isAuthenticated()) return;
 
-    this.apiService.get<{unreadCount: number}>('/notifications/summary').subscribe({
+    this.apiService.getSilent<{unreadCount: number}>('/notifications/summary').subscribe({
       next: (response: any) => {
         if (response?.data?.unreadCount !== undefined) {
           this.unreadNotifications.set(response.data.unreadCount);
@@ -168,7 +168,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (!user) return '?';
     const first = user.firstName?.charAt(0) ?? '';
     const last = user.lastName?.charAt(0) ?? '';
-    return (first + last).toUpperCase() || '?';
+    // If we have both, return both; otherwise return first letter or email prefix
+    if (first && last) {
+      return (first + last).toUpperCase();
+    }
+    if (first) {
+      return first.toUpperCase();
+    }
+    // Fallback: use first letter of email
+    if (user.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return '?';
   };
 
   logout(): void {

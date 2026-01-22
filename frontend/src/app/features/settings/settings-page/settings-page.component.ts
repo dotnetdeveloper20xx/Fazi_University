@@ -96,7 +96,9 @@ import { NotificationService } from '../../../core/services/notification.service
                     <span class="avatar-initials">{{ getInitials() }}</span>
                   }
                 </div>
-                <button mat-stroked-button class="change-avatar-btn">
+                <input type="file" #fileInput accept="image/*" style="display: none"
+                       (change)="onPhotoSelected($event)">
+                <button mat-stroked-button class="change-avatar-btn" (click)="fileInput.click()">
                   <mat-icon>photo_camera</mat-icon>
                   Change Photo
                 </button>
@@ -209,53 +211,80 @@ import { NotificationService } from '../../../core/services/notification.service
           <div class="settings-card">
             <h3 class="card-title">Change Password</h3>
             <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="password-form">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Current Password</mat-label>
-                <input matInput [type]="hideCurrentPassword() ? 'password' : 'text'"
-                       formControlName="currentPassword">
-                <button mat-icon-button matSuffix type="button"
-                        (click)="hideCurrentPassword.set(!hideCurrentPassword())">
-                  <mat-icon>{{ hideCurrentPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-                </button>
+              <div class="password-field">
+                <label class="field-label">Current Password</label>
+                <div class="password-input-wrapper"
+                     [class.focused]="currentPasswordFocused()"
+                     [class.error]="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+                  <mat-icon class="field-icon">lock</mat-icon>
+                  <input
+                    [type]="hideCurrentPassword() ? 'password' : 'text'"
+                    formControlName="currentPassword"
+                    placeholder="Enter current password"
+                    (focus)="currentPasswordFocused.set(true)"
+                    (blur)="currentPasswordFocused.set(false)"
+                  >
+                  <button type="button" class="toggle-visibility" (click)="hideCurrentPassword.set(!hideCurrentPassword())">
+                    <mat-icon>{{ hideCurrentPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                </div>
                 @if (passwordForm.get('currentPassword')?.hasError('required') && passwordForm.get('currentPassword')?.touched) {
-                  <mat-error>Current password is required</mat-error>
+                  <span class="error-text">Current password is required</span>
                 }
-              </mat-form-field>
+              </div>
 
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>New Password</mat-label>
-                <input matInput [type]="hideNewPassword() ? 'password' : 'text'"
-                       formControlName="newPassword">
-                <button mat-icon-button matSuffix type="button"
-                        (click)="hideNewPassword.set(!hideNewPassword())">
-                  <mat-icon>{{ hideNewPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-                </button>
+              <div class="password-field">
+                <label class="field-label">New Password</label>
+                <div class="password-input-wrapper"
+                     [class.focused]="newPasswordFocused()"
+                     [class.error]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+                  <mat-icon class="field-icon">lock_reset</mat-icon>
+                  <input
+                    [type]="hideNewPassword() ? 'password' : 'text'"
+                    formControlName="newPassword"
+                    placeholder="Enter new password"
+                    (focus)="newPasswordFocused.set(true)"
+                    (blur)="newPasswordFocused.set(false)"
+                  >
+                  <button type="button" class="toggle-visibility" (click)="hideNewPassword.set(!hideNewPassword())">
+                    <mat-icon>{{ hideNewPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                </div>
                 @if (passwordForm.get('newPassword')?.hasError('required') && passwordForm.get('newPassword')?.touched) {
-                  <mat-error>New password is required</mat-error>
+                  <span class="error-text">New password is required</span>
                 }
                 @if (passwordForm.get('newPassword')?.hasError('minlength') && passwordForm.get('newPassword')?.touched) {
-                  <mat-error>Password must be at least 8 characters</mat-error>
+                  <span class="error-text">Password must be at least 8 characters</span>
                 }
-              </mat-form-field>
+              </div>
 
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Confirm New Password</mat-label>
-                <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'"
-                       formControlName="confirmNewPassword">
-                <button mat-icon-button matSuffix type="button"
-                        (click)="hideConfirmPassword.set(!hideConfirmPassword())">
-                  <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-                </button>
+              <div class="password-field">
+                <label class="field-label">Confirm New Password</label>
+                <div class="password-input-wrapper"
+                     [class.focused]="confirmPasswordFocused()"
+                     [class.error]="(passwordForm.get('confirmNewPassword')?.invalid || passwordForm.hasError('passwordMismatch')) && passwordForm.get('confirmNewPassword')?.touched">
+                  <mat-icon class="field-icon">check_circle</mat-icon>
+                  <input
+                    [type]="hideConfirmPassword() ? 'password' : 'text'"
+                    formControlName="confirmNewPassword"
+                    placeholder="Confirm new password"
+                    (focus)="confirmPasswordFocused.set(true)"
+                    (blur)="confirmPasswordFocused.set(false)"
+                  >
+                  <button type="button" class="toggle-visibility" (click)="hideConfirmPassword.set(!hideConfirmPassword())">
+                    <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                </div>
                 @if (passwordForm.get('confirmNewPassword')?.hasError('required') && passwordForm.get('confirmNewPassword')?.touched) {
-                  <mat-error>Please confirm your new password</mat-error>
+                  <span class="error-text">Please confirm your new password</span>
                 }
                 @if (passwordForm.hasError('passwordMismatch') && passwordForm.get('confirmNewPassword')?.touched) {
-                  <mat-error>Passwords do not match</mat-error>
+                  <span class="error-text">Passwords do not match</span>
                 }
-              </mat-form-field>
+              </div>
 
               <button mat-flat-button color="primary" type="submit"
-                      [disabled]="isChangingPassword() || passwordForm.invalid">
+                      [disabled]="isChangingPassword() || passwordForm.invalid" class="submit-password-btn">
                 @if (isChangingPassword()) {
                   <mat-spinner diameter="18" class="btn-spinner"></mat-spinner>
                 }
@@ -731,8 +760,109 @@ import { NotificationService } from '../../../core/services/notification.service
     .password-form {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       max-width: 400px;
+    }
+
+    .password-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .password-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      height: 48px;
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .password-input-wrapper:hover {
+      border-color: #9ca3af;
+    }
+
+    .password-input-wrapper.focused {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: white;
+    }
+
+    .password-input-wrapper.error {
+      border-color: #ef4444;
+    }
+
+    .password-input-wrapper.error.focused {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .field-icon {
+      color: #9ca3af;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .password-input-wrapper.focused .field-icon {
+      color: #6366f1;
+    }
+
+    .password-input-wrapper input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      color: #111827;
+      outline: none;
+      padding: 0;
+      height: 100%;
+    }
+
+    .password-input-wrapper input::placeholder {
+      color: #9ca3af;
+    }
+
+    .toggle-visibility {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      transition: color 0.2s;
+    }
+
+    .toggle-visibility:hover {
+      color: #6b7280;
+    }
+
+    .toggle-visibility mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .error-text {
+      font-size: 12px;
+      color: #ef4444;
+      margin-top: 2px;
+    }
+
+    .submit-password-btn {
+      margin-top: 8px;
     }
 
     .btn-spinner {
@@ -973,6 +1103,23 @@ import { NotificationService } from '../../../core/services/notification.service
         border-color: #3b82f6;
         background: #1e3a5f;
       }
+
+      .field-label {
+        color: #d1d5db;
+      }
+
+      .password-input-wrapper {
+        background: #374151;
+        border-color: #4b5563;
+      }
+
+      .password-input-wrapper.focused {
+        background: #1f2937;
+      }
+
+      .password-input-wrapper input {
+        color: #f3f4f6;
+      }
     }
   `]
 })
@@ -999,6 +1146,9 @@ export class SettingsPageComponent implements OnInit {
   hideCurrentPassword = signal(true);
   hideNewPassword = signal(true);
   hideConfirmPassword = signal(true);
+  currentPasswordFocused = signal(false);
+  newPasswordFocused = signal(false);
+  confirmPasswordFocused = signal(false);
 
   // Appearance
   selectedTheme = signal<'light' | 'dark' | 'system'>('system');
@@ -1022,6 +1172,32 @@ export class SettingsPageComponent implements OnInit {
 
   setSection(section: 'profile' | 'account' | 'security' | 'appearance' | 'notifications'): void {
     this.activeSection.set(section);
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.notificationService.showError('Please select an image file');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        this.notificationService.showError('Image size must be less than 5MB');
+        return;
+      }
+
+      // For now, show a message that this feature is coming soon
+      // In a real app, you would upload the file to a server
+      this.notificationService.showInfo('Profile photo upload coming soon! File selected: ' + file.name);
+
+      // Reset the input
+      input.value = '';
+    }
   }
 
   getInitials(): string {

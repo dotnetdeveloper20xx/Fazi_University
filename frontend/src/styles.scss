@@ -418,32 +418,25 @@ a {
   }
 }
 
-/* Fix form field label overflow */
+/* Fix form field label and outline appearance */
 .mat-mdc-form-field {
-  // Ensure the form field respects min-width and doesn't shrink
-  flex-shrink: 0;
-
-  // Fix floating label overflow
-  .mdc-floating-label {
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: nowrap !important;
-  }
-
-  // Fix notched outline to accommodate longer labels
-  .mdc-notched-outline__notch {
-    max-width: calc(100% - 24px) !important;
-  }
-
   // Ensure prefix icons don't cause overflow
   .mat-mdc-form-field-icon-prefix,
   .mat-mdc-form-field-icon-suffix {
     flex-shrink: 0;
   }
+}
 
-  // Fix infix width
-  .mat-mdc-form-field-infix {
-    min-width: 80px;
+/* Fix notched outline for floating labels */
+.mat-mdc-form-field.mat-form-field-appearance-outline {
+  // When label is floating, ensure notch opens
+  .mdc-notched-outline--notched .mdc-notched-outline__notch {
+    border-top: none !important;
+  }
+
+  // For always-floating labels, keep notch always open
+  &.mat-mdc-form-field-label-always-float .mdc-notched-outline__notch {
+    border-top: none !important;
   }
 }
 
@@ -455,8 +448,8 @@ a {
   }
 }
 
-/* Login form and full-width form field improvements */
-.mat-mdc-form-field.w-full {
+/* Form field full-width improvements */
+.mat-mdc-form-field {
   display: block;
   width: 100%;
 
@@ -492,12 +485,7 @@ a {
   }
 }
 
-/* Improve input appearance in form fields */
-.mat-mdc-form-field-infix {
-  padding-top: 20px !important;
-  padding-bottom: 4px !important;
-  min-height: 48px;
-}
+/* Improve input appearance in form fields - DO NOT override default padding */
 
 /* Ensure input text doesn't get cut off */
 input.mat-mdc-input-element,

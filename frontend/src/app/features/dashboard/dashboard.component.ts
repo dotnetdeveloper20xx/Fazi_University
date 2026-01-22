@@ -88,59 +88,25 @@ interface ActivityDisplay {
           }
         </div>
 
-        <!-- Quick actions and Recent Activity -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Recent Activity -->
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Recent Activity</mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="p-6">
-              @if (recentActivities().length === 0) {
-                <div class="text-center py-8 text-gray-500">
-                  <mat-icon class="text-4xl mb-2">history</mat-icon>
-                  <p>No recent activity</p>
-                </div>
-              } @else {
-                <div class="space-y-4">
-                  @for (activity of recentActivities(); track activity.id) {
-                    <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                      <div class="w-10 h-10 rounded-full flex items-center justify-center"
-                           [class]="activity.bgColor">
-                        <mat-icon [class]="activity.iconColor" class="text-sm">{{ activity.icon }}</mat-icon>
-                      </div>
-                      <div class="flex-1">
-                        <p class="text-gray-900 dark:text-gray-100 font-medium">{{ activity.title }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ activity.description }}</p>
-                      </div>
-                      <span class="text-xs text-gray-400">{{ activity.time }}</span>
-                    </div>
-                  }
-                </div>
+        <!-- Quick Actions -->
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Quick Actions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="p-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              @for (action of quickActions(); track action.label) {
+                <a
+                  [routerLink]="action.route"
+                  class="flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all hover-lift-sm"
+                >
+                  <mat-icon class="text-primary-600 dark:text-primary-400 mb-2">{{ action.icon }}</mat-icon>
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ action.label }}</span>
+                </a>
               }
-            </mat-card-content>
-          </mat-card>
-
-          <!-- Quick Actions -->
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Quick Actions</mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="p-6">
-              <div class="grid grid-cols-2 gap-4">
-                @for (action of quickActions(); track action.label) {
-                  <a
-                    [routerLink]="action.route"
-                    class="flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all hover-lift-sm"
-                  >
-                    <mat-icon class="text-primary-600 dark:text-primary-400 mb-2">{{ action.icon }}</mat-icon>
-                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ action.label }}</span>
-                  </a>
-                }
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
         <!-- Additional Stats for Admin -->
         @if (authService.isAdmin() && summary()) {

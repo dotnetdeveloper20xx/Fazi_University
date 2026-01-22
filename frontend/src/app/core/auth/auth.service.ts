@@ -133,13 +133,23 @@ export class AuthService {
     this.tokenService.setToken(authData.accessToken);
     this.tokenService.setRefreshToken(authData.refreshToken);
 
+    // Extract name from userName (email)
+    // e.g., admin@universyslite.edu -> Admin
+    // e.g., john.doe@universyslite.edu -> John Doe
+    const emailPrefix = authData.userName.split('@')[0];
+    const nameParts = emailPrefix.split('.').map(part =>
+      part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+    );
+    const firstName = nameParts[0] || 'User';
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
     // Map AuthData to User
     const user: User = {
       id: authData.userId,
       email: authData.email,
-      firstName: authData.userName.split('@')[0], // Extract from username
-      lastName: '',
-      fullName: authData.userName,
+      firstName,
+      lastName,
+      fullName: nameParts.join(' ') || authData.userName,
       roles: authData.roles as UserRole[],
       permissions: authData.permissions,
       isActive: true

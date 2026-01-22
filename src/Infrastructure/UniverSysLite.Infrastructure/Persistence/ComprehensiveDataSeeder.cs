@@ -1142,6 +1142,129 @@ public static class ComprehensiveDataSeeder
                 Icon = "info",
                 Priority = NotificationPriority.Normal
             });
+
+            notifications.Add(new Notification
+            {
+                UserId = staffMember.Id,
+                Type = NotificationType.DeadlineReminder,
+                Title = "Term End Approaching",
+                Message = "The current term ends in 2 weeks. Please ensure all grades are submitted on time.",
+                ActionUrl = "/courses",
+                ActionText = "View Courses",
+                Icon = "event",
+                Priority = NotificationPriority.High
+            });
+
+            notifications.Add(new Notification
+            {
+                UserId = staffMember.Id,
+                Type = NotificationType.SystemAlert,
+                Title = "New Feature Available",
+                Message = "The new bulk enrollment feature is now available. Check it out!",
+                ActionUrl = "/enrollments",
+                ActionText = "Try Now",
+                Icon = "new_releases",
+                Priority = NotificationPriority.Low
+            });
+        }
+
+        // Add notifications for admin users
+        var adminUsers = await context.UserRoles
+            .Where(ur => context.Roles.Any(r => r.Id == ur.RoleId && r.Name == "Administrator"))
+            .Select(ur => ur.UserId)
+            .ToListAsync();
+
+        foreach (var adminId in adminUsers)
+        {
+            var adminNotifications = new[]
+            {
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.SystemAlert,
+                    Title = "Welcome to UniverSys Lite",
+                    Message = "You are logged in as Administrator. You have full access to all system features.",
+                    Icon = "admin_panel_settings",
+                    Priority = NotificationPriority.Normal
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.SystemAlert,
+                    Title = "System Health Check",
+                    Message = "All system components are running normally. Database backup completed successfully.",
+                    Icon = "check_circle",
+                    Priority = NotificationPriority.Low
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.DeadlineReminder,
+                    Title = "Registration Period Starting",
+                    Message = "Spring 2025 registration opens next week. Ensure all course sections are properly configured.",
+                    ActionUrl = "/courses",
+                    ActionText = "View Courses",
+                    Icon = "calendar_today",
+                    Priority = NotificationPriority.High
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.SystemAlert,
+                    Title = "New Users Registered",
+                    Message = "15 new faculty members have been added to the system this month.",
+                    ActionUrl = "/users",
+                    ActionText = "View Users",
+                    Icon = "group_add",
+                    Priority = NotificationPriority.Normal
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.SystemAlert,
+                    Title = "Enrollment Statistics",
+                    Message = "Student enrollment for Spring 2025 is up 12% compared to last year.",
+                    ActionUrl = "/dashboard",
+                    ActionText = "View Dashboard",
+                    Icon = "trending_up",
+                    Priority = NotificationPriority.Normal
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.PaymentDue,
+                    Title = "Outstanding Balances Report",
+                    Message = "32 students have outstanding balances totaling $47,850. Consider sending payment reminders.",
+                    ActionUrl = "/billing",
+                    ActionText = "View Billing",
+                    Icon = "payments",
+                    Priority = NotificationPriority.High
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.SystemAlert,
+                    Title = "Security Update",
+                    Message = "A new security patch has been applied. All user sessions have been refreshed.",
+                    Icon = "security",
+                    Priority = NotificationPriority.Normal
+                },
+                new Notification
+                {
+                    UserId = adminId,
+                    Type = NotificationType.DeadlineReminder,
+                    Title = "Annual Audit Reminder",
+                    Message = "The annual system audit is scheduled for next month. Please prepare all required documentation.",
+                    Icon = "fact_check",
+                    Priority = NotificationPriority.High
+                }
+            };
+
+            notifications.AddRange(adminNotifications);
+
+            // Mark a few as read
+            notifications[notifications.Count - 1].MarkAsRead();
+            notifications[notifications.Count - 3].MarkAsRead();
         }
 
         context.Notifications.AddRange(notifications);

@@ -19,9 +19,10 @@ export class DashboardService {
 
   /**
    * Get dashboard summary with key metrics
+   * Uses silent request to avoid showing error notifications if the endpoint doesn't exist
    */
   getDashboardSummary(): Observable<DashboardSummary> {
-    return this.api.get<ApiResponse<DashboardSummary>>(`${this.endpoint}/dashboard`).pipe(
+    return this.api.getSilent<ApiResponse<DashboardSummary>>(`${this.endpoint}/dashboard`).pipe(
       map(response => response.data)
     );
   }

@@ -113,6 +113,9 @@ export interface RoomFilter {
   type?: string;
   minCapacity?: number;
   isActive?: boolean;
+  hasProjector?: boolean;
+  hasComputers?: boolean;
+  isAccessible?: boolean;
 }
 
 // Filter for bookings

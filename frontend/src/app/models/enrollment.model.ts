@@ -89,6 +89,7 @@ export interface CourseSectionListItem {
   room?: string;
   isOpen: boolean;
   isCancelled: boolean;
+  termName?: string;
 }
 
 // Course Section Detail - matches backend CourseSectionDto

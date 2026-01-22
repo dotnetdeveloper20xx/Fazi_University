@@ -45,271 +45,960 @@ import {
     MatDialogModule
   ],
   template: `
-    <div class="space-y-6">
-      <!-- Header -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Billing Management</h1>
-          <p class="text-gray-500 dark:text-gray-400">Manage student accounts, charges, and payments</p>
-        </div>
-      </div>
-
-      <!-- Student Selector -->
-      <mat-card class="p-6">
-        <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Select Student</h2>
-        <mat-form-field appearance="outline" class="w-full md:w-1/2">
-          <mat-label>Student</mat-label>
-          <mat-select [(ngModel)]="selectedStudentId" (selectionChange)="onStudentChange()">
-            <mat-select-trigger>
-              @if (getSelectedStudent(); as student) {
-                <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
-                <span class="mx-2">-</span>
-                <span>{{ student.fullName }}</span>
-              }
-            </mat-select-trigger>
-            @for (student of students(); track student.id) {
-              <mat-option [value]="student.id">
-                <span class="font-mono text-sm text-gray-500">{{ student.studentId }}</span>
-                <span class="mx-2">-</span>
-                <span>{{ student.fullName }}</span>
-              </mat-option>
-            }
-          </mat-select>
-          <mat-hint>Select a student to view their billing account</mat-hint>
-        </mat-form-field>
-      </mat-card>
-
-      @if (isLoadingStudents()) {
-        <div class="flex items-center justify-center p-12">
-          <mat-spinner diameter="40"></mat-spinner>
-        </div>
-      } @else if (!selectedStudentId) {
-        <mat-card class="p-12">
-          <div class="text-center">
-            <mat-icon class="text-5xl text-gray-400 mb-4">account_balance_wallet</mat-icon>
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Select a Student</h3>
-            <p class="text-gray-500">Choose a student above to view and manage their billing account.</p>
-          </div>
-        </mat-card>
-      } @else if (isLoading()) {
-        <div class="flex items-center justify-center p-12">
-          <mat-spinner diameter="40"></mat-spinner>
-        </div>
-      } @else if (error()) {
-        <mat-card class="p-8">
-          <div class="text-center">
-            <mat-icon class="text-5xl text-red-500 mb-4">error_outline</mat-icon>
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Error Loading Account</h3>
-            <p class="text-gray-500 mb-4">{{ error() }}</p>
-            <button mat-flat-button color="primary" (click)="loadAccount()">
-              <mat-icon>refresh</mat-icon>
-              Try Again
+    <div class="billing-container">
+      <!-- Main Layout -->
+      <div class="main-layout">
+        <!-- Left Sidebar: Student Selector -->
+        <aside class="student-sidebar" [class.collapsed]="sidebarCollapsed()">
+          <div class="sidebar-header">
+            <div class="sidebar-title" *ngIf="!sidebarCollapsed()">
+              <mat-icon>people</mat-icon>
+              <span>Students</span>
+            </div>
+            <button mat-icon-button (click)="toggleSidebar()" class="collapse-btn">
+              <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
             </button>
           </div>
-        </mat-card>
-      } @else if (account()) {
-        <!-- Account Summary -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <mat-card class="p-4">
-            <div class="text-sm text-gray-500">Account Balance</div>
-            <div class="text-3xl font-bold" [class]="getBalanceClass(account()!.accountBalance)">
-              {{ account()!.accountBalance | currency }}
-            </div>
-          </mat-card>
-          <mat-card class="p-4">
-            <div class="text-sm text-gray-500">Account Status</div>
-            <div class="text-xl font-semibold" [class]="getStatusClass(account()!.accountStatus)">
-              {{ account()!.accountStatus }}
-            </div>
-          </mat-card>
-          <mat-card class="p-4">
-            <div class="text-sm text-gray-500">Financial Hold</div>
-            <div class="text-xl font-semibold" [class]="account()!.hasFinancialHold ? 'text-red-600' : 'text-green-600'">
-              {{ account()!.hasFinancialHold ? 'Yes - Hold Active' : 'No Hold' }}
-            </div>
-          </mat-card>
-          <mat-card class="p-4 flex flex-col justify-between">
-            <div class="text-sm text-gray-500 mb-2">Quick Actions</div>
-            <div class="flex gap-2">
-              <button mat-stroked-button color="primary" (click)="showAddChargeDialog()">
-                <mat-icon>add</mat-icon>
-                Add Charge
-              </button>
-              <button mat-flat-button color="primary" (click)="showPaymentDialog()">
-                <mat-icon>payment</mat-icon>
-                Payment
-              </button>
-            </div>
-          </mat-card>
-        </div>
 
-        <!-- Recent Charges & Payments -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Recent Charges -->
-          <mat-card class="overflow-hidden">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Charges</h3>
+          <div class="sidebar-content" *ngIf="!sidebarCollapsed()">
+            <!-- Search Students -->
+            <div class="student-search">
+              <mat-form-field appearance="outline" class="w-full filter-field">
+                <mat-icon matPrefix class="search-icon">search</mat-icon>
+                <input
+                  matInput
+                  [(ngModel)]="studentSearch"
+                  placeholder="Search students..."
+                >
+              </mat-form-field>
             </div>
-            @if (account()!.recentCharges.length === 0) {
-              <div class="p-8 text-center">
-                <mat-icon class="text-4xl text-gray-400 mb-2">receipt_long</mat-icon>
-                <p class="text-gray-500">No recent charges</p>
-              </div>
-            } @else {
-              <div class="overflow-x-auto">
-                <table mat-table [dataSource]="account()!.recentCharges" class="w-full">
-                  <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef>Date</th>
-                    <td mat-cell *matCellDef="let row">{{ row.chargeDate | date:'shortDate' }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef>Description</th>
-                    <td mat-cell *matCellDef="let row">
-                      <div>{{ row.description }}</div>
-                      <div class="text-xs text-gray-500">{{ row.chargeType }} - {{ row.termName }}</div>
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="amount">
-                    <th mat-header-cell *matHeaderCellDef class="text-right">Amount</th>
-                    <td mat-cell *matCellDef="let row" class="text-right font-medium text-red-600">
-                      {{ row.amount | currency }}
-                    </td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="chargeColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: chargeColumns;"></tr>
-                </table>
-              </div>
-            }
-          </mat-card>
 
-          <!-- Recent Payments -->
-          <mat-card class="overflow-hidden">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Payments</h3>
+            <!-- Student List -->
+            <div class="student-list">
+              @if (isLoadingStudents()) {
+                <div class="loading-students">
+                  <mat-spinner diameter="24"></mat-spinner>
+                </div>
+              } @else {
+                @for (student of filteredStudents(); track student.id) {
+                  <div
+                    class="student-item"
+                    [class.selected]="student.id === selectedStudentId"
+                    (click)="selectStudent(student.id)"
+                  >
+                    <div class="student-avatar">
+                      {{ getInitials(student.fullName) }}
+                    </div>
+                    <div class="student-details">
+                      <div class="student-name">{{ student.fullName }}</div>
+                      <div class="student-id">{{ student.studentId }}</div>
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="no-students">No students found</div>
+                }
+              }
             </div>
-            @if (account()!.recentPayments.length === 0) {
-              <div class="p-8 text-center">
-                <mat-icon class="text-4xl text-gray-400 mb-2">payments</mat-icon>
-                <p class="text-gray-500">No recent payments</p>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+          <!-- Page Header -->
+          <header class="page-header">
+            <div class="header-info">
+              <h1 class="page-title">Billing Management</h1>
+              <p class="page-subtitle">
+                @if (getSelectedStudent(); as student) {
+                  {{ student.fullName }} - {{ student.studentId }}
+                } @else {
+                  Select a student to view billing
+                }
+              </p>
+            </div>
+            <div class="header-actions">
+              <button mat-stroked-button routerLink="/billing/calculator">
+                <mat-icon>calculate</mat-icon>
+                Calculator
+              </button>
+            </div>
+          </header>
+
+          @if (!selectedStudentId) {
+            <!-- Empty State -->
+            <div class="main-card">
+              <div class="empty-state">
+                <mat-icon>account_balance_wallet</mat-icon>
+                <h3>Select a Student</h3>
+                <p>Choose a student from the left panel to view and manage their billing account.</p>
               </div>
-            } @else {
-              <div class="overflow-x-auto">
-                <table mat-table [dataSource]="account()!.recentPayments" class="w-full">
-                  <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef>Date</th>
-                    <td mat-cell *matCellDef="let row">{{ row.paymentDate | date:'shortDate' }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="method">
-                    <th mat-header-cell *matHeaderCellDef>Method</th>
-                    <td mat-cell *matCellDef="let row">
-                      <div>{{ row.paymentMethod }}</div>
-                      @if (row.referenceNumber) {
-                        <div class="text-xs text-gray-500">Ref: {{ row.referenceNumber }}</div>
+            </div>
+          } @else if (isLoading()) {
+            <div class="main-card">
+              <div class="loading-state">
+                <mat-spinner diameter="48"></mat-spinner>
+                <p>Loading account...</p>
+              </div>
+            </div>
+          } @else if (error()) {
+            <div class="main-card">
+              <div class="error-state">
+                <mat-icon>error_outline</mat-icon>
+                <h3>Error Loading Account</h3>
+                <p>{{ error() }}</p>
+                <button mat-flat-button color="primary" (click)="loadAccount()">
+                  <mat-icon>refresh</mat-icon>
+                  Try Again
+                </button>
+              </div>
+            </div>
+          } @else if (account()) {
+            <!-- Account Summary Cards -->
+            <div class="summary-cards">
+              <div class="summary-card balance-card" [class.positive]="account()!.accountBalance > 0" [class.negative]="account()!.accountBalance < 0" [class.zero]="account()!.accountBalance === 0">
+                <div class="card-icon">
+                  <mat-icon>account_balance</mat-icon>
+                </div>
+                <div class="card-content">
+                  <span class="card-label">Account Balance</span>
+                  <span class="card-value">{{ account()!.accountBalance | currency }}</span>
+                </div>
+              </div>
+
+              <div class="summary-card status-card" [class]="'status-' + account()!.accountStatus.toLowerCase().replace(' ', '-')">
+                <div class="card-icon">
+                  <mat-icon>{{ getStatusIcon(account()!.accountStatus) }}</mat-icon>
+                </div>
+                <div class="card-content">
+                  <span class="card-label">Account Status</span>
+                  <span class="card-value">{{ account()!.accountStatus }}</span>
+                </div>
+              </div>
+
+              <div class="summary-card hold-card" [class.has-hold]="account()!.hasFinancialHold">
+                <div class="card-icon">
+                  <mat-icon>{{ account()!.hasFinancialHold ? 'lock' : 'lock_open' }}</mat-icon>
+                </div>
+                <div class="card-content">
+                  <span class="card-label">Financial Hold</span>
+                  <span class="card-value">{{ account()!.hasFinancialHold ? 'Active' : 'None' }}</span>
+                </div>
+              </div>
+
+              <div class="summary-card actions-card">
+                <button mat-stroked-button (click)="showAddChargeDialog()" class="action-btn">
+                  <mat-icon>add_circle</mat-icon>
+                  Add Charge
+                </button>
+                <button mat-flat-button color="primary" (click)="showPaymentDialog()" class="action-btn">
+                  <mat-icon>payment</mat-icon>
+                  Payment
+                </button>
+              </div>
+            </div>
+
+            <!-- Charge/Payment Forms -->
+            @if (showChargeForm()) {
+              <div class="form-card">
+                <div class="form-header">
+                  <h3>Add New Charge</h3>
+                  <button mat-icon-button (click)="cancelCharge()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                <div class="form-body">
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Charge Type</mat-label>
+                      <mat-select [(ngModel)]="newCharge.chargeType">
+                        @for (type of chargeTypes; track type) {
+                          <mat-option [value]="type">{{ type }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Amount</mat-label>
+                      <span matTextPrefix>$&nbsp;</span>
+                      <input matInput type="number" [(ngModel)]="newCharge.amount" min="0" step="0.01">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="form-field full-width">
+                      <mat-label>Description</mat-label>
+                      <input matInput [(ngModel)]="newCharge.description">
+                    </mat-form-field>
+                  </div>
+                  <div class="form-actions">
+                    <button mat-stroked-button (click)="cancelCharge()">Cancel</button>
+                    <button mat-flat-button color="primary" (click)="submitCharge()" [disabled]="isSubmitting()">
+                      @if (isSubmitting()) {
+                        <mat-spinner diameter="20"></mat-spinner>
                       }
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let row">
-                      <span class="px-2 py-0.5 rounded-full text-xs font-medium"
-                            [class]="getPaymentStatusClass(row.status)">
-                        {{ row.status }}
-                      </span>
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="amount">
-                    <th mat-header-cell *matHeaderCellDef class="text-right">Amount</th>
-                    <td mat-cell *matCellDef="let row" class="text-right font-medium text-green-600">
-                      {{ row.amount | currency }}
-                    </td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="paymentColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: paymentColumns;"></tr>
-                </table>
+                      Add Charge
+                    </button>
+                  </div>
+                </div>
               </div>
             }
-          </mat-card>
-        </div>
 
-        <!-- Add Charge Form (Inline) -->
-        @if (showChargeForm()) {
-          <mat-card class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Add New Charge</h3>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <mat-form-field appearance="outline">
-                <mat-label>Charge Type</mat-label>
-                <mat-select [(ngModel)]="newCharge.chargeType">
-                  @for (type of chargeTypes; track type) {
-                    <mat-option [value]="type">{{ type }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="newCharge.amount" min="0" step="0.01">
-                <span matTextPrefix>$&nbsp;</span>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="md:col-span-2">
-                <mat-label>Description</mat-label>
-                <input matInput [(ngModel)]="newCharge.description">
-              </mat-form-field>
-            </div>
-            <div class="flex justify-end gap-2 mt-4">
-              <button mat-stroked-button (click)="cancelCharge()">Cancel</button>
-              <button mat-flat-button color="primary" (click)="submitCharge()" [disabled]="isSubmitting()">
-                @if (isSubmitting()) {
-                  <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
-                }
-                Add Charge
-              </button>
-            </div>
-          </mat-card>
-        }
+            @if (showPaymentForm()) {
+              <div class="form-card">
+                <div class="form-header">
+                  <h3>Process Payment</h3>
+                  <button mat-icon-button (click)="cancelPayment()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                <div class="form-body">
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Payment Method</mat-label>
+                      <mat-select [(ngModel)]="newPayment.paymentMethod">
+                        @for (method of paymentMethods; track method) {
+                          <mat-option [value]="method">{{ method }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Amount</mat-label>
+                      <span matTextPrefix>$&nbsp;</span>
+                      <input matInput type="number" [(ngModel)]="newPayment.amount" min="0" step="0.01">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Reference Number</mat-label>
+                      <input matInput [(ngModel)]="newPayment.referenceNumber">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Notes</mat-label>
+                      <input matInput [(ngModel)]="newPayment.notes">
+                    </mat-form-field>
+                  </div>
+                  <div class="form-actions">
+                    <button mat-stroked-button (click)="cancelPayment()">Cancel</button>
+                    <button mat-flat-button color="primary" (click)="submitPayment()" [disabled]="isSubmitting()">
+                      @if (isSubmitting()) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                      }
+                      Process Payment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
 
-        <!-- Payment Form (Inline) -->
-        @if (showPaymentForm()) {
-          <mat-card class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Process Payment</h3>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <mat-form-field appearance="outline">
-                <mat-label>Payment Method</mat-label>
-                <mat-select [(ngModel)]="newPayment.paymentMethod">
-                  @for (method of paymentMethods; track method) {
-                    <mat-option [value]="method">{{ method }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="newPayment.amount" min="0" step="0.01">
-                <span matTextPrefix>$&nbsp;</span>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Reference Number</mat-label>
-                <input matInput [(ngModel)]="newPayment.referenceNumber">
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Notes</mat-label>
-                <input matInput [(ngModel)]="newPayment.notes">
-              </mat-form-field>
-            </div>
-            <div class="flex justify-end gap-2 mt-4">
-              <button mat-stroked-button (click)="cancelPayment()">Cancel</button>
-              <button mat-flat-button color="primary" (click)="submitPayment()" [disabled]="isSubmitting()">
-                @if (isSubmitting()) {
-                  <mat-spinner diameter="20" class="inline-block mr-2"></mat-spinner>
+            <!-- Transactions Tables -->
+            <div class="transactions-grid">
+              <!-- Recent Charges -->
+              <div class="table-card">
+                <div class="table-header">
+                  <h3>
+                    <mat-icon>receipt_long</mat-icon>
+                    Recent Charges
+                  </h3>
+                  <span class="item-count">{{ account()!.recentCharges.length }} items</span>
+                </div>
+                @if (account()!.recentCharges.length === 0) {
+                  <div class="table-empty">
+                    <mat-icon>receipt_long</mat-icon>
+                    <p>No recent charges</p>
+                  </div>
+                } @else {
+                  <div class="table-container">
+                    <table mat-table [dataSource]="account()!.recentCharges">
+                      <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="date-text">{{ row.chargeDate | date:'MMM d' }}</span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef>Description</th>
+                        <td mat-cell *matCellDef="let row">
+                          <div class="charge-info">
+                            <span class="charge-desc">{{ row.description }}</span>
+                            <span class="charge-meta">{{ row.chargeType }} - {{ row.termName }}</span>
+                          </div>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef>Amount</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="amount charge">{{ row.amount | currency }}</span>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="chargeColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: chargeColumns;"></tr>
+                    </table>
+                  </div>
                 }
-                Process Payment
-              </button>
+              </div>
+
+              <!-- Recent Payments -->
+              <div class="table-card">
+                <div class="table-header">
+                  <h3>
+                    <mat-icon>payments</mat-icon>
+                    Recent Payments
+                  </h3>
+                  <span class="item-count">{{ account()!.recentPayments.length }} items</span>
+                </div>
+                @if (account()!.recentPayments.length === 0) {
+                  <div class="table-empty">
+                    <mat-icon>payments</mat-icon>
+                    <p>No recent payments</p>
+                  </div>
+                } @else {
+                  <div class="table-container">
+                    <table mat-table [dataSource]="account()!.recentPayments">
+                      <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="date-text">{{ row.paymentDate | date:'MMM d' }}</span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="method">
+                        <th mat-header-cell *matHeaderCellDef>Method</th>
+                        <td mat-cell *matCellDef="let row">
+                          <div class="payment-info">
+                            <span class="payment-method">{{ row.paymentMethod }}</span>
+                            @if (row.referenceNumber) {
+                              <span class="payment-ref">Ref: {{ row.referenceNumber }}</span>
+                            }
+                          </div>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="status-badge" [class]="getPaymentStatusClass(row.status)">
+                            {{ row.status }}
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef>Amount</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="amount payment">{{ row.amount | currency }}</span>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="paymentColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: paymentColumns;"></tr>
+                    </table>
+                  </div>
+                }
+              </div>
             </div>
-          </mat-card>
-        }
-      }
+          }
+        </main>
+      </div>
     </div>
   `,
   styles: [`
     :host {
       display: block;
+    }
+
+    .billing-container {
+      height: calc(100vh - 140px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-layout {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Student Sidebar */
+    .student-sidebar {
+      width: 300px;
+      min-width: 300px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .student-sidebar.collapsed {
+      width: 56px;
+      min-width: 56px;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .sidebar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .sidebar-title mat-icon {
+      color: #6366f1;
+    }
+
+    .collapse-btn {
+      color: #6b7280;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .student-search {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .filter-field {
+      width: 100%;
+    }
+
+    .filter-field .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .search-icon {
+      color: #9ca3af;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .student-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .loading-students {
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .student-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      transition: all 0.15s ease;
+      border: 2px solid transparent;
+    }
+
+    .student-item:hover {
+      background: #f3f4f6;
+    }
+
+    .student-item.selected {
+      background: #eef2ff;
+      border-color: #6366f1;
+    }
+
+    .student-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .student-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .student-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .student-id {
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .no-students {
+      text-align: center;
+      padding: 24px;
+      color: #9ca3af;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 4px 0 0 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Main Card */
+    .main-card {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+
+    .balance-card .card-icon { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .balance-card.positive .card-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .balance-card.negative .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .balance-card.zero .card-icon { background: linear-gradient(135deg, #6b7280, #4b5563); }
+
+    .status-card .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .status-card.status-past-due .card-icon { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .status-card.status-collections .card-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+    .hold-card .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .hold-card.has-hold .card-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card-label {
+      display: block;
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .card-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .balance-card.positive .card-value { color: #dc2626; }
+    .balance-card.negative .card-value { color: #059669; }
+
+    .actions-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .action-btn {
+      width: 100%;
+    }
+
+    /* Form Card */
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .form-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .form-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-field {
+      width: 100%;
+    }
+
+    .form-field.full-width {
+      grid-column: span 2;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Transactions Grid */
+    .transactions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .table-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table-header h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .table-header h3 mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: #6366f1;
+    }
+
+    .item-count {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .table-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .table-empty mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #d1d5db;
+      margin-bottom: 8px;
+    }
+
+    .table-empty p {
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    .mat-mdc-header-row {
+      background: #f9fafb;
+    }
+
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #374151;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .date-text {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .charge-info,
+    .payment-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .charge-desc,
+    .payment-method {
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .charge-meta,
+    .payment-ref {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .amount {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .amount.charge {
+      color: #dc2626;
+    }
+
+    .amount.payment {
+      color: #059669;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.completed,
+    .status-badge.posted {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.failed,
+    .status-badge.declined {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-badge.refunded {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    /* States */
+    .loading-state,
+    .error-state,
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 24px;
+      text-align: center;
+    }
+
+    .loading-state p {
+      margin-top: 16px;
+      color: #6b7280;
+    }
+
+    .error-state mat-icon,
+    .empty-state mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+    }
+
+    .error-state mat-icon {
+      color: #ef4444;
+    }
+
+    .empty-state mat-icon {
+      color: #9ca3af;
+    }
+
+    .error-state h3,
+    .empty-state h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0 0 8px 0;
+    }
+
+    .error-state p,
+    .empty-state p {
+      color: #6b7280;
+      margin: 0;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .student-sidebar,
+      .main-card,
+      .summary-card,
+      .form-card,
+      .table-card {
+        background: #1f2937;
+      }
+
+      .sidebar-header,
+      .student-search,
+      .table-header,
+      .form-header {
+        border-color: #374151;
+      }
+
+      .sidebar-title,
+      .page-title,
+      .card-value,
+      .table-header h3,
+      .form-header h3,
+      .charge-desc,
+      .payment-method {
+        color: #f9fafb;
+      }
+
+      .student-item:hover {
+        background: #374151;
+      }
+
+      .student-item.selected {
+        background: #312e81;
+      }
+
+      .student-name {
+        color: #f9fafb;
+      }
+
+      .mat-mdc-header-row {
+        background: #111827;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .student-sidebar {
+        display: none;
+      }
+
+      .main-layout {
+        gap: 0;
+      }
+
+      .transactions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-field.full-width {
+        grid-column: span 1;
+      }
     }
   `]
 })
@@ -325,15 +1014,13 @@ export class BillingOverviewComponent implements OnInit {
   isLoading = signal(false);
   isSubmitting = signal(false);
   error = signal<string | null>(null);
+  sidebarCollapsed = signal(false);
 
   showChargeForm = signal(false);
   showPaymentForm = signal(false);
 
   selectedStudentId: string = '';
-
-  getSelectedStudent(): StudentListItem | undefined {
-    return this.students().find(s => s.id === this.selectedStudentId);
-  }
+  studentSearch: string = '';
 
   chargeTypes = CHARGE_TYPES;
   paymentMethods = PAYMENT_METHODS;
@@ -354,6 +1041,46 @@ export class BillingOverviewComponent implements OnInit {
     notes: ''
   };
 
+  toggleSidebar(): void {
+    this.sidebarCollapsed.update(v => !v);
+  }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  }
+
+  filteredStudents(): StudentListItem[] {
+    if (!this.studentSearch) return this.students();
+    const search = this.studentSearch.toLowerCase();
+    return this.students().filter(s =>
+      s.fullName.toLowerCase().includes(search) ||
+      s.studentId.toLowerCase().includes(search)
+    );
+  }
+
+  getSelectedStudent(): StudentListItem | undefined {
+    return this.students().find(s => s.id === this.selectedStudentId);
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'Current':
+      case 'Paid in Full':
+        return 'check_circle';
+      case 'Past Due':
+        return 'warning';
+      case 'Collections':
+        return 'error';
+      default:
+        return 'info';
+    }
+  }
+
   ngOnInit(): void {
     this.loadStudents();
   }
@@ -373,11 +1100,8 @@ export class BillingOverviewComponent implements OnInit {
     });
   }
 
-  onStudentChange(): void {
-    if (!this.selectedStudentId) {
-      this.account.set(null);
-      return;
-    }
+  selectStudent(studentId: string): void {
+    this.selectedStudentId = studentId;
     this.loadAccount();
   }
 
@@ -410,7 +1134,6 @@ export class BillingOverviewComponent implements OnInit {
   showPaymentDialog(): void {
     this.showChargeForm.set(false);
     this.showPaymentForm.set(true);
-    // Pre-fill amount with current balance if positive
     const balance = this.account()?.accountBalance || 0;
     this.newPayment = {
       paymentMethod: '',
@@ -483,40 +1206,20 @@ export class BillingOverviewComponent implements OnInit {
     });
   }
 
-  getBalanceClass(balance: number): string {
-    if (balance > 0) return 'text-red-600';
-    if (balance < 0) return 'text-green-600';
-    return 'text-gray-900 dark:text-gray-100';
-  }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'Current':
-      case 'Paid in Full':
-        return 'text-green-600';
-      case 'Past Due':
-        return 'text-orange-600';
-      case 'Collections':
-        return 'text-red-600';
-      default:
-        return 'text-gray-600';
-    }
-  }
-
   getPaymentStatusClass(status: string): string {
     switch (status) {
       case 'Completed':
       case 'Posted':
-        return 'bg-green-100 text-green-800';
+        return 'completed';
       case 'Pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'pending';
       case 'Failed':
       case 'Declined':
-        return 'bg-red-100 text-red-800';
+        return 'failed';
       case 'Refunded':
-        return 'bg-blue-100 text-blue-800';
+        return 'refunded';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return '';
     }
   }
 }

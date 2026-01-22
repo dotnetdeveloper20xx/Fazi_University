@@ -1,21 +1,22 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { StudentService } from '../services/student.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ExportService, ExportColumn } from '../../../shared/services/export.service';
@@ -31,95 +32,29 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatChipsModule,
     MatMenuModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule,
+    MatBadgeModule,
+    MatExpansionModule
   ],
   template: `
-    <div class="space-y-6">
-      <!-- Page header -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Students</h1>
-          <p class="text-gray-500 dark:text-gray-400">Manage student records and information</p>
-        </div>
-        <a mat-flat-button color="primary" routerLink="/students/new">
-          <mat-icon>add</mat-icon>
-          Add Student
-        </a>
-      </div>
-
-      <!-- Filters -->
-      <mat-card>
-        <mat-card-content class="p-4">
-          <div class="flex flex-wrap gap-4 items-end">
-            <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-              <input
-                matInput
-                [(ngModel)]="searchTerm"
-                placeholder="Search by name, ID, or email"
-                (keyup.enter)="applyFilters()"
-              >
-              <mat-icon matPrefix>search</mat-icon>
-              @if (searchTerm) {
-                <button matSuffix mat-icon-button (click)="searchTerm = ''; applyFilters()">
-                  <mat-icon>close</mat-icon>
-                </button>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All Status</mat-option>
-                <mat-option value="Admitted">Admitted</mat-option>
-                <mat-option value="Active">Active</mat-option>
-                <mat-option value="Inactive">Inactive</mat-option>
-                <mat-option value="Graduated">Graduated</mat-option>
-                <mat-option value="Suspended">Suspended</mat-option>
-                <mat-option value="Withdrawn">Withdrawn</mat-option>
-                <mat-option value="OnLeave">On Leave</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="min-w-[120px]">
-              <mat-label>Type</mat-label>
-              <mat-select [(ngModel)]="typeFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All Types</mat-option>
-                <mat-option value="FullTime">Full Time</mat-option>
-                <mat-option value="PartTime">Part Time</mat-option>
-                <mat-option value="Online">Online</mat-option>
-                <mat-option value="Exchange">Exchange</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="min-w-[140px]">
-              <mat-label>Standing</mat-label>
-              <mat-select [(ngModel)]="standingFilter" (selectionChange)="applyFilters()">
-                <mat-option value="">All Standing</mat-option>
-                <mat-option value="GoodStanding">Good Standing</mat-option>
-                <mat-option value="AcademicWarning">Warning</mat-option>
-                <mat-option value="Probation">Probation</mat-option>
-                <mat-option value="Dismissed">Dismissed</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <button mat-stroked-button (click)="clearFilters()" [disabled]="!hasActiveFilters()">
-              <mat-icon>clear</mat-icon>
-              Clear Filters
-            </button>
-
-            <div class="flex-1"></div>
-
-            <!-- Export buttons -->
+    <div class="page-container">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">
+            <h1>Students</h1>
+            <p class="subtitle">{{ totalCount() }} students in database</p>
+          </div>
+          <div class="header-actions">
             <button mat-stroked-button [matMenuTriggerFor]="exportMenu" [disabled]="students().length === 0">
               <mat-icon>download</mat-icon>
               Export
@@ -127,209 +62,648 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
             <mat-menu #exportMenu="matMenu">
               <button mat-menu-item (click)="exportToExcel()">
                 <mat-icon>table_chart</mat-icon>
-                <span>Export to Excel</span>
+                Excel
               </button>
               <button mat-menu-item (click)="exportToCsv()">
                 <mat-icon>description</mat-icon>
-                <span>Export to CSV</span>
+                CSV
               </button>
               <button mat-menu-item (click)="exportToPdf()">
                 <mat-icon>picture_as_pdf</mat-icon>
-                <span>Print / PDF</span>
+                PDF
               </button>
             </mat-menu>
+            <a mat-flat-button color="primary" routerLink="/students/new">
+              <mat-icon>person_add</mat-icon>
+              Add Student
+            </a>
           </div>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </header>
 
-      <!-- Data table -->
-      <mat-card>
-        @if (isLoading()) {
-          <div class="flex items-center justify-center p-12">
-            <mat-spinner diameter="40"></mat-spinner>
-          </div>
-        } @else if (error()) {
-          <div class="flex flex-col items-center justify-center p-12 text-center">
-            <mat-icon class="text-5xl text-red-500 mb-4">error_outline</mat-icon>
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Error Loading Students</h3>
-            <p class="text-gray-500 dark:text-gray-400 mb-4">{{ error() }}</p>
-            <button mat-flat-button color="primary" (click)="loadStudents()">
-              <mat-icon>refresh</mat-icon>
-              Try Again
+      <!-- Main Content: Filters + Table -->
+      <div class="content-layout">
+        <!-- Left: Filters Panel -->
+        <aside class="filters-panel" [class.collapsed]="filtersCollapsed()">
+          <div class="filters-header">
+            <span class="filters-title">
+              <mat-icon>filter_list</mat-icon>
+              Filters
+            </span>
+            <button mat-icon-button (click)="filtersCollapsed.set(!filtersCollapsed())" matTooltip="Toggle filters">
+              <mat-icon>{{ filtersCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
             </button>
           </div>
-        } @else if (students().length === 0) {
-          <div class="flex flex-col items-center justify-center p-12 text-center">
-            <mat-icon class="text-5xl text-gray-400 mb-4">school</mat-icon>
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No Students Found</h3>
-            <p class="text-gray-500 dark:text-gray-400 mb-4">
-              @if (hasActiveFilters()) {
-                No students match your current filters.
-              } @else {
-                Get started by adding your first student.
-              }
-            </p>
-            @if (hasActiveFilters()) {
-              <button mat-stroked-button (click)="clearFilters()">
-                Clear Filters
-              </button>
-            } @else {
-              <a mat-flat-button color="primary" routerLink="/students/new">
-                <mat-icon>add</mat-icon>
-                Add Student
-              </a>
-            }
-          </div>
-        } @else {
-          <div class="overflow-x-auto">
-            <table mat-table [dataSource]="students()" matSort (matSortChange)="onSort($event)" class="w-full">
-              <!-- Student ID Column -->
-              <ng-container matColumnDef="studentId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Student ID</th>
-                <td mat-cell *matCellDef="let student">
-                  <span class="font-mono text-sm">{{ student.studentId }}</span>
-                </td>
-              </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="fullName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                <td mat-cell *matCellDef="let student">
-                  <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                      <span class="text-sm font-medium text-primary-700 dark:text-primary-300">
-                        {{ student.firstName?.charAt(0) }}{{ student.lastName?.charAt(0) }}
-                      </span>
-                    </div>
-                    <div class="min-w-0">
-                      <div class="font-medium truncate">{{ student.fullName }}</div>
-                      <div class="text-sm text-gray-500 truncate">{{ student.email }}</div>
-                    </div>
-                  </div>
-                </td>
-              </ng-container>
-
-              <!-- Program Column -->
-              <ng-container matColumnDef="programName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Program</th>
-                <td mat-cell *matCellDef="let student">
-                  <div class="truncate max-w-[200px]" [matTooltip]="student.programName || 'N/A'">
-                    {{ student.programName || 'N/A' }}
-                  </div>
-                  @if (student.departmentName) {
-                    <div class="text-xs text-gray-500 truncate">{{ student.departmentName }}</div>
+          @if (!filtersCollapsed()) {
+            <div class="filters-body">
+              <!-- Search -->
+              <div class="filter-section">
+                <label class="filter-label">Search</label>
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-icon matPrefix>search</mat-icon>
+                  <input matInput [(ngModel)]="searchTerm" placeholder="Name, ID, or email" (keyup.enter)="applyFilters()">
+                  @if (searchTerm) {
+                    <button matSuffix mat-icon-button (click)="searchTerm = ''; applyFilters()">
+                      <mat-icon>close</mat-icon>
+                    </button>
                   }
-                </td>
-              </ng-container>
+                </mat-form-field>
+              </div>
 
-              <!-- GPA Column -->
-              <ng-container matColumnDef="cumulativeGpa">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>GPA</th>
-                <td mat-cell *matCellDef="let student">
-                  <span [class]="getGpaClass(student.cumulativeGpa)">
-                    {{ student.cumulativeGpa | number:'1.2-2' }}
-                  </span>
-                </td>
-              </ng-container>
+              <!-- Status Filter -->
+              <div class="filter-section">
+                <label class="filter-label">Status</label>
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
+                    <mat-option value="">All Statuses</mat-option>
+                    <mat-option value="Active">
+                      <span class="status-option active"></span> Active
+                    </mat-option>
+                    <mat-option value="Admitted">
+                      <span class="status-option admitted"></span> Admitted
+                    </mat-option>
+                    <mat-option value="Graduated">
+                      <span class="status-option graduated"></span> Graduated
+                    </mat-option>
+                    <mat-option value="Suspended">
+                      <span class="status-option suspended"></span> Suspended
+                    </mat-option>
+                    <mat-option value="Withdrawn">
+                      <span class="status-option withdrawn"></span> Withdrawn
+                    </mat-option>
+                    <mat-option value="OnLeave">
+                      <span class="status-option onleave"></span> On Leave
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-              <!-- Status Column -->
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                <td mat-cell *matCellDef="let student">
-                  <span
-                    class="px-2 py-1 rounded-full text-xs font-medium"
-                    [class]="getStatusClass(student.status)"
-                  >
-                    {{ student.status }}
-                  </span>
-                </td>
-              </ng-container>
+              <!-- Type Filter -->
+              <div class="filter-section">
+                <label class="filter-label">Enrollment Type</label>
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-select [(ngModel)]="typeFilter" (selectionChange)="applyFilters()">
+                    <mat-option value="">All Types</mat-option>
+                    <mat-option value="FullTime">Full Time</mat-option>
+                    <mat-option value="PartTime">Part Time</mat-option>
+                    <mat-option value="Online">Online</mat-option>
+                    <mat-option value="Exchange">Exchange</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-              <!-- Standing Column -->
-              <ng-container matColumnDef="academicStanding">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Standing</th>
-                <td mat-cell *matCellDef="let student">
-                  <div class="flex items-center gap-1">
-                    <span
-                      class="px-2 py-1 rounded-full text-xs font-medium"
-                      [class]="getStandingClass(student.academicStanding)"
-                    >
-                      {{ formatStanding(student.academicStanding) }}
-                    </span>
-                    @if (student.hasFinancialHold || student.hasAcademicHold) {
-                      <mat-icon
-                        class="text-red-500 text-sm"
-                        [matTooltip]="getHoldTooltip(student)"
-                      >
-                        warning
-                      </mat-icon>
+              <!-- Academic Standing Filter -->
+              <div class="filter-section">
+                <label class="filter-label">Academic Standing</label>
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-select [(ngModel)]="standingFilter" (selectionChange)="applyFilters()">
+                    <mat-option value="">All Standings</mat-option>
+                    <mat-option value="GoodStanding">Good Standing</mat-option>
+                    <mat-option value="DeansList">Dean's List</mat-option>
+                    <mat-option value="PresidentsList">President's List</mat-option>
+                    <mat-option value="AcademicWarning">Warning</mat-option>
+                    <mat-option value="Probation">Probation</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- Active Filters & Clear -->
+              @if (hasActiveFilters()) {
+                <div class="active-filters">
+                  <div class="active-filters-header">
+                    <span>Active Filters</span>
+                    <button mat-button color="warn" (click)="clearFilters()">
+                      Clear All
+                    </button>
+                  </div>
+                  <div class="filter-chips">
+                    @if (searchTerm) {
+                      <mat-chip-row (removed)="searchTerm = ''; applyFilters()">
+                        Search: {{ searchTerm }}
+                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                      </mat-chip-row>
+                    }
+                    @if (statusFilter) {
+                      <mat-chip-row (removed)="statusFilter = ''; applyFilters()">
+                        Status: {{ statusFilter }}
+                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                      </mat-chip-row>
+                    }
+                    @if (typeFilter) {
+                      <mat-chip-row (removed)="typeFilter = ''; applyFilters()">
+                        Type: {{ typeFilter }}
+                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                      </mat-chip-row>
+                    }
+                    @if (standingFilter) {
+                      <mat-chip-row (removed)="standingFilter = ''; applyFilters()">
+                        Standing: {{ standingFilter }}
+                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                      </mat-chip-row>
                     }
                   </div>
-                </td>
-              </ng-container>
+                </div>
+              }
+            </div>
+          }
+        </aside>
 
-              <!-- Actions Column -->
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="w-16">Actions</th>
-                <td mat-cell *matCellDef="let student">
-                  <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <a mat-menu-item [routerLink]="['/students', student.id]">
-                      <mat-icon>visibility</mat-icon>
-                      <span>View Details</span>
-                    </a>
-                    <a mat-menu-item [routerLink]="['/students', student.id, 'edit']">
-                      <mat-icon>edit</mat-icon>
-                      <span>Edit</span>
-                    </a>
-                    <a mat-menu-item [routerLink]="['/enrollments']" [queryParams]="{studentId: student.id}">
-                      <mat-icon>assignment</mat-icon>
-                      <span>Enrollments</span>
-                    </a>
-                    <a mat-menu-item [routerLink]="['/grades']" [queryParams]="{studentId: student.id}">
-                      <mat-icon>grade</mat-icon>
-                      <span>Grades</span>
-                    </a>
-                    <mat-divider></mat-divider>
-                    <button mat-menu-item class="text-red-600" (click)="confirmDelete(student)">
-                      <mat-icon class="text-red-600">delete</mat-icon>
-                      <span>Delete</span>
+        <!-- Right: Data Table -->
+        <main class="data-panel">
+          @if (isLoading()) {
+            <div class="loading-state">
+              <mat-spinner diameter="48"></mat-spinner>
+              <p>Loading students...</p>
+            </div>
+          } @else if (error()) {
+            <div class="error-state">
+              <mat-icon>error_outline</mat-icon>
+              <h3>Failed to load students</h3>
+              <p>{{ error() }}</p>
+              <button mat-flat-button color="primary" (click)="loadStudents()">
+                <mat-icon>refresh</mat-icon>
+                Retry
+              </button>
+            </div>
+          } @else if (students().length === 0) {
+            <div class="empty-state">
+              <mat-icon>school</mat-icon>
+              <h3>No students found</h3>
+              <p>{{ hasActiveFilters() ? 'Try adjusting your filters' : 'Add your first student to get started' }}</p>
+              @if (hasActiveFilters()) {
+                <button mat-stroked-button (click)="clearFilters()">Clear Filters</button>
+              } @else {
+                <a mat-flat-button color="primary" routerLink="/students/new">Add Student</a>
+              }
+            </div>
+          } @else {
+            <div class="table-container">
+              <table mat-table [dataSource]="students()" matSort (matSortChange)="onSort($event)">
+                <!-- Student ID -->
+                <ng-container matColumnDef="studentId">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                  <td mat-cell *matCellDef="let s">
+                    <code class="student-id">{{ s.studentId }}</code>
+                  </td>
+                </ng-container>
+
+                <!-- Name -->
+                <ng-container matColumnDef="fullName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Student</th>
+                  <td mat-cell *matCellDef="let s">
+                    <div class="student-info">
+                      <div class="avatar">{{ s.firstName?.charAt(0) }}{{ s.lastName?.charAt(0) }}</div>
+                      <div class="details">
+                        <span class="name">{{ s.fullName }}</span>
+                        <span class="email">{{ s.email }}</span>
+                      </div>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Program -->
+                <ng-container matColumnDef="programName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Program</th>
+                  <td mat-cell *matCellDef="let s">
+                    <div class="program-info">
+                      <span class="program">{{ s.programName || '—' }}</span>
+                      @if (s.departmentName) {
+                        <span class="department">{{ s.departmentName }}</span>
+                      }
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- GPA -->
+                <ng-container matColumnDef="cumulativeGpa">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>GPA</th>
+                  <td mat-cell *matCellDef="let s">
+                    <span class="gpa" [class]="getGpaClass(s.cumulativeGpa)">
+                      {{ s.cumulativeGpa | number:'1.2-2' }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                  <td mat-cell *matCellDef="let s">
+                    <span class="status-badge" [class]="'status-' + s.status.toLowerCase()">
+                      {{ s.status }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <!-- Standing -->
+                <ng-container matColumnDef="academicStanding">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Standing</th>
+                  <td mat-cell *matCellDef="let s">
+                    <div class="standing-cell">
+                      <span class="standing-badge" [class]="'standing-' + s.academicStanding.toLowerCase()">
+                        {{ formatStanding(s.academicStanding) }}
+                      </span>
+                      @if (s.hasFinancialHold || s.hasAcademicHold) {
+                        <mat-icon class="hold-icon" [matTooltip]="getHoldTooltip(s)">warning</mat-icon>
+                      }
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Actions -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let s">
+                    <button mat-icon-button [matMenuTriggerFor]="rowMenu" (click)="$event.stopPropagation()">
+                      <mat-icon>more_vert</mat-icon>
                     </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
+                    <mat-menu #rowMenu="matMenu">
+                      <a mat-menu-item [routerLink]="['/students', s.id]">
+                        <mat-icon>visibility</mat-icon> View
+                      </a>
+                      <a mat-menu-item [routerLink]="['/students', s.id, 'edit']">
+                        <mat-icon>edit</mat-icon> Edit
+                      </a>
+                      <mat-divider></mat-divider>
+                      <a mat-menu-item [routerLink]="['/enrollments']" [queryParams]="{studentId: s.id}">
+                        <mat-icon>assignment</mat-icon> Enrollments
+                      </a>
+                      <a mat-menu-item [routerLink]="['/grades']" [queryParams]="{studentId: s.id}">
+                        <mat-icon>grade</mat-icon> Grades
+                      </a>
+                      <a mat-menu-item [routerLink]="['/billing']" [queryParams]="{studentId: s.id}">
+                        <mat-icon>payments</mat-icon> Billing
+                      </a>
+                      <mat-divider></mat-divider>
+                      <button mat-menu-item class="delete-action" (click)="confirmDelete(s)">
+                        <mat-icon>delete</mat-icon> Delete
+                      </button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr
-                mat-row
-                *matRowDef="let row; columns: displayedColumns;"
-                class="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-                [routerLink]="['/students', row.id]"
-              ></tr>
-            </table>
-          </div>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    [routerLink]="['/students', row.id]"
+                    class="clickable-row"></tr>
+              </table>
+            </div>
 
-          <mat-paginator
-            [length]="totalCount()"
-            [pageSize]="pageSize()"
-            [pageIndex]="pageIndex()"
-            [pageSizeOptions]="[10, 25, 50]"
-            (page)="onPageChange($event)"
-            showFirstLastButtons
-          />
-        }
-      </mat-card>
+            <mat-paginator
+              [length]="totalCount()"
+              [pageSize]="pageSize()"
+              [pageIndex]="pageIndex()"
+              [pageSizeOptions]="[10, 25, 50, 100]"
+              (page)="onPageChange($event)"
+              showFirstLastButtons>
+            </mat-paginator>
+          }
+        </main>
+      </div>
     </div>
   `,
   styles: [`
-    :host {
-      display: block;
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #f8fafc;
     }
 
-    .mat-mdc-row:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+    /* Header */
+    .page-header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 100%;
+    }
+
+    .header-title h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .subtitle {
+      margin: 0.25rem 0 0;
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Content Layout */
+    .content-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Filters Panel */
+    .filters-panel {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.2s ease;
+    }
+
+    .filters-panel.collapsed {
+      width: 48px;
+    }
+
+    .filters-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .filters-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      color: #475569;
+    }
+
+    .filters-panel.collapsed .filters-title span {
+      display: none;
+    }
+
+    .filters-body {
+      padding: 1rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .filter-section {
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-bottom: 0.5rem;
+    }
+
+    .filter-field {
+      width: 100%;
+    }
+
+    .filter-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .status-option {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-option.active { background: #22c55e; }
+    .status-option.admitted { background: #8b5cf6; }
+    .status-option.graduated { background: #3b82f6; }
+    .status-option.suspended { background: #ef4444; }
+    .status-option.withdrawn { background: #f97316; }
+    .status-option.onleave { background: #eab308; }
+
+    .active-filters {
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .active-filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Data Panel */
+    .data-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: white;
+      margin: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .table-container {
+      flex: 1;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    th.mat-mdc-header-cell {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .clickable-row:hover {
+      background: #f1f5f9;
+    }
+
+    /* Student ID */
+    .student-id {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.8125rem;
+      color: #6366f1;
+      background: #eef2ff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* Student Info */
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .name {
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .email {
+      font-size: 0.8125rem;
+      color: #64748b;
+    }
+
+    /* Program Info */
+    .program-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .program {
+      color: #1e293b;
+    }
+
+    .department {
+      font-size: 0.8125rem;
+      color: #64748b;
+    }
+
+    /* GPA */
+    .gpa {
+      font-weight: 600;
+      font-size: 0.9375rem;
+    }
+
+    .gpa.excellent { color: #22c55e; }
+    .gpa.good { color: #3b82f6; }
+    .gpa.average { color: #eab308; }
+    .gpa.poor { color: #ef4444; }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .status-active { background: #dcfce7; color: #166534; }
+    .status-admitted { background: #ede9fe; color: #5b21b6; }
+    .status-graduated { background: #dbeafe; color: #1e40af; }
+    .status-suspended { background: #fee2e2; color: #991b1b; }
+    .status-withdrawn { background: #ffedd5; color: #9a3412; }
+    .status-onleave { background: #fef9c3; color: #854d0e; }
+    .status-inactive { background: #f1f5f9; color: #475569; }
+
+    /* Standing Badge */
+    .standing-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .standing-badge {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .standing-goodstanding { background: #dcfce7; color: #166534; }
+    .standing-deanslist { background: #dbeafe; color: #1e40af; }
+    .standing-presidentslist { background: #ede9fe; color: #5b21b6; }
+    .standing-academicwarning { background: #fef9c3; color: #854d0e; }
+    .standing-probation { background: #ffedd5; color: #9a3412; }
+    .standing-dismissed { background: #fee2e2; color: #991b1b; }
+
+    .hold-icon {
+      color: #ef4444;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .delete-action {
+      color: #ef4444;
+    }
+
+    /* States */
+    .loading-state, .error-state, .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      flex: 1;
+    }
+
+    .loading-state p, .error-state p, .empty-state p {
+      color: #64748b;
+      margin: 1rem 0;
+    }
+
+    .error-state mat-icon, .empty-state mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #94a3b8;
+    }
+
+    .error-state mat-icon {
+      color: #ef4444;
+    }
+
+    .error-state h3, .empty-state h3 {
+      margin: 0;
+      color: #1e293b;
+    }
+
+    /* Paginator */
+    mat-paginator {
+      border-top: 1px solid #e2e8f0;
     }
   `]
 })
@@ -344,10 +718,11 @@ export class StudentListComponent implements OnInit {
   isLoading = signal(false);
   error = signal<string | null>(null);
   totalCount = signal(0);
-  pageSize = signal(10);
+  pageSize = signal(25);
   pageIndex = signal(0);
   sortBy = signal('CreatedAt');
   sortDirection = signal<'asc' | 'desc'>('desc');
+  filtersCollapsed = signal(false);
 
   searchTerm = '';
   statusFilter = '';
@@ -441,70 +816,35 @@ export class StudentListComponent implements OnInit {
   }
 
   confirmDelete(student: StudentListItem): void {
-    if (confirm(`Are you sure you want to delete ${student.fullName}? This action cannot be undone.`)) {
+    if (confirm(`Are you sure you want to delete ${student.fullName}?`)) {
       this.studentService.deleteStudent(student.id).subscribe({
         next: () => {
-          this.notificationService.showSuccess(`${student.fullName} has been deleted`);
+          this.notificationService.showSuccess(`${student.fullName} deleted`);
           this.loadStudents();
         },
         error: (err) => {
-          this.notificationService.showError(err.error?.message || 'Failed to delete student');
+          this.notificationService.showError(err.error?.message || 'Failed to delete');
         }
       });
     }
   }
 
-  getStatusClass(status: StudentStatus): string {
-    switch (status) {
-      case 'Admitted':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
-      case 'Active':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'Inactive':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
-      case 'Graduated':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-      case 'Suspended':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      case 'Withdrawn':
-        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
-      case 'OnLeave':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
-    }
-  }
-
-  getStandingClass(standing: AcademicStanding): string {
-    switch (standing) {
-      case 'GoodStanding':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'AcademicWarning':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'Probation':
-        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
-      case 'Dismissed':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
-    }
-  }
-
   formatStanding(standing: AcademicStanding): string {
-    switch (standing) {
-      case 'GoodStanding': return 'Good';
-      case 'AcademicWarning': return 'Warning';
-      case 'Probation': return 'Probation';
-      case 'Dismissed': return 'Dismissed';
-      default: return standing;
-    }
+    const map: Record<string, string> = {
+      'GoodStanding': 'Good',
+      'AcademicWarning': 'Warning',
+      'Probation': 'Probation',
+      'DeansList': "Dean's List",
+      'PresidentsList': "President's List"
+    };
+    return map[standing] || standing;
   }
 
   getGpaClass(gpa: number): string {
-    if (gpa >= 3.5) return 'text-green-600 dark:text-green-400 font-semibold';
-    if (gpa >= 3.0) return 'text-blue-600 dark:text-blue-400';
-    if (gpa >= 2.0) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-red-600 dark:text-red-400';
+    if (gpa >= 3.5) return 'excellent';
+    if (gpa >= 3.0) return 'good';
+    if (gpa >= 2.0) return 'average';
+    return 'poor';
   }
 
   getHoldTooltip(student: StudentListItem): string {
@@ -514,7 +854,6 @@ export class StudentListComponent implements OnInit {
     return holds.join(', ');
   }
 
-  // Export methods
   private getExportColumns(): ExportColumn[] {
     return [
       { header: 'Student ID', key: 'studentId', width: 15 },
@@ -531,29 +870,16 @@ export class StudentListComponent implements OnInit {
   }
 
   exportToExcel(): void {
-    this.exportService.exportToExcel(
-      this.students(),
-      this.getExportColumns(),
-      'students'
-    );
-    this.notificationService.showSuccess('Students exported to Excel');
+    this.exportService.exportToExcel(this.students(), this.getExportColumns(), 'students');
+    this.notificationService.showSuccess('Exported to Excel');
   }
 
   exportToCsv(): void {
-    this.exportService.exportToCsv(
-      this.students(),
-      this.getExportColumns(),
-      'students'
-    );
-    this.notificationService.showSuccess('Students exported to CSV');
+    this.exportService.exportToCsv(this.students(), this.getExportColumns(), 'students');
+    this.notificationService.showSuccess('Exported to CSV');
   }
 
   exportToPdf(): void {
-    this.exportService.exportToPdf(
-      this.students(),
-      this.getExportColumns(),
-      'students',
-      'Student List Report'
-    );
+    this.exportService.exportToPdf(this.students(), this.getExportColumns(), 'students', 'Student List');
   }
 }

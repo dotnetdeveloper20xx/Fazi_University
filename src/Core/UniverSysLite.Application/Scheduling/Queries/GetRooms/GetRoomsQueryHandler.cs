@@ -21,7 +21,8 @@ public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Result<Pagina
         CancellationToken cancellationToken)
     {
         var query = _context.Rooms
-            .Include(r => r.Building)
+            .AsNoTracking()
+            .Where(r => !r.IsDeleted)
             .AsQueryable();
 
         if (request.BuildingId.HasValue)
@@ -61,16 +62,37 @@ public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Result<Pagina
 
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var rooms = await query
-            .OrderBy(r => r.Building.Code)
+        // Project first, then order in memory to avoid EF Core translation issues
+        var roomData = await query
+            .Select(r => new
+            {
+                r.Id,
+                BuildingCode = r.Building.Code,
+                BuildingName = r.Building.Name,
+                r.RoomNumber,
+                r.Name,
+                r.Type,
+                r.Capacity,
+                r.Floor,
+                r.IsActive,
+                r.HasProjector,
+                r.HasWhiteboard,
+                r.HasComputers,
+                r.ComputerCount,
+                r.IsAccessible
+            })
+            .ToListAsync(cancellationToken);
+
+        var rooms = roomData
+            .OrderBy(r => r.BuildingCode)
             .ThenBy(r => r.RoomNumber)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(r => new RoomListDto
             {
                 Id = r.Id,
-                BuildingCode = r.Building.Code,
-                BuildingName = r.Building.Name,
+                BuildingCode = r.BuildingCode,
+                BuildingName = r.BuildingName,
                 RoomNumber = r.RoomNumber,
                 Name = r.Name,
                 Type = r.Type.ToString(),
@@ -84,8 +106,7 @@ public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Result<Pagina
                     r.HasComputers ? $"Computers ({r.ComputerCount ?? 0})" : null,
                     r.IsAccessible ? "Accessible" : null
                 }.Where(f => f != null))
-            })
-            .ToListAsync(cancellationToken);
+            }).ToList();
 
         var result = new PaginatedList<RoomListDto>(rooms, totalCount, request.PageNumber, request.PageSize);
         return Result<PaginatedList<RoomListDto>>.Success(result);

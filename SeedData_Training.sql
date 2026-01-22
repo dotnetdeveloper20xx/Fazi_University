@@ -8,10 +8,11 @@
 -- All seed data uses @example.com emails for easy cleanup
 -- =====================================================
 
-USE [UniverSysLiteDb];
+USE [UniverSysLiteDb_Dev];
 GO
 
 SET NOCOUNT ON;
+SET QUOTED_IDENTIFIER ON;
 PRINT 'Starting UniverSys Lite Training Data Seed...';
 PRINT '============================================';
 

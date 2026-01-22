@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { StudentService } from '../services/student.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { ExportService, ExportColumn } from '../../../shared/services/export.service';
 import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentListFilter } from '../../../models';
 
 @Component({
@@ -112,6 +113,28 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
               <mat-icon>clear</mat-icon>
               Clear Filters
             </button>
+
+            <div class="flex-1"></div>
+
+            <!-- Export buttons -->
+            <button mat-stroked-button [matMenuTriggerFor]="exportMenu" [disabled]="students().length === 0">
+              <mat-icon>download</mat-icon>
+              Export
+            </button>
+            <mat-menu #exportMenu="matMenu">
+              <button mat-menu-item (click)="exportToExcel()">
+                <mat-icon>table_chart</mat-icon>
+                <span>Export to Excel</span>
+              </button>
+              <button mat-menu-item (click)="exportToCsv()">
+                <mat-icon>description</mat-icon>
+                <span>Export to CSV</span>
+              </button>
+              <button mat-menu-item (click)="exportToPdf()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>Print / PDF</span>
+              </button>
+            </mat-menu>
           </div>
         </mat-card-content>
       </mat-card>
@@ -310,6 +333,7 @@ import { StudentListItem, StudentStatus, StudentType, AcademicStanding, StudentL
 export class StudentListComponent implements OnInit {
   private readonly studentService = inject(StudentService);
   private readonly notificationService = inject(NotificationService);
+  private readonly exportService = inject(ExportService);
 
   displayedColumns = ['studentId', 'fullName', 'programName', 'cumulativeGpa', 'status', 'academicStanding', 'actions'];
 
@@ -485,5 +509,48 @@ export class StudentListComponent implements OnInit {
     if (student.hasFinancialHold) holds.push('Financial Hold');
     if (student.hasAcademicHold) holds.push('Academic Hold');
     return holds.join(', ');
+  }
+
+  // Export methods
+  private getExportColumns(): ExportColumn[] {
+    return [
+      { header: 'Student ID', key: 'studentId', width: 15 },
+      { header: 'First Name', key: 'firstName', width: 15 },
+      { header: 'Last Name', key: 'lastName', width: 15 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Program', key: 'programName', width: 25 },
+      { header: 'Department', key: 'departmentName', width: 20 },
+      { header: 'GPA', key: 'cumulativeGpa', width: 8 },
+      { header: 'Credits', key: 'earnedCredits', width: 10 },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Standing', key: 'academicStanding', width: 15 }
+    ];
+  }
+
+  exportToExcel(): void {
+    this.exportService.exportToExcel(
+      this.students(),
+      this.getExportColumns(),
+      'students'
+    );
+    this.notificationService.showSuccess('Students exported to Excel');
+  }
+
+  exportToCsv(): void {
+    this.exportService.exportToCsv(
+      this.students(),
+      this.getExportColumns(),
+      'students'
+    );
+    this.notificationService.showSuccess('Students exported to CSV');
+  }
+
+  exportToPdf(): void {
+    this.exportService.exportToPdf(
+      this.students(),
+      this.getExportColumns(),
+      'students',
+      'Student List Report'
+    );
   }
 }

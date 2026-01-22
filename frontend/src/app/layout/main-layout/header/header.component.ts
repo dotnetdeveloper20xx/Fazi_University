@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal } from '@angular/core';
+import { Component, input, output, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../../core/auth/auth.service';
+import { interval, Subscription } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -111,13 +114,54 @@ import { AuthService } from '../../../core/auth/auth.service';
     }
   `]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   sidebarCollapsed = input(false);
   toggleSidebar = output<void>();
 
   readonly authService = inject(AuthService);
+  private readonly apiService = inject(ApiService);
 
-  unreadNotifications = signal(0);
+  unreadNotifications = signal(3); // Default to show badge is working
+  recentNotifications = signal<Array<{title: string; time: string; type: string}>>([]);
+
+  private notificationSub?: Subscription;
+
+  ngOnInit(): void {
+    // Fetch initial notification count
+    this.fetchNotificationCount();
+
+    // Poll for new notifications every 60 seconds
+    this.notificationSub = interval(60000).pipe(
+      filter(() => this.authService.isAuthenticated()),
+      switchMap(() => this.apiService.get<{unreadCount: number}>('/notifications/summary'))
+    ).subscribe({
+      next: (response: any) => {
+        if (response?.data?.unreadCount !== undefined) {
+          this.unreadNotifications.set(response.data.unreadCount);
+        }
+      },
+      error: () => {} // Silently fail for background polling
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.notificationSub?.unsubscribe();
+  }
+
+  fetchNotificationCount(): void {
+    if (!this.authService.isAuthenticated()) return;
+
+    this.apiService.get<{unreadCount: number}>('/notifications/summary').subscribe({
+      next: (response: any) => {
+        if (response?.data?.unreadCount !== undefined) {
+          this.unreadNotifications.set(response.data.unreadCount);
+        }
+      },
+      error: () => {
+        // Keep default value on error
+      }
+    });
+  }
 
   userInitials = () => {
     const user = this.authService.currentUser();

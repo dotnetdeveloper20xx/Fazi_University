@@ -35,7 +35,13 @@
 | **Faculty** | john.smith@universyslite.edu | Faculty@123! | Courses, grades, students (view) |
 | **Registrar** | mary.wilson@universyslite.edu | Staff@123! | Students, enrollments, courses |
 | **Billing Staff** | robert.walker@universyslite.edu | Staff@123! | Billing, payments, student accounts |
-| **Student** | emma.smith1@student.universyslite.edu | Student@123! | Own grades, billing, enrollments |
+| **Student** | *See note below* | Student@123! | Own grades, billing, enrollments |
+
+> **Note:** Student accounts are generated with random names during seeding. To find actual student emails:
+> 1. Login as Admin
+> 2. Go to Students page
+> 3. Pick any student email (format: firstname.lastnameN@student.universyslite.edu)
+> 4. Use password: `Student@123!`
 
 ### Additional Test Accounts
 

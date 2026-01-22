@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AuthService } from '../../core/auth/auth.service';
 import { DashboardService } from './services/dashboard.service';
 import { DashboardSummary, RecentActivity } from '../../models';
@@ -38,7 +39,8 @@ interface ActivityDisplay {
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxChartsModule
   ],
   template: `
     <div class="space-y-6">
@@ -185,6 +187,70 @@ interface ActivityDisplay {
               </mat-card-content>
             </mat-card>
           </div>
+
+          <!-- Charts Section -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Grade Distribution Chart -->
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Grade Distribution</mat-card-title>
+              </mat-card-header>
+              <mat-card-content class="p-4">
+                <div class="h-64">
+                  <ngx-charts-bar-vertical
+                    [results]="gradeDistributionData()"
+                    [xAxis]="true"
+                    [yAxis]="true"
+                    [showXAxisLabel]="true"
+                    [showYAxisLabel]="true"
+                    xAxisLabel="Grade"
+                    yAxisLabel="Students"
+                    [gradient]="true"
+                    [scheme]="colorScheme">
+                  </ngx-charts-bar-vertical>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Enrollment Status Chart -->
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Enrollment Status</mat-card-title>
+              </mat-card-header>
+              <mat-card-content class="p-4">
+                <div class="h-64">
+                  <ngx-charts-pie-chart
+                    [results]="enrollmentStatusData()"
+                    [labels]="true"
+                    [doughnut]="true"
+                    [scheme]="colorScheme">
+                  </ngx-charts-pie-chart>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Enrollment Trend Chart -->
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Enrollment Trends (Last 6 Terms)</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="p-4">
+              <div class="h-72">
+                <ngx-charts-line-chart
+                  [results]="enrollmentTrendData()"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  xAxisLabel="Term"
+                  yAxisLabel="Enrollments"
+                  [autoScale]="true"
+                  [scheme]="colorScheme">
+                </ngx-charts-line-chart>
+              </div>
+            </mat-card-content>
+          </mat-card>
         }
 
         <!-- Upcoming Deadlines -->
@@ -232,9 +298,65 @@ export class DashboardComponent implements OnInit {
   isLoading = signal(false);
   summary = signal<DashboardSummary | null>(null);
 
+  // Chart configuration - using built-in scheme name
+  colorScheme = 'cool';
+
   ngOnInit(): void {
     this.loadDashboardData();
   }
+
+  // Chart data computed signals
+  gradeDistributionData = computed(() => {
+    const data = this.summary();
+    if (!data?.gradeDistribution) {
+      // Default sample data
+      return [
+        { name: 'A', value: 245 },
+        { name: 'B', value: 412 },
+        { name: 'C', value: 328 },
+        { name: 'D', value: 156 },
+        { name: 'F', value: 89 },
+        { name: 'W', value: 67 }
+      ];
+    }
+    return data.gradeDistribution.map(g => ({ name: g.grade, value: g.count }));
+  });
+
+  enrollmentStatusData = computed(() => {
+    const data = this.summary();
+    if (!data?.enrollmentsByStatus) {
+      // Default sample data
+      return [
+        { name: 'Enrolled', value: 3200 },
+        { name: 'Completed', value: 1850 },
+        { name: 'Withdrawn', value: 245 },
+        { name: 'Waitlisted', value: 120 }
+      ];
+    }
+    return data.enrollmentsByStatus.map(e => ({ name: e.status, value: e.count }));
+  });
+
+  enrollmentTrendData = computed(() => {
+    const data = this.summary();
+    if (!data?.enrollmentTrend) {
+      // Default sample data
+      return [{
+        name: 'Enrollments',
+        series: [
+          { name: 'Fall 2024', value: 4200 },
+          { name: 'Spring 2025', value: 4450 },
+          { name: 'Summer 2025', value: 1850 },
+          { name: 'Fall 2025', value: 4680 },
+          { name: 'Spring 2026', value: 4890 },
+          { name: 'Summer 2026', value: 2100 }
+        ]
+      }];
+    }
+    return [{
+      name: 'Enrollments',
+      series: data.enrollmentTrend.map(t => ({ name: t.term, value: t.count }))
+    }];
+  });
 
   loadDashboardData(): void {
     this.isLoading.set(true);

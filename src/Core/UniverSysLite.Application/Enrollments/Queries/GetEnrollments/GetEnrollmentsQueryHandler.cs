@@ -65,8 +65,8 @@ public class GetEnrollmentsQueryHandler : IRequestHandler<GetEnrollmentsQuery, R
             var searchTerm = request.SearchTerm.ToLower();
             query = query.Where(e =>
                 e.Student.StudentId.ToLower().Contains(searchTerm) ||
-                e.Student.User.FirstName.ToLower().Contains(searchTerm) ||
-                e.Student.User.LastName.ToLower().Contains(searchTerm) ||
+                (e.Student.User != null && e.Student.User.FirstName.ToLower().Contains(searchTerm)) ||
+                (e.Student.User != null && e.Student.User.LastName.ToLower().Contains(searchTerm)) ||
                 e.CourseSection.Course.Code.ToLower().Contains(searchTerm) ||
                 e.CourseSection.Course.Name.ToLower().Contains(searchTerm));
         }
@@ -78,8 +78,8 @@ public class GetEnrollmentsQueryHandler : IRequestHandler<GetEnrollmentsQuery, R
                 ? query.OrderByDescending(e => e.Student.StudentId)
                 : query.OrderBy(e => e.Student.StudentId),
             "studentname" => request.SortDescending
-                ? query.OrderByDescending(e => e.Student.User.LastName).ThenByDescending(e => e.Student.User.FirstName)
-                : query.OrderBy(e => e.Student.User.LastName).ThenBy(e => e.Student.User.FirstName),
+                ? query.OrderByDescending(e => e.Student.User!.LastName).ThenByDescending(e => e.Student.User!.FirstName)
+                : query.OrderBy(e => e.Student.User!.LastName).ThenBy(e => e.Student.User!.FirstName),
             "coursecode" => request.SortDescending
                 ? query.OrderByDescending(e => e.CourseSection.Course.Code)
                 : query.OrderBy(e => e.CourseSection.Course.Code),
@@ -103,11 +103,11 @@ public class GetEnrollmentsQueryHandler : IRequestHandler<GetEnrollmentsQuery, R
             {
                 Id = e.Id,
                 StudentId_Display = e.Student.StudentId,
-                StudentName = e.Student.User.FirstName + " " + e.Student.User.LastName,
+                StudentName = e.Student.User != null ? e.Student.User.FirstName + " " + e.Student.User.LastName : "",
                 CourseCode = e.CourseSection.Course.Code,
                 CourseName = e.CourseSection.Course.Name,
                 SectionNumber = e.CourseSection.SectionNumber,
-                TermName = e.CourseSection.Term.Name,
+                TermName = e.CourseSection.Term != null ? e.CourseSection.Term.Name : "",
                 Status = e.Status.ToString(),
                 EnrollmentDate = e.EnrollmentDate,
                 Grade = e.Grade,

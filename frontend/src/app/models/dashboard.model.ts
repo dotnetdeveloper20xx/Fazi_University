@@ -9,6 +9,25 @@ export interface DashboardSummary {
   averageGpa: number;
   recentActivities: RecentActivity[];
   upcomingDeadlines: UpcomingDeadline[];
+  // Chart data
+  gradeDistribution?: GradeDistributionItem[];
+  enrollmentsByStatus?: EnrollmentStatusItem[];
+  enrollmentTrend?: EnrollmentTrendItem[];
+}
+
+export interface GradeDistributionItem {
+  grade: string;
+  count: number;
+}
+
+export interface EnrollmentStatusItem {
+  status: string;
+  count: number;
+}
+
+export interface EnrollmentTrendItem {
+  term: string;
+  count: number;
 }
 
 export interface RecentActivity {

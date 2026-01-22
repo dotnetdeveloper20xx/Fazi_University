@@ -42,15 +42,15 @@ public class GetSectionEnrollmentsQueryHandler : IRequestHandler<GetSectionEnrol
         }
 
         var enrollments = await query
-            .OrderBy(e => e.Student.User.LastName)
-            .ThenBy(e => e.Student.User.FirstName)
+            .OrderBy(e => e.Student.User!.LastName)
+            .ThenBy(e => e.Student.User!.FirstName)
             .Select(e => new SectionEnrollmentDto
             {
                 Id = e.Id,
                 StudentId = e.StudentId,
                 StudentId_Display = e.Student.StudentId,
-                StudentName = e.Student.User.FirstName + " " + e.Student.User.LastName,
-                StudentEmail = e.Student.User.Email ?? "",
+                StudentName = (e.Student.User != null ? e.Student.User.FirstName + " " + e.Student.User.LastName : ""),
+                StudentEmail = e.Student.User != null ? e.Student.User.Email ?? "" : "",
                 ProgramName = e.Student.Program != null ? e.Student.Program.Name : "",
                 Status = e.Status.ToString(),
                 EnrollmentDate = e.EnrollmentDate,

@@ -38,8 +38,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Gu
         {
             UserName = request.Email,
             Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
+            FirstName = request.FirstName ?? "",
+            LastName = request.LastName ?? "",
             PhoneNumber = request.PhoneNumber,
             IsActive = true,
             CreatedAt = _dateTimeService.UtcNow

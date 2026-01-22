@@ -50,19 +50,19 @@ public class ApiResponse<T>
 /// </summary>
 public class ApiResponse : ApiResponse<object>
 {
-    public new static ApiResponse Ok(string? message = null) => new()
+    public static ApiResponse Ok(string? message = null) => new()
     {
         Success = true,
         Message = message
     };
 
-    public new static ApiResponse Fail(string error) => new()
+    public static new ApiResponse Fail(string error) => new()
     {
         Success = false,
         Errors = new[] { error }
     };
 
-    public new static ApiResponse Fail(IEnumerable<string> errors) => new()
+    public static new ApiResponse Fail(IEnumerable<string> errors) => new()
     {
         Success = false,
         Errors = errors

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, tap, catchError, throwError, BehaviorSubject, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TokenService } from './token.service';
 import {
@@ -103,7 +103,26 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/me`).pipe(
+    return this.http.get<{ success: boolean; data: any }>(`${this.baseUrl}/me`).pipe(
+      map(response => {
+        if (!response.success || !response.data) {
+          throw new Error('Failed to get current user');
+        }
+        const userData = response.data;
+        // Map API response to User model
+        const user: User = {
+          id: userData.id,
+          email: userData.email,
+          firstName: userData.firstName || '',
+          lastName: userData.lastName || '',
+          fullName: `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || userData.email,
+          roles: userData.roles as UserRole[],
+          permissions: userData.permissions || [],
+          isActive: userData.isActive,
+          lastLoginAt: userData.lastLoginAt
+        };
+        return user;
+      }),
       tap(user => {
         this._currentUser.set(user);
         this.saveUserToStorage(user);

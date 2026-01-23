@@ -64,7 +64,7 @@ export class StudentService {
         console.error('Students API error:', err);
         // Return empty response on error
         return of({
-          succeeded: false,
+          success: false,
           data: {
             items: [] as StudentListItem[],
             totalCount: 0,

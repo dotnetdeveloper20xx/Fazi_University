@@ -54,7 +54,7 @@ export class EnrollmentService {
       catchError(err => {
         console.error('Enrollments API error:', err);
         return of({
-          succeeded: false,
+          success: false,
           data: {
             items: [] as EnrollmentListItem[],
             totalCount: 0,

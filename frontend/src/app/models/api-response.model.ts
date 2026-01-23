@@ -1,6 +1,7 @@
 export interface ApiResponse<T> {
   data: T;
-  succeeded: boolean;
+  success: boolean;      // Backend uses 'success'
+  succeeded?: boolean;   // Alias for backwards compatibility
   errors: string[];
   message?: string;
 }

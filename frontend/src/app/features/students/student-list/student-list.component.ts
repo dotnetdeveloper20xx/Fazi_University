@@ -753,7 +753,7 @@ export class StudentListComponent implements OnInit {
       filter
     ).subscribe({
       next: (response) => {
-        if (response.succeeded) {
+        if (response.success) {
           this.students.set(response.data.items);
           this.totalCount.set(response.data.totalCount);
         } else {

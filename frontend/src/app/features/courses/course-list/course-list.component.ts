@@ -920,7 +920,7 @@ export class CourseListComponent implements OnInit {
       filter
     ).subscribe({
       next: (response) => {
-        if (response.succeeded) {
+        if (response.success) {
           this.courses.set(response.data.items);
           this.totalCount.set(response.data.totalCount);
         } else {

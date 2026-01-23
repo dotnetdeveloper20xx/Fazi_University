@@ -120,17 +120,17 @@ import { NotificationService } from '../../../core/services/notification.service
             <div class="form-grid">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>First Name</mat-label>
-                <input matInput [value]="user()?.firstName" readonly>
+                <input matInput [value]="user()?.firstName ?? ''" placeholder="Not set" readonly>
                 <mat-icon matSuffix>lock</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Last Name</mat-label>
-                <input matInput [value]="user()?.lastName" readonly>
+                <input matInput [value]="user()?.lastName ?? ''" placeholder="Not set" readonly>
                 <mat-icon matSuffix>lock</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" class="form-field span-2">
                 <mat-label>Email Address</mat-label>
-                <input matInput [value]="user()?.email" readonly>
+                <input matInput [value]="user()?.email ?? ''" placeholder="Not set" readonly>
                 <mat-icon matSuffix>lock</mat-icon>
               </mat-form-field>
             </div>
@@ -153,12 +153,12 @@ import { NotificationService } from '../../../core/services/notification.service
             <div class="info-grid">
               <div class="info-item">
                 <span class="info-label">User ID</span>
-                <span class="info-value mono">{{ user()?.id }}</span>
+                <span class="info-value mono">{{ user()?.id || 'N/A' }}</span>
               </div>
               <div class="info-item">
                 <span class="info-label">Account Status</span>
                 <span class="info-value">
-                  @if (user()?.isActive) {
+                  @if (user()?.isActive !== false) {
                     <span class="status-badge active">
                       <span class="status-dot"></span>
                       Active
@@ -173,17 +173,35 @@ import { NotificationService } from '../../../core/services/notification.service
               </div>
               <div class="info-item">
                 <span class="info-label">Last Login</span>
-                <span class="info-value">{{ user()?.lastLoginAt | date:'medium' }}</span>
+                <span class="info-value">
+                  @if (user()?.lastLoginAt) {
+                    {{ user()?.lastLoginAt | date:'medium' }}
+                  } @else {
+                    {{ currentLoginTime | date:'medium' }}
+                  }
+                </span>
               </div>
               <div class="info-item">
                 <span class="info-label">Roles</span>
                 <span class="info-value">
                   <div class="roles-list">
-                    @for (role of user()?.roles; track role) {
-                      <span class="role-chip">{{ role }}</span>
+                    @if (user()?.roles && user()!.roles.length > 0) {
+                      @for (role of user()?.roles; track role) {
+                        <span class="role-chip">{{ role }}</span>
+                      }
+                    } @else {
+                      <span class="text-gray-400">No roles assigned</span>
                     }
                   </div>
                 </span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ user()?.email || 'N/A' }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Full Name</span>
+                <span class="info-value">{{ user()?.fullName || 'N/A' }}</span>
               </div>
             </div>
           </div>
@@ -1134,6 +1152,7 @@ export class SettingsPageComponent implements OnInit {
 
   // User
   user = this.authService.currentUser;
+  currentLoginTime = new Date(); // Track current session start time
 
   // Password form
   passwordForm: FormGroup = this.fb.group({
@@ -1151,7 +1170,7 @@ export class SettingsPageComponent implements OnInit {
   confirmPasswordFocused = signal(false);
 
   // Appearance
-  selectedTheme = signal<'light' | 'dark' | 'system'>('system');
+  selectedTheme = signal<'light' | 'dark' | 'system'>(this.loadThemeFromStorage());
   compactMode = false;
   showAnimations = true;
 
@@ -1164,6 +1183,8 @@ export class SettingsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe();
+    // Apply saved theme on load
+    this.applyTheme(this.selectedTheme());
   }
 
   toggleSidebar(): void {
@@ -1208,7 +1229,46 @@ export class SettingsPageComponent implements OnInit {
 
   setTheme(theme: 'light' | 'dark' | 'system'): void {
     this.selectedTheme.set(theme);
-    // Theme application would be handled by a theme service
+    this.applyTheme(theme);
+    localStorage.setItem('theme', theme);
+    this.notificationService.showSuccess(`Theme changed to ${theme}`);
+  }
+
+  private loadThemeFromStorage(): 'light' | 'dark' | 'system' {
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
+    if (saved && ['light', 'dark', 'system'].includes(saved)) {
+      // Apply theme on load
+      setTimeout(() => this.applyTheme(saved), 0);
+      return saved;
+    }
+    return 'system';
+  }
+
+  private applyTheme(theme: 'light' | 'dark' | 'system'): void {
+    const root = document.documentElement;
+    const body = document.body;
+
+    // Remove existing theme classes
+    root.classList.remove('light', 'dark');
+    body.classList.remove('light-theme', 'dark-theme');
+
+    if (theme === 'system') {
+      // Check system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        root.classList.add('dark');
+        body.classList.add('dark-theme');
+      } else {
+        root.classList.add('light');
+        body.classList.add('light-theme');
+      }
+    } else if (theme === 'dark') {
+      root.classList.add('dark');
+      body.classList.add('dark-theme');
+    } else {
+      root.classList.add('light');
+      body.classList.add('light-theme');
+    }
   }
 
   onChangePassword(): void {

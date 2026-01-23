@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Sprints - UniverSys Lite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-white text-xl">school</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">UniverSys Lite</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="nav-link">Overview</a>
+                    <a href="planning.html" class="nav-link">Planning</a>
+                    <a href="sprints.html" class="nav-link active">Sprints</a>
+                    <a href="backend.html" class="nav-link">Back-End</a>
+                    <a href="frontend.html" class="nav-link">Front-End</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="https://github.com/dotnetdeveloper20xx/Fazi_University" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <span class="material-icons text-2xl">timeline</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold">Development Sprints</h1>
+            </div>
+            <p class="text-xl text-teal-100 max-w-3xl">
+                Agile development approach with iterative sprints. Each sprint delivers functional features
+                with continuous integration and deployment.
+            </p>
+        </div>
+    </section>
+
+    <!-- Progress Summary -->
+    <section class="py-8 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600">5</div>
+                    <div class="text-sm text-gray-600">Completed Sprints</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600">1</div>
+                    <div class="text-sm text-gray-600">In Progress</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600">50+</div>
+                    <div class="text-sm text-gray-600">Features Delivered</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-gray-600">100+</div>
+                    <div class="text-sm text-gray-600">Commits</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sprints -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-8">
+
+                <!-- Sprint 1 -->
+                <div class="sprint-card">
+                    <div class="sprint-header blue">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-blue-700">Sprint 1</span>
+                            <span class="text-sm text-blue-600">Foundation & Authentication</span>
+                        </div>
+                        <span class="status-badge completed">
+                            <span class="material-icons text-sm">check_circle</span>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Project setup with Clean Architecture structure
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        EF Core database context and initial migrations
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        ASP.NET Core Identity setup with JWT authentication
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Login, Register, Refresh Token endpoints
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Angular 19 project with routing and auth guards
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Technical Highlights</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">.NET 8</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">EF Core 8</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">JWT Auth</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Angular 19</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">MediatR</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sprint 2 -->
+                <div class="sprint-card">
+                    <div class="sprint-header green">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-green-700">Sprint 2</span>
+                            <span class="text-sm text-green-600">Core Domain Entities</span>
+                        </div>
+                        <span class="status-badge completed">
+                            <span class="material-icons text-sm">check_circle</span>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Student entity with full CRUD operations
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Course and CourseSection entities
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Department and Program entities
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Term (academic period) management
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Comprehensive data seeding (150 students, 70 courses)
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Technical Highlights</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">CQRS Handlers</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">FluentValidation</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">AutoMapper</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Pagination</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sprint 3 -->
+                <div class="sprint-card">
+                    <div class="sprint-header purple">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-purple-700">Sprint 3</span>
+                            <span class="text-sm text-purple-600">Enrollments & Grades</span>
+                        </div>
+                        <span class="status-badge completed">
+                            <span class="material-icons text-sm">check_circle</span>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Enrollment processing with waitlist support
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Drop/Withdraw functionality with deadlines
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Grade submission by faculty
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        GPA calculation and transcript generation
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Grade finalization workflow
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Technical Highlights</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Domain Events</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Business Rules</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Workflow States</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sprint 4 -->
+                <div class="sprint-card">
+                    <div class="sprint-header orange">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-orange-700">Sprint 4</span>
+                            <span class="text-sm text-orange-600">Billing & Scheduling</span>
+                        </div>
+                        <span class="status-badge completed">
+                            <span class="material-icons text-sm">check_circle</span>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Billing account management
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Charge creation and payment processing
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Financial hold management
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Building and room management
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Room booking calendar
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Technical Highlights</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Financial Calculations</span>
+                                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Calendar Integration</span>
+                                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Booking Conflicts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sprint 5 -->
+                <div class="sprint-card">
+                    <div class="sprint-header teal">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-teal-700">Sprint 5</span>
+                            <span class="text-sm text-teal-600">UI/UX & Polish</span>
+                        </div>
+                        <span class="status-badge completed">
+                            <span class="material-icons text-sm">check_circle</span>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Modern dashboard with role-based views
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Responsive sidebar navigation
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Dark mode support
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Notification center
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Settings page with profile management
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Technical Highlights</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">Angular Material</span>
+                                    <span class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">Tailwind CSS</span>
+                                    <span class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">Signals</span>
+                                    <span class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">Animations</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sprint 6 (Current) -->
+                <div class="sprint-card border-2 border-blue-300">
+                    <div class="sprint-header blue">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl font-bold text-blue-700">Sprint 6</span>
+                            <span class="text-sm text-blue-600">Bug Fixes & Refinements</span>
+                        </div>
+                        <span class="status-badge in-progress">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                            In Progress
+                        </span>
+                    </div>
+                    <div class="sprint-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Deliverables</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Fix API response handling (succeeded vs success)
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Fix getCurrentUser() API response unwrapping
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-green-500 text-base">check</span>
+                                        Fix sidebar menu state after settings navigation
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-blue-500 text-base">pending</span>
+                                        Performance optimization
+                                    </li>
+                                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                                        <span class="material-icons text-blue-500 text-base">pending</span>
+                                        Documentation and code cleanup
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Focus Areas</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Bug Fixes</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">State Management</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Error Handling</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Documentation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Roadmap -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Future Roadmap</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-icons text-gray-400">schedule</span>
+                        <h3 class="font-semibold text-gray-900">Planned Features</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Two-factor authentication
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Email notifications
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Report generation (PDF export)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Bulk import from CSV/Excel
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-icons text-gray-400">trending_up</span>
+                        <h3 class="font-semibold text-gray-900">Enhancements</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Advanced analytics dashboard
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Real-time notifications with SignalR
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Mobile-responsive PWA
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Audit logging dashboard
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-icons text-gray-400">cloud</span>
+                        <h3 class="font-semibold text-gray-900">Infrastructure</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Docker containerization
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            CI/CD with GitHub Actions
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Azure deployment
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                            Redis caching layer
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                        <span class="material-icons text-white text-xl">school</span>
+                    </div>
+                    <span class="text-xl font-bold">UniverSys Lite</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition">Overview</a>
+                    <a href="planning.html" class="text-gray-400 hover:text-white transition">Planning</a>
+                    <a href="sprints.html" class="text-gray-400 hover:text-white transition">Sprints</a>
+                    <a href="backend.html" class="text-gray-400 hover:text-white transition">Back-End</a>
+                    <a href="frontend.html" class="text-gray-400 hover:text-white transition">Front-End</a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    Portfolio Demo Project &copy; 2026
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back-End Architecture - UniverSys Lite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-white text-xl">school</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">UniverSys Lite</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="nav-link">Overview</a>
+                    <a href="planning.html" class="nav-link">Planning</a>
+                    <a href="sprints.html" class="nav-link">Sprints</a>
+                    <a href="backend.html" class="nav-link active">Back-End</a>
+                    <a href="frontend.html" class="nav-link">Front-End</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="https://github.com/dotnetdeveloper20xx/Fazi_University" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-purple-700 to-violet-800 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <span class="material-icons text-2xl">dns</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold">Back-End Architecture</h1>
+            </div>
+            <p class="text-xl text-purple-100 max-w-3xl">
+                Built with .NET 8 following Clean Architecture principles. CQRS pattern with MediatR,
+                Entity Framework Core, and comprehensive JWT authentication.
+            </p>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-12 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">.NET 8</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">ASP.NET Core</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">EF Core 8</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">SQL Server</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">MediatR</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">FluentValidation</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">AutoMapper</span>
+                </div>
+                <div class="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Serilog</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Endpoints -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">API Endpoints</h2>
+
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200">
+                <!-- Auth Endpoints -->
+                <div class="border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                            <span class="material-icons text-blue-600">vpn_key</span>
+                            Authentication
+                        </h3>
+                    </div>
+                    <table class="endpoint-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th style="width: 100px;">Auth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/auth/login</td>
+                                <td>Authenticate user and get JWT token</td>
+                                <td><span class="text-gray-400">No</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/auth/register</td>
+                                <td>Register new user account</td>
+                                <td><span class="text-gray-400">No</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/auth/refresh-token</td>
+                                <td>Refresh expired access token</td>
+                                <td><span class="text-gray-400">No</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/auth/me</td>
+                                <td>Get current user information</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/auth/change-password</td>
+                                <td>Change current user password</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Students Endpoints -->
+                <div class="border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                            <span class="material-icons text-green-600">school</span>
+                            Students
+                        </h3>
+                    </div>
+                    <table class="endpoint-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th style="width: 100px;">Auth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/students</td>
+                                <td>List students with pagination and filters</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/students/{id}</td>
+                                <td>Get student details by ID</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/students</td>
+                                <td>Create new student record</td>
+                                <td><span class="text-green-600">Admin/Registrar</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge put">PUT</span></td>
+                                <td class="font-mono text-sm">/api/students/{id}</td>
+                                <td>Update student information</td>
+                                <td><span class="text-green-600">Admin/Registrar</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge delete">DELETE</span></td>
+                                <td class="font-mono text-sm">/api/students/{id}</td>
+                                <td>Delete student record</td>
+                                <td><span class="text-green-600">Admin</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Courses Endpoints -->
+                <div class="border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                            <span class="material-icons text-purple-600">menu_book</span>
+                            Courses
+                        </h3>
+                    </div>
+                    <table class="endpoint-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th style="width: 100px;">Auth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/courses</td>
+                                <td>List courses with filters</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/courses/{id}</td>
+                                <td>Get course details</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/courses/{id}/sections</td>
+                                <td>Get course sections</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/courses</td>
+                                <td>Create new course</td>
+                                <td><span class="text-green-600">Admin/Registrar</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Enrollments Endpoints -->
+                <div class="border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                            <span class="material-icons text-orange-600">assignment</span>
+                            Enrollments
+                        </h3>
+                    </div>
+                    <table class="endpoint-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th style="width: 100px;">Auth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/enrollments</td>
+                                <td>List enrollments with filters</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/enrollments</td>
+                                <td>Enroll student in course section</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/enrollments/{id}/drop</td>
+                                <td>Drop enrollment before deadline</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/enrollments/{id}/withdraw</td>
+                                <td>Withdraw with "W" grade</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Grades Endpoints -->
+                <div>
+                    <div class="px-6 py-4 bg-gray-50">
+                        <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                            <span class="material-icons text-teal-600">grade</span>
+                            Grades
+                        </h3>
+                    </div>
+                    <table class="endpoint-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                                <th style="width: 100px;">Auth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/grades/student/{id}</td>
+                                <td>Get student grades</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/grades</td>
+                                <td>Submit grade for enrollment</td>
+                                <td><span class="text-green-600">Faculty</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge post">POST</span></td>
+                                <td class="font-mono text-sm">/api/grades/section/{id}/finalize</td>
+                                <td>Finalize all section grades</td>
+                                <td><span class="text-green-600">Faculty</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-badge get">GET</span></td>
+                                <td class="font-mono text-sm">/api/grades/student/{id}/transcript</td>
+                                <td>Generate student transcript</td>
+                                <td><span class="text-green-600">Yes</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <p class="text-center text-gray-500 mt-6">
+                <span class="font-semibold">40+ total endpoints</span> across all modules including Billing, Scheduling, Documents, and Notifications
+            </p>
+        </div>
+    </section>
+
+    <!-- CQRS Pattern -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">CQRS Implementation</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-blue-700 mb-4 flex items-center gap-2">
+                        <span class="material-icons">search</span>
+                        Query (Read)
+                    </h3>
+                    <div class="code-block">
+                        <pre>
+// GetStudentsQuery.cs
+public record GetStudentsQuery : IRequest&lt;Result&lt;PaginatedList&lt;StudentDto&gt;&gt;&gt;
+{
+    public int PageNumber { get; init; } = 1;
+    public int PageSize { get; init; } = 10;
+    public string? Search { get; init; }
+    public StudentStatus? Status { get; init; }
+}
+
+// GetStudentsQueryHandler.cs
+public class GetStudentsQueryHandler
+    : IRequestHandler&lt;GetStudentsQuery,
+      Result&lt;PaginatedList&lt;StudentDto&gt;&gt;&gt;
+{
+    private readonly IStudentRepository _repository;
+    private readonly IMapper _mapper;
+
+    public async Task&lt;Result&lt;PaginatedList&lt;StudentDto&gt;&gt;&gt;
+        Handle(GetStudentsQuery request, CancellationToken ct)
+    {
+        var students = await _repository
+            .GetPagedAsync(request, ct);
+
+        return Result.Success(
+            _mapper.Map&lt;PaginatedList&lt;StudentDto&gt;&gt;(students));
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
+                        <span class="material-icons">edit</span>
+                        Command (Write)
+                    </h3>
+                    <div class="code-block">
+                        <pre>
+// CreateStudentCommand.cs
+public record CreateStudentCommand : IRequest&lt;Result&lt;Guid&gt;&gt;
+{
+    public string FirstName { get; init; } = default!;
+    public string LastName { get; init; } = default!;
+    public string Email { get; init; } = default!;
+    public DateTime DateOfBirth { get; init; }
+    public Guid? ProgramId { get; init; }
+}
+
+// CreateStudentCommandHandler.cs
+public class CreateStudentCommandHandler
+    : IRequestHandler&lt;CreateStudentCommand, Result&lt;Guid&gt;&gt;
+{
+    private readonly IStudentRepository _repository;
+
+    public async Task&lt;Result&lt;Guid&gt;&gt; Handle(
+        CreateStudentCommand request, CancellationToken ct)
+    {
+        var student = Student.Create(
+            request.FirstName, request.LastName,
+            request.Email, request.DateOfBirth);
+
+        await _repository.AddAsync(student, ct);
+        return Result.Success(student.Id);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Database Stats -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Database & Seeded Data</h2>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">150</div>
+                    <div class="text-gray-600">Students</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-green-600 mb-2">69</div>
+                    <div class="text-gray-600">Courses</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">1,075</div>
+                    <div class="text-gray-600">Course Sections</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">4,400+</div>
+                    <div class="text-gray-600">Enrollments</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-teal-600 mb-2">10</div>
+                    <div class="text-gray-600">Departments</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-red-600 mb-2">17</div>
+                    <div class="text-gray-600">Programs</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">8</div>
+                    <div class="text-gray-600">Buildings</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-pink-600 mb-2">80+</div>
+                    <div class="text-gray-600">Rooms</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                        <span class="material-icons text-white text-xl">school</span>
+                    </div>
+                    <span class="text-xl font-bold">UniverSys Lite</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition">Overview</a>
+                    <a href="planning.html" class="text-gray-400 hover:text-white transition">Planning</a>
+                    <a href="sprints.html" class="text-gray-400 hover:text-white transition">Sprints</a>
+                    <a href="backend.html" class="text-gray-400 hover:text-white transition">Back-End</a>
+                    <a href="frontend.html" class="text-gray-400 hover:text-white transition">Front-End</a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    Portfolio Demo Project &copy; 2026
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

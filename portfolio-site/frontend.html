@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front-End Architecture - UniverSys Lite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-white text-xl">school</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">UniverSys Lite</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="nav-link">Overview</a>
+                    <a href="planning.html" class="nav-link">Planning</a>
+                    <a href="sprints.html" class="nav-link">Sprints</a>
+                    <a href="backend.html" class="nav-link">Back-End</a>
+                    <a href="frontend.html" class="nav-link active">Front-End</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="https://github.com/dotnetdeveloper20xx/Fazi_University" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-red-600 to-rose-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <span class="material-icons text-2xl">web</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold">Front-End Architecture</h1>
+            </div>
+            <p class="text-xl text-red-100 max-w-3xl">
+                Modern Angular 19 application with standalone components, signals for state management,
+                and a beautiful UI built with Angular Material and Tailwind CSS.
+            </p>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-12 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Angular 19</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">TypeScript 5.7</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Signals</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Angular Material 19</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Tailwind CSS 3.4</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">RxJS</span>
+                </div>
+                <div class="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full">
+                    <span class="font-semibold">Reactive Forms</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Structure -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Project Structure</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="code-block">
+                    <pre>
+frontend/src/app/
+├── core/                    # Singleton services
+│   ├── auth/               # Auth service, guards, interceptors
+│   ├── services/           # API service, notification service
+│   └── interceptors/       # HTTP interceptors
+│
+├── features/               # Feature modules (lazy loaded)
+│   ├── dashboard/          # Dashboard component
+│   ├── students/           # Student management
+│   ├── courses/            # Course catalog
+│   ├── enrollments/        # Enrollment processing
+│   ├── grades/             # Grade management
+│   ├── billing/            # Billing & payments
+│   ├── scheduling/         # Room scheduling
+│   ├── documents/          # Document management
+│   ├── notifications/      # Notification center
+│   └── settings/           # User settings
+│
+├── shared/                 # Shared components
+│   ├── components/         # Reusable UI components
+│   ├── pipes/              # Custom pipes
+│   └── animations/         # Animation definitions
+│
+├── layout/                 # Layout components
+│   └── main-layout/        # Header, sidebar, footer
+│
+└── models/                 # TypeScript interfaces</pre>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-red-50 rounded-xl p-5 border border-red-100">
+                        <h3 class="font-semibold text-red-900 mb-2">Core Module</h3>
+                        <p class="text-sm text-red-700">Singleton services loaded once at app startup. Contains authentication, API communication, and global state management.</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                        <h3 class="font-semibold text-blue-900 mb-2">Feature Modules</h3>
+                        <p class="text-sm text-blue-700">Each feature is a lazy-loaded standalone module with its own components, services, and routes. Optimizes initial bundle size.</p>
+                    </div>
+                    <div class="bg-green-50 rounded-xl p-5 border border-green-100">
+                        <h3 class="font-semibold text-green-900 mb-2">Shared Module</h3>
+                        <p class="text-sm text-green-700">Reusable components, pipes, and animations used across multiple features. Follows DRY principle.</p>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-5 border border-purple-100">
+                        <h3 class="font-semibold text-purple-900 mb-2">Layout Module</h3>
+                        <p class="text-sm text-purple-700">Application shell with responsive sidebar, header with user menu, and role-based navigation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Angular Features -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Angular 19 Features Used</h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-red-600">widgets</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">Standalone Components</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">All components are standalone with explicit imports. No NgModules required, resulting in cleaner code and better tree-shaking.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+@Component({
+  standalone: true,
+  imports: [CommonModule, ...],
+  template: `...`
+})
+export class MyComponent {}</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-blue-600">signal_cellular_alt</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">Signals</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Modern reactive state management with signals. Simpler than RxJS for component state, with automatic change detection.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+// Auth state with signals
+currentUser = signal&lt;User | null&gt;(null);
+isAuthenticated = computed(() =>
+  !!this.currentUser());
+userRoles = computed(() =>
+  this.currentUser()?.roles ?? []);</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-green-600">code</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">Control Flow</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">New built-in control flow syntax (@if, @for, @switch) replacing *ngIf and *ngFor with better performance.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+@if (isLoading()) {
+  &lt;mat-spinner /&gt;
+} @else {
+  @for (item of items(); track item.id) {
+    &lt;app-item [data]="item" /&gt;
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-purple-600">route</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">Lazy Loading</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">All feature modules are lazy-loaded for optimal bundle size. Users only download code for features they access.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+{
+  path: 'students',
+  loadChildren: () =>
+    import('./features/students')
+      .then(m => m.STUDENT_ROUTES),
+  canActivate: [authGuard]
+}</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-orange-600">security</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">Route Guards</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Functional guards protect routes based on authentication status and user roles. Redirects to login if unauthorized.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+export const authGuard: CanActivateFn =
+  (route, state) => {
+    const auth = inject(AuthService);
+    if (auth.isAuthenticated()) {
+      return true;
+    }
+    return inject(Router)
+      .createUrlTree(['/login']);
+  };</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                            <span class="material-icons text-teal-600">http</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900">HTTP Interceptors</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Functional interceptors add JWT tokens to requests and handle 401 errors globally with automatic token refresh.</p>
+                    <div class="code-block text-xs">
+                        <pre>
+export const authInterceptor:
+  HttpInterceptorFn = (req, next) => {
+    const token = inject(TokenService)
+      .getToken();
+    if (token) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+    return next(req);
+  };</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Components -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">UI Components & Features</h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-blue-600 text-3xl mb-3">dashboard</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Dashboard</h3>
+                    <p class="text-sm text-gray-600">Role-based dashboard with KPIs, charts, and quick actions</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-green-600 text-3xl mb-3">table_chart</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Data Tables</h3>
+                    <p class="text-sm text-gray-600">Paginated tables with sorting, filtering, and search</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-purple-600 text-3xl mb-3">edit_note</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Forms</h3>
+                    <p class="text-sm text-gray-600">Reactive forms with validation and error messages</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-orange-600 text-3xl mb-3">filter_alt</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Filters</h3>
+                    <p class="text-sm text-gray-600">Side panel filters with multiple criteria</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-red-600 text-3xl mb-3">notifications</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Notifications</h3>
+                    <p class="text-sm text-gray-600">Toast notifications and notification center</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-teal-600 text-3xl mb-3">dark_mode</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Dark Mode</h3>
+                    <p class="text-sm text-gray-600">System-aware theme switching</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-indigo-600 text-3xl mb-3">menu</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Sidebar</h3>
+                    <p class="text-sm text-gray-600">Collapsible sidebar with role-based menu</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-gray-200">
+                    <span class="material-icons text-pink-600 text-3xl mb-3">smartphone</span>
+                    <h3 class="font-semibold text-gray-900 mb-2">Responsive</h3>
+                    <p class="text-sm text-gray-600">Mobile-first responsive design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- State Management -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">State Management with Signals</h2>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Auth Service Example</h3>
+                        <div class="code-block">
+                            <pre>
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  // Private writable signal
+  private readonly _currentUser =
+    signal&lt;User | null&gt;(this.loadFromStorage());
+
+  // Public readonly signals
+  readonly currentUser = this._currentUser.asReadonly();
+
+  readonly isAuthenticated = computed(() =>
+    !!this._currentUser() &&
+    !this.tokenService.isTokenExpired()
+  );
+
+  readonly userRoles = computed(() =>
+    this._currentUser()?.roles ?? []
+  );
+
+  readonly isAdmin = computed(() =>
+    this.hasRole('Administrator')
+  );
+
+  // Update state
+  login(credentials: LoginRequest) {
+    return this.http.post&lt;AuthResponse&gt;(url, credentials)
+      .pipe(
+        tap(response => {
+          this._currentUser.set(response.user);
+          this.saveToStorage(response.user);
+        })
+      );
+  }
+
+  logout() {
+    this._currentUser.set(null);
+    this.clearStorage();
+  }
+}</pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Why Signals?</h3>
+                        <ul class="space-y-4">
+                            <li class="flex gap-3">
+                                <span class="material-icons text-green-500 flex-shrink-0">check_circle</span>
+                                <div>
+                                    <strong class="text-gray-900">Simpler Than RxJS</strong>
+                                    <p class="text-sm text-gray-600">No subscriptions to manage, no memory leaks from forgotten unsubscribes</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="material-icons text-green-500 flex-shrink-0">check_circle</span>
+                                <div>
+                                    <strong class="text-gray-900">Fine-Grained Reactivity</strong>
+                                    <p class="text-sm text-gray-600">Only components using a signal re-render when it changes</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="material-icons text-green-500 flex-shrink-0">check_circle</span>
+                                <div>
+                                    <strong class="text-gray-900">Computed Values</strong>
+                                    <p class="text-sm text-gray-600">Derived state automatically updates when dependencies change</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="material-icons text-green-500 flex-shrink-0">check_circle</span>
+                                <div>
+                                    <strong class="text-gray-900">Type Safe</strong>
+                                    <p class="text-sm text-gray-600">Full TypeScript support with inferred types</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="material-icons text-green-500 flex-shrink-0">check_circle</span>
+                                <div>
+                                    <strong class="text-gray-900">Synchronous</strong>
+                                    <p class="text-sm text-gray-600">Read values synchronously with signal() - no async/await needed</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bundle Stats -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Build Statistics</h2>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">~325KB</div>
+                    <div class="text-gray-600">Initial Bundle</div>
+                    <div class="text-xs text-gray-400 mt-1">Gzipped</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-green-600 mb-2">10</div>
+                    <div class="text-gray-600">Lazy Chunks</div>
+                    <div class="text-xs text-gray-400 mt-1">Feature modules</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">20+</div>
+                    <div class="text-gray-600">Components</div>
+                    <div class="text-xs text-gray-400 mt-1">Standalone</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center border border-gray-200">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">&lt;3s</div>
+                    <div class="text-gray-600">Build Time</div>
+                    <div class="text-xs text-gray-400 mt-1">Development</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                        <span class="material-icons text-white text-xl">school</span>
+                    </div>
+                    <span class="text-xl font-bold">UniverSys Lite</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition">Overview</a>
+                    <a href="planning.html" class="text-gray-400 hover:text-white transition">Planning</a>
+                    <a href="sprints.html" class="text-gray-400 hover:text-white transition">Sprints</a>
+                    <a href="backend.html" class="text-gray-400 hover:text-white transition">Back-End</a>
+                    <a href="frontend.html" class="text-gray-400 hover:text-white transition">Front-End</a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    Portfolio Demo Project &copy; 2026
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

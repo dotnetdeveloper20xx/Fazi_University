@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap, catchError, of } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import {
   ApiResponse,
@@ -58,7 +58,26 @@ export class StudentService {
       params['hasHold'] = filter.hasHold;
     }
 
-    return this.api.get<ApiResponse<PagedResponse<StudentListItem>>>(this.endpoint, params);
+    return this.api.get<ApiResponse<PagedResponse<StudentListItem>>>(this.endpoint, params).pipe(
+      tap(response => console.log('Students API response:', response)),
+      catchError(err => {
+        console.error('Students API error:', err);
+        // Return empty response on error
+        return of({
+          succeeded: false,
+          data: {
+            items: [] as StudentListItem[],
+            totalCount: 0,
+            pageNumber: 1,
+            pageSize: 10,
+            totalPages: 0,
+            hasPreviousPage: false,
+            hasNextPage: false
+          },
+          errors: [err.message || 'Failed to load students']
+        } as ApiResponse<PagedResponse<StudentListItem>>);
+      })
+    );
   }
 
   /**

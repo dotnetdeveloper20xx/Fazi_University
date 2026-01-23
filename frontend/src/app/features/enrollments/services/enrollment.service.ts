@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap, catchError, of } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import {
   ApiResponse,
@@ -49,7 +49,25 @@ export class EnrollmentService {
     if (filter.status) params['status'] = filter.status;
     if (filter.isGradeFinalized !== undefined) params['isGradeFinalized'] = filter.isGradeFinalized;
 
-    return this.api.get<ApiResponse<PagedResponse<EnrollmentListItem>>>(this.endpoint, params);
+    return this.api.get<ApiResponse<PagedResponse<EnrollmentListItem>>>(this.endpoint, params).pipe(
+      tap(response => console.log('Enrollments API response:', response)),
+      catchError(err => {
+        console.error('Enrollments API error:', err);
+        return of({
+          succeeded: false,
+          data: {
+            items: [] as EnrollmentListItem[],
+            totalCount: 0,
+            pageNumber: 1,
+            pageSize: 10,
+            totalPages: 0,
+            hasPreviousPage: false,
+            hasNextPage: false
+          },
+          errors: [err.message || 'Failed to load enrollments']
+        } as ApiResponse<PagedResponse<EnrollmentListItem>>);
+      })
+    );
   }
 
   /**

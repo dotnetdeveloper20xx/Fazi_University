@@ -331,10 +331,12 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getDashboardSummary().subscribe({
       next: (data) => {
+        console.log('Dashboard data loaded:', data);
         this.summary.set(data);
         this.isLoading.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('Dashboard load error:', err);
         // Fallback to empty/default values on error
         this.isLoading.set(false);
       }
@@ -342,16 +344,27 @@ export class DashboardComponent implements OnInit {
   }
 
   dashboardStats = computed((): DashboardStat[] => {
+    const user = this.authService.currentUser();
     const isAdmin = this.authService.isAdmin();
     const isFaculty = this.authService.isFaculty();
     const isStudent = this.authService.isStudent();
     const data = this.summary();
 
+    // If no user is logged in, show loading state
+    if (!user) {
+      return [
+        { label: 'Total Students', value: '-', icon: 'school', bgColor: 'bg-blue-100', iconColor: 'text-blue-600', route: '/students' },
+        { label: 'Active Courses', value: '-', icon: 'menu_book', bgColor: 'bg-green-100', iconColor: 'text-green-600', route: '/courses' },
+        { label: 'Total Enrollments', value: '-', icon: 'assignment', bgColor: 'bg-purple-100', iconColor: 'text-purple-600', route: '/enrollments' },
+        { label: 'Average GPA', value: '-', icon: 'grade', bgColor: 'bg-orange-100', iconColor: 'text-orange-600', route: '/grades' },
+      ];
+    }
+
     if (isAdmin && data) {
       return [
         {
           label: 'Total Students',
-          value: data.totalStudents.toLocaleString(),
+          value: (data.totalStudents ?? 0).toLocaleString(),
           icon: 'school',
           bgColor: 'bg-blue-100',
           iconColor: 'text-blue-600',
@@ -359,7 +372,7 @@ export class DashboardComponent implements OnInit {
         },
         {
           label: 'Active Courses',
-          value: data.totalCourses.toLocaleString(),
+          value: (data.totalCourses ?? 0).toLocaleString(),
           icon: 'menu_book',
           bgColor: 'bg-green-100',
           iconColor: 'text-green-600',
@@ -367,7 +380,7 @@ export class DashboardComponent implements OnInit {
         },
         {
           label: 'Total Enrollments',
-          value: data.totalEnrollments.toLocaleString(),
+          value: (data.totalEnrollments ?? 0).toLocaleString(),
           icon: 'assignment',
           bgColor: 'bg-purple-100',
           iconColor: 'text-purple-600',
@@ -375,7 +388,7 @@ export class DashboardComponent implements OnInit {
         },
         {
           label: 'Average GPA',
-          value: data.averageGpa.toFixed(2),
+          value: (data.averageGpa ?? 0).toFixed(2),
           icon: 'grade',
           bgColor: 'bg-orange-100',
           iconColor: 'text-orange-600',

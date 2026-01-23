@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import {
   ApiResponse,
@@ -21,9 +21,13 @@ export class DashboardService {
    * Get dashboard summary with key metrics
    * Uses silent request to avoid showing error notifications if the endpoint doesn't exist
    */
-  getDashboardSummary(): Observable<DashboardSummary> {
+  getDashboardSummary(): Observable<DashboardSummary | null> {
     return this.api.getSilent<ApiResponse<DashboardSummary>>(`${this.endpoint}/dashboard`).pipe(
-      map(response => response.data)
+      map(response => response?.data ?? null),
+      catchError(err => {
+        console.error('Dashboard summary error:', err);
+        return of(null);
+      })
     );
   }
 

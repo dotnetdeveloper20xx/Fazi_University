@@ -1,10 +1,11 @@
 import { HttpInterceptorFn, HttpErrorResponse, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, switchMap, throwError, BehaviorSubject, filter, take } from 'rxjs';
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';
 
 let isRefreshing = false;
+const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
@@ -50,6 +51,7 @@ function handleUnauthorized(
 ) {
   if (!isRefreshing) {
     isRefreshing = true;
+    refreshTokenSubject.next(null);
 
     const refreshToken = tokenService.getRefreshToken();
 
@@ -57,19 +59,29 @@ function handleUnauthorized(
       return authService.refreshToken().pipe(
         switchMap(response => {
           isRefreshing = false;
-          return next(addTokenHeader(request, response.data.accessToken));
+          const newToken = response.data.accessToken;
+          refreshTokenSubject.next(newToken);
+          return next(addTokenHeader(request, newToken));
         }),
         catchError(error => {
           isRefreshing = false;
+          refreshTokenSubject.next(null);
           authService.logout();
           return throwError(() => error);
         })
       );
     } else {
       isRefreshing = false;
+      refreshTokenSubject.next(null);
       authService.logout();
+      return throwError(() => new Error('No refresh token available'));
     }
   }
 
-  return throwError(() => new Error('Session expired'));
+  // Wait for the refresh to complete, then retry with new token
+  return refreshTokenSubject.pipe(
+    filter(token => token !== null),
+    take(1),
+    switchMap(token => next(addTokenHeader(request, token!)))
+  );
 }

@@ -71,3 +71,6 @@ TestResults/
 coverage/
 *.coverage
 *.coveragexml
+
+# Claude
+.claude/

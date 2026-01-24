@@ -32,6 +32,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
                 "http://localhost:4200",
                 "http://localhost:4201",
+                "http://localhost:4300",
                 "http://localhost:5173",
                 builder.Configuration.GetValue<string>("CorsOrigins:ReactApp") ?? "http://localhost:4201")
             .AllowAnyHeader()
